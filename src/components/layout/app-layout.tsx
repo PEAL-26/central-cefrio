@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { Avatar, AvatarImage } from "../ui/avatar";
+import Image from "next/image";
 import { UserNav } from "../ui/user-nav";
 import { MainNav } from "../ui/main-nav";
-import Image from "next/image";
 
 export function AppLayout({
   children,
