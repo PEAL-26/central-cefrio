@@ -1,4 +1,4 @@
-import { CreateInvoice } from "@/components/templates/invoices";
+import { CreateInvoice } from "../../../components/templates/invoices";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

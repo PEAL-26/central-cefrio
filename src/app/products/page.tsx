@@ -1,4 +1,4 @@
-import { ListProducts } from "@/components/templates/products";
+import { ListProducts } from "../../components/templates/products";
 import { Suspense } from "react";
 
 export const metadata = {

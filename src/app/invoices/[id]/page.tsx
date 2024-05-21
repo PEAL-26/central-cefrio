@@ -1,4 +1,4 @@
-import { DetailsInvoice } from "@/components/templates/invoices";
+import { DetailsInvoice } from "../../../components/templates/invoices";
 
 export default function InvoiceDetailsPage() {
   return <DetailsInvoice />;
