@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:prod": "npm i && npm run prisma:generate && npm run migrate:deploy && npm run build",
+    "build:prod": "npm i && npm run prisma:generate && npm run migrate:deploy",
     "start": "next start",
     "lint": "next lint",
     "migrate:dev": "npx prisma migrate dev",
