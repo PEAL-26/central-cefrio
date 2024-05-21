@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { ListCustomers } from "@/components/templates/customers/index";
+import { ListCustomers } from "@/components/templates/customers/list/index";
 
 export const metadata = {
   title: "Clientes",
