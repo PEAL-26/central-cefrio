@@ -1,4 +1,4 @@
-import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
