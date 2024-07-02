@@ -30,12 +30,22 @@ export function AppLayout({
         </div>
       </div>
 
-      <main className="mt-16 overflow-y-auto h-screen-custom flex-1 p-8 ">
+      <main className="mt-16 overflow-y-auto h-screen-custom flex-1 p-8 mb-14">
         {children}
-        <footer className="bg-gray-900 text-white py-4 px-6 mt-8">
-          <p className="text-sm">{`© ${new Date().getFullYear()} PEALSystems. All rights reserved.`}</p>
-        </footer>
       </main>
+      <footer className="fixed inset-x-0 bg-gray-900 text-white bottom-0 z-50 py-4 px-6 h-14">
+        <p className="text-sm">
+          {`© ${new Date().getFullYear()} `}
+          <Link
+            className="font-medium"
+            href="https://pealsystems.com"
+            target="_blank"
+          >
+            PEALSystems
+          </Link>
+          {`. All rights reserved.`}
+        </p>
+      </footer>
     </>
   );
 }

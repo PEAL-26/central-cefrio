@@ -2,37 +2,43 @@ import { ListRequestParams, ListResponseData } from "@/types";
 import { api } from "./api-custom";
 import { ApiRequestConfig } from "./types";
 
-let MAIN_ROUTE = "";
+export class Crud {
+  constructor(private mainRoute: string) {}
 
-async function create<Request = any, Response = any>(request: Request) {
-  return api.post<Response>(`${MAIN_ROUTE}`, request);
-}
+  async create<Request = any, Response = any>(
+    request: Request,
+    config?: ApiRequestConfig
+  ) {
+    return api.post<Response>(`${this.mainRoute}`, request, config);
+  }
 
-async function update<Request = any, Response = any>(
-  request: Request,
-  id: string
-) {
-  return api.put<Response>(`${MAIN_ROUTE}/${id}`, request);
-}
+  async update<Request = any, Response = any>(
+    request: Request,
+    id: string,
+    config?: ApiRequestConfig
+  ) {
+    return api.put<Response>(`${this.mainRoute}/${id}`, request, config);
+  }
 
-async function list<TData, Params extends ListRequestParams = {}>(
-  params?: Params,
-  configs?: ApiRequestConfig
-): Promise<ListResponseData<TData>> {
-  const { signal, ...rest } = configs || {};
-  return api.get<ListResponseData<TData>>(`${MAIN_ROUTE}`, {
-    params,
-    signal,
-    ...rest,
-  });
-}
+  async list<TData, Params extends ListRequestParams = {}>(
+    params?: Params,
+    configs?: ApiRequestConfig
+  ): Promise<ListResponseData<TData>> {
+    const { signal, ...rest } = configs || {};
+    return api.get<ListResponseData<TData>>(`${this.mainRoute}`, {
+      params,
+      signal,
+      ...rest,
+    });
+  }
 
-async function getById<TData>(id: string) {
-  return api.get<TData>(`${MAIN_ROUTE}/${id}`);
-}
+  async getById<TData>(id: string, config?: ApiRequestConfig) {
+    return api.get<TData>(`${this.mainRoute}/${id}`, config);
+  }
 
-async function deleteCRUD(id: string) {
-  return api.delete(`${MAIN_ROUTE}/${id}`);
+  async delete(id: string, config?: ApiRequestConfig) {
+    return api.delete(`${this.mainRoute}/${id}`, config);
+  }
 }
 
 interface CrudProps {
@@ -43,16 +49,22 @@ export function crud<
   TCreate = any,
   TUpdate = any,
   TDataList = any,
-  TParams extends ListRequestParams = any
+  TParams extends ListRequestParams = any,
+  TDataById = any
 >(props: CrudProps) {
   const { route } = props;
-  MAIN_ROUTE = route;
+
+  const op = new Crud(route);
 
   return {
-    create: create<TCreate>,
-    update: update<TUpdate>,
-    list: list<TDataList, TParams>,
-    getById,
-    delete: deleteCRUD,
+    create: (data: TCreate, config?: ApiRequestConfig) =>
+      op.create<TCreate>(data, config),
+    update: (data: TUpdate, id: string, config?: ApiRequestConfig) =>
+      op.update<TUpdate>(data, id, config),
+    list: (Params?: TParams, configs?: ApiRequestConfig) =>
+      op.list<TDataList, TParams>(Params, configs),
+    getById: (id: string, config?: ApiRequestConfig) =>
+      op.getById<TDataById>(id, config),
+    delete: (id: string, config?: ApiRequestConfig) => op.delete(id, config),
   };
 }

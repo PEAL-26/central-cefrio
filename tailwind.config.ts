@@ -1,5 +1,3 @@
-import type { Config } from "tailwindcss";
-
 const config = {
   darkMode: ["class"],
   content: [
@@ -19,7 +17,7 @@ const config = {
     },
     extend: {
       height: {
-        "screen-custom": "calc(100vh - 64px)",
+        "screen-custom": "calc(100vh - 120px)",
       },
       keyframes: {
         "accordion-down": {
@@ -38,6 +36,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+} ;
 
 export default config;
