@@ -19,7 +19,7 @@ export function MainNav(props: HTMLAttributes<HTMLElement>) {
 
   const activeLink = (url: string) => {
     const className = {
-      active: "text-sm font-medium transition-colors hover:text-primary",
+      active: "text-sm font-bold transition-colors hover:text-primary text-primary",
       inative:
         "text-sm font-medium text-muted-foreground transition-colors hover:text-primary",
     }[url === pathname ? "active" : "inative"];

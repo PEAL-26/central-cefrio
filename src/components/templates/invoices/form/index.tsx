@@ -18,7 +18,7 @@ export function InvoiceForm() {
       <Resume />
       <div className="flex justify-end">
         <Button
-          className="bg-gray-900 text-white hover:bg-gray-800"
+          className="bg-primary-900 text-white hover:bg-primary-800"
           type="submit"
         >
           Save Invoice

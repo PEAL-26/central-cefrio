@@ -1,3 +1,5 @@
+const { colors } = require("./src/styles/colors");
+
 const config = {
   darkMode: ["class"],
   content: [
@@ -16,6 +18,7 @@ const config = {
       },
     },
     extend: {
+      colors,
       height: {
         "screen-custom": "calc(100vh - 120px)",
       },
@@ -36,6 +39,6 @@ const config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-} ;
+};
 
-export default config;
+module.exports = config;

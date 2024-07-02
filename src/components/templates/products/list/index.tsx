@@ -19,7 +19,7 @@ export function ListProducts() {
 
   return (
     <>
-      <div className="flex-col space-y-8 flex">
+      <div className="flex-col space-y-8 flex  h-full">
         <div className="flex items-center justify-between space-y-2">
           <div>
             <h2 className="text-2xl font-bold tracking-tight">
@@ -33,10 +33,10 @@ export function ListProducts() {
           <Button onClick={() => handleOpenDialog()}>Novo</Button>
         </div>
         {response.isLoading && !response.isError ? (
-          <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center h-full">
             <ReactLoading
               type="spinningBubbles"
-              color={"#000"}
+              color={"#1B3D7A"}
               height={90}
               width={90}
             />

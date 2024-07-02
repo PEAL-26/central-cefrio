@@ -66,7 +66,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 h-full">
       <Suspense>
         <DataTableToolbar table={table} />
       </Suspense>
@@ -111,7 +111,7 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="text-center"
                 >
                   No results.
                 </TableCell>

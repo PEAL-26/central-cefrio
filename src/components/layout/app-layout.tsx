@@ -33,7 +33,7 @@ export function AppLayout({
       <main className="mt-16 overflow-y-auto h-screen-custom flex-1 p-8 mb-14">
         {children}
       </main>
-      <footer className="fixed inset-x-0 bg-gray-900 text-white bottom-0 z-50 py-4 px-6 h-14">
+      <footer className="fixed inset-x-0 bg-primary-900 text-white bottom-0 z-50 py-4 px-6 h-14 flex items-center">
         <p className="text-sm">
           {`© ${new Date().getFullYear()} `}
           <Link
