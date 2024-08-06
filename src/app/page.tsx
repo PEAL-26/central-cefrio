@@ -1,3 +1,4 @@
+import { Dashboard } from "@/components/templates/dashboard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -5,11 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardPage() {
-  return (
-    <>
-      <li>Gráficos</li>
-      <li>Faturas dos últimos 30 dias</li>
-      <li>Pagamentos</li>
-    </>
-  );
+  return <Dashboard />;
 }
