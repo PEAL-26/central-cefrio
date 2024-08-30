@@ -61,11 +61,11 @@ export function useDialog(props: UseDialogProps) {
       if (response) {
         form.setValue("id", response.id);
         form.setValue("name", response.name);
-        form.setValue("address", response?.address);
-        form.setValue("location", response?.location);
-        form.setValue("taxpayer", response?.taxpayer);
-        form.setValue("telephone", response?.telephone);
-        form.setValue("email", response?.email);
+        form.setValue("address", response?.address || '');
+        form.setValue("location", response?.location || '');
+        form.setValue("taxpayer", response?.taxpayer || "");
+        form.setValue("telephone", response?.telephone || "");
+        form.setValue("email", response?.email || "");
       }
       setIsLoading(false);
     }

@@ -1,11 +1,13 @@
 import { z } from "zod";
 import { randomUUID } from "crypto";
-import { prisma } from "../../../libs/prisma";
-import { Prisma } from "@prisma/client";
-import { getAllParams } from "../../../helpers/search-params";
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
+
+import { prisma } from "../../../libs/prisma";
+import { getAllParams } from "../../../helpers/search-params";
 import { responseError } from "../../../helpers/response/route-response";
 import { paginationData, setPagination } from "../../../helpers/pagination";
+import { generateUrlFromName } from "@/helpers/file";
 
 const listParamsSchema = z.object({
   q: z.string().optional(),
@@ -17,7 +19,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const { q = "", page, size } = listParamsSchema.parse(getAllParams(req.url));
   const { limit: take, offset: skip } = setPagination({ size, page });
 
-  const queryParams: Prisma.CustomerWhereInput = {
+  const queryParams: Prisma.CompanyWhereInput = {
     OR: [
       {
         name: {
@@ -25,32 +27,24 @@ export async function GET(req: NextRequest, res: NextResponse) {
           mode: "insensitive",
         },
       },
-      {
-        telephone: {
-          contains: q,
-          mode: "insensitive",
-        },
-      },
-      {
-        email: {
-          contains: q,
-          mode: "insensitive",
-        },
-      },
     ],
   };
 
-  const [total, customers] = await Promise.all([
-    prisma.customer.count({
+  const [total, companies] = await Promise.all([
+    prisma.company.count({
       where: queryParams,
     }),
-    prisma.customer.findMany({
+    prisma.company.findMany({
       select: {
         id: true,
         name: true,
-        email: true,
         telephone: true,
+        email: true,
+        site: true,
+        address: true,
         taxpayer: true,
+        location: true,
+        logo: true,
       },
       where: queryParams,
       skip,
@@ -59,7 +53,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
   ]);
 
   const response = paginationData({
-    rows: customers,
+    rows: companies.map((company) => ({
+      ...company,
+      logo: generateUrlFromName(company?.logo),
+    })),
     total,
     limit: take,
     page,
@@ -68,14 +65,25 @@ export async function GET(req: NextRequest, res: NextResponse) {
   return NextResponse.json(response, { status: 200 });
 }
 
-const customerSchema = z.object({
+const companySchema = z.object({
   id: z.string().uuid().optional(),
-  name: z.string({ required_error: "Campo Obrigatório." }),
-  address: z.string().optional(),
-  location: z.string().optional(),
-  email: z.string().optional(),
-  taxpayer: z.string().optional(),
+  name: z
+    .string({
+      required_error: "Campo obrigatório.",
+    })
+    .min(2, {
+      message: "O nome deve ter pelo menos 2 caracteres",
+    })
+    .max(255, {
+      message: "O nome não deve ter mais de 255 caracteres",
+    }),
   telephone: z.string().optional(),
+  email: z.string().optional(),
+  site: z.string().optional(),
+  address: z.string().optional(),
+  taxpayer: z.string().optional(),
+  location: z.string().optional(),
+  logo: z.string().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -84,37 +92,43 @@ export async function POST(request: NextRequest) {
     const {
       id = randomUUID(),
       name,
-      address,
-      location,
-      email,
-      taxpayer,
       telephone,
-    } = customerSchema.parse(data);
+      email,
+      site,
+      address,
+      taxpayer,
+      location,
+      logo,
+    } = companySchema.parse(data);
 
-    const customer = await prisma.customer.findFirst({ where: { id } });
+    const company = await prisma.company.findFirst({ where: { id } });
 
-    if (customer) {
-      await prisma.customer.update({
+    if (company) {
+      await prisma.company.update({
         data: {
           name,
-          address,
-          location,
-          email,
-          taxpayer,
           telephone,
+          email,
+          site,
+          address,
+          taxpayer,
+          location,
+          logo,
         },
         where: { id },
       });
     } else {
-      await prisma.customer.create({
+      await prisma.company.create({
         data: {
           id,
           name,
-          address,
-          location,
-          email,
-          taxpayer,
           telephone,
+          email,
+          site,
+          address,
+          taxpayer,
+          location,
+          logo,
         },
       });
     }

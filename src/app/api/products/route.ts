@@ -75,17 +75,29 @@ export async function POST(request: NextRequest) {
       iva,
     } = productSchema.parse(data);
 
-    await prisma.product.upsert({
-      create: {
-        id,
-        name,
-        unitMeasure,
-        price,
-        iva,
-      },
-      update: { name, unitMeasure, price, iva },
-      where: { id },
-    });
+    const product = await prisma.product.findFirst({ where: { id } });
+
+    if (product) {
+      await prisma.product.update({
+        data: {
+          name,
+          unitMeasure,
+          price,
+          iva,
+        },
+        where: { id },
+      });
+    } else {
+      await prisma.product.create({
+        data: {
+          id,
+          name,
+          unitMeasure,
+          price,
+          iva,
+        },
+      });
+    }
 
     return NextResponse.json({ message: "success" }, { status: 200 });
   } catch (error: any) {

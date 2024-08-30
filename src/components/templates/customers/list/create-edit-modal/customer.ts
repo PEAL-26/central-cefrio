@@ -14,7 +14,7 @@ export const customerSchema = z.object({
     }),
   address: z.string().optional(),
   location: z.string().optional(),
-  email: z.string().email().optional(),
+  email: z.string().optional(),
   taxpayer: z.string().optional(),
   telephone: z.string().optional(),
 });

@@ -45,7 +45,11 @@ export function useDialog(props: UseDialogProps) {
 
   const handleSubmit = async (data: ProductSchemaType) => {
     if (isPending) return;
-    await mutateAsync(data);
+    try {
+      await mutateAsync(data);
+    } catch (error) {
+      toastResponseError(error);
+    }
   };
 
   useEffect(() => {
