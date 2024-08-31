@@ -22,7 +22,7 @@ export interface InvoiceRequestData {
   date: Date;
   dueDate?: Date;
   paymentCondition?: string;
-  invoices: Product[];
+  items: Product[];
   payments?: Payment[];
 }
 

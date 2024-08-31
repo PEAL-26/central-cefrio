@@ -8,6 +8,8 @@ import {
   AutoCompleteCompleteEvent,
 } from "@/components/ui/autocomplete";
 import { cn } from "@/libs/utils";
+import { Button } from "@/components/ui/button";
+import { BoltIcon } from "lucide-react";
 
 export function CustomerForm() {
   const [value, setValue] = useState("");
@@ -21,9 +23,44 @@ export function CustomerForm() {
   };
 
   return (
-    <div className="flex flex-col max-w-lg ">
-      <h2 className="text-lg font-semibold mb-4 w-full">Cliente</h2>
-      <div className="grid grid-cols-2 gap-6 ">
+    <div className="flex flex-col max-w-lg w-72">
+      <div className="flex justify-between items-center w-full gap-4 border-b">
+        <h2 className="text-lg font-semibold">Cliente</h2>
+        <Button variant="ghost" className="p-0 hover:bg-transparent">
+          <BoltIcon />
+        </Button>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="flex flex-col w-full">
+          <div className="flex items-center justify-between w-full">
+            <span className="font-bold">Nome </span>
+            <span>00</span>
+          </div>
+          <div className="flex items-center justify-between w-full">
+            <span className="font-bold">NIF: </span>
+            <span>xxxxxxxxxxxxxxx</span>
+          </div>
+          <div className="flex items-center justify-between w-full">
+            <span className="font-bold">Telefone: </span>
+            <span>94657836</span>
+          </div>
+          <div className="flex items-center justify-between w-full">
+            <span className="font-bold">Email: </span>
+            <span>email@example.com</span>
+          </div>
+          <div className="flex items-center justify-between w-full">
+            <span className="font-bold">Cidade </span>
+            <span>Luanda - Angola</span>
+          </div>
+          <div className="flex items-center justify-between w-full gap-4">
+            <span className="font-bold">Morada: </span>
+            <span className="line-clamp-1 w-full text-right">
+              Alguma coisa gggggggggggggggg ggg
+            </span>
+          </div>
+        </div>
+      </div>
+      {/* <div className="grid grid-cols-2 gap-6 ">
         <div className="col-span-2 flex flex-col">
           <Label htmlFor="customer-name">Nome do cliente</Label>
           <AutoComplete
@@ -62,7 +99,7 @@ export function CustomerForm() {
             placeholder="123 Main St, Anytown USA"
           />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

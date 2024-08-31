@@ -133,8 +133,8 @@ model Company {
 
   name      String
   telephone String?
-  email String?
-  site String?
+  email     String?
+  site      String?
   address   String?
   taxpayer  String?
   location  String?
