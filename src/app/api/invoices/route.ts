@@ -8,17 +8,19 @@ import { responseError } from "../../../helpers/response/route-response";
 import { paginationData, setPagination } from "../../../helpers/pagination";
 
 const listParamsSchema = z.object({
+  type: z.string().optional(),
   q: z.string().optional(),
   page: z.coerce.number().optional(),
   size: z.coerce.number().optional(),
 });
 
 export async function GET(req: NextRequest, res: NextResponse) {
-  const { q = "", page, size } = listParamsSchema.parse(getAllParams(req.url));
+  const { type, q = "", page, size } = listParamsSchema.parse(getAllParams(req.url));
   const { limit: take, offset: skip } = setPagination({ size, page });
 
   const queryParams: Prisma.InvoiceWhereInput = {
     OR: [],
+    type,
   };
 
   const [total, invoices] = await Promise.all([

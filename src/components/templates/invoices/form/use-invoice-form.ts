@@ -20,6 +20,18 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
   const form = useForm<InvoiceSchemaType>({
     resolver: zodResolver(invoiceSchema),
     mode: "onChange",
+    defaultValues: {
+      date: new Date(),
+      dueDate: new Date(),
+      currency: "AOA",
+      reasonExemption: "Transmissão de bens e serviços não sujeita",
+      subtotal: 0,
+      totalDiscount: 0,
+      totalIva: 0,
+      totalWithholdingTax: 0,
+
+      total: 0,
+    },
   });
 
   const handleSubmit = async (data: InvoiceSchemaType) => {

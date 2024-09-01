@@ -9,7 +9,9 @@ export interface InvoiceListResponseData {
   total?: number;
 }
 
-export interface InvoiceParams extends ListRequestParams {}
+export interface InvoiceParams extends ListRequestParams {
+  type?: string;
+}
 
 export interface InvoiceRequestData {
   id?: string;

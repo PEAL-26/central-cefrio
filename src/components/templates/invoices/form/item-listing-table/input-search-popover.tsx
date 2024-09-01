@@ -11,7 +11,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { KeyboardEvent, useState } from "react";
-import { ItemSearchTable } from "./item-search-table";
+import { TableItemsSearch } from "./table-items-search";
 import { ProductListResponseData } from "@/services/products";
 
 interface ItemSearchProps {
@@ -19,7 +19,7 @@ interface ItemSearchProps {
   index: number;
 }
 
-export function ItemSearch(props: ItemSearchProps) {
+export function InputSearchPopover(props: ItemSearchProps) {
   const { form, index } = props;
   const [open, setOpen] = useState(() => false);
 
@@ -59,7 +59,7 @@ export function ItemSearch(props: ItemSearchProps) {
         )}
       />
       <PopoverContent align="start" className="w-80 h-96 bg-white">
-        <ItemSearchTable onSelect={handleSelect} />
+        <TableItemsSearch onSelect={handleSelect} />
       </PopoverContent>
     </Popover>
   );

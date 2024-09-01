@@ -1,7 +1,7 @@
 "use client";
 import { TableRow, TableCell } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { InvoiceSchemaType } from "./schema";
+import { InvoiceSchemaType } from "../schema";
 import { Button } from "@/components/ui/button";
 import { TrashIcon } from "lucide-react";
 import { useFormContext } from "react-hook-form";
@@ -12,14 +12,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useEffect } from "react";
-import { ItemSearch } from "./item-search";
+import { InputSearchPopover } from "./input-search-popover";
+import { formatCurrency } from "@/helpers/currency";
 
 interface TableItemProps {
   index: number;
   remove?(): void;
 }
 
-export function TableItem(props: TableItemProps) {
+export function TableItemRow(props: TableItemProps) {
   const { index, remove } = props;
   const form = useFormContext<InvoiceSchemaType>();
 
@@ -45,7 +46,7 @@ export function TableItem(props: TableItemProps) {
   return (
     <TableRow>
       <TableCell className="align-top">
-        <ItemSearch form={form} index={index} />
+        <InputSearchPopover form={form} index={index} />
       </TableCell>
       <TableCell className="w-[1%] align-top">
         <FormField
@@ -141,9 +142,9 @@ export function TableItem(props: TableItemProps) {
           )}
         />
       </TableCell>
-      <TableCell className="text-right font-bold align-top pt-4">{`$ ${Number(
-        form.getValues(`items.${index}.total`) ?? "0"
-      ).toFixed(2)}`}</TableCell>
+      <TableCell className="text-right font-bold align-top pt-4">
+        {formatCurrency(form.getValues(`items.${index}.total`))}
+      </TableCell>
       <TableCell className="text-right font-bold align-top">
         <Button
           type="button"

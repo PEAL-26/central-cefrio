@@ -1,16 +1,6 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { useState } from "react";
+import { LoaderIcon } from "lucide-react";
+
 import {
   Table,
   TableBody,
@@ -19,16 +9,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Input } from "@/components/ui/input";
 import { useDebounceValue, useQueryPagination } from "@/hooks";
 import { ProductListResponseData, productService } from "@/services/products";
-import { LoaderIcon } from "lucide-react";
-import { KeyboardEvent, useState } from "react";
 
 interface ItemSearchProps {
   onSelect?(data: ProductListResponseData): void;
 }
 
-export function ItemSearchTable({ onSelect }: ItemSearchProps) {
+export function TableItemsSearch({ onSelect }: ItemSearchProps) {
   const [page, setPage] = useState<string | undefined>(undefined);
   const [size, setSize] = useState<string | undefined>("10");
   const [query, setQuery] = useState<string | undefined>(undefined);

@@ -6,9 +6,9 @@ import {
   Table,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { TableItem } from "./item";
+import { TableItemRow } from "./table-item-row";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { InvoiceSchemaType } from "./schema";
+import { InvoiceSchemaType } from "../schema";
 import { useEffect, useState } from "react";
 
 export function ItemListingTable() {
@@ -25,7 +25,6 @@ export function ItemListingTable() {
   const handleRemove = (id: string) => {
     const index = fields.findIndex((p) => p.id === id);
     remove(index);
-    console.log({ index, id, fields });
   };
 
   const handleAppend = () => {
@@ -63,7 +62,7 @@ export function ItemListingTable() {
         </TableHeader>
         <TableBody>
           {fields.map((item, index) => (
-            <TableItem
+            <TableItemRow
               index={index}
               key={index}
               remove={() => handleRemove(item.id)}

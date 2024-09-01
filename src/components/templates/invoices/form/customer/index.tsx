@@ -1,14 +1,13 @@
 "use client";
-import { BoltIcon, LoaderIcon } from "lucide-react";
+import { LoaderIcon } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import { CustomerModal } from "./modal";
 import { useCustomer } from "./use-customer";
 
 export function CustomerForm() {
   const { customer, isLoading } = useCustomer();
   return (
-    <div className="flex flex-col max-w-lg w-72">
+    <div className="flex flex-col max-w-lg w-72 gap-4">
       <div className="flex justify-between items-center w-full gap-4 border-b">
         <h2 className="text-lg font-semibold">Cliente</h2>
         <CustomerModal />

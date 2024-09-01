@@ -46,27 +46,34 @@ model Product {
   @@map("products")
 }
 
+enum WithholdingTaxType {
+  COMPANY
+  PARTICULAR
+}
+
 model Invoice {
   id     String @id @unique @default(uuid())
   number String @unique @db.VarChar(100)
-  type   String @db.VarChar(150)
+  type   String @db.VarChar(5)
 
   customer   Customer @relation(fields: [customerId], references: [id])
   customerId String   @map("customer_id")
 
-  customerDiscount  Decimal?  @default(0.00) @map("customer_discount")
-  financialDiscount Decimal?  @default(0.00) @map("financial_discount")
-  currency          String?
-  exchange          Decimal?  @default(0.00)
-  date              DateTime
-  dueDate           DateTime? @map("due_Date")
-  paymentCondition  String?   @map("payment_condition")
-  reference         String?
-  observation       String?
+  currency                 String?             @default("AOA") @db.VarChar(5)
+  exchange                 Decimal?            @default(0.00)
+  date                     DateTime
+  dueDate                  DateTime?           @map("due_Date")
+  paymentTerms             String?             @map("payment_terms")
+  reference                String?
+  observation              String?
+  withholdingTaxType       WithholdingTaxType?
+  withholdingTaxPercentage Decimal?
 
   // Impostos
   taxAmount       Decimal? @default(0.00) @map("tax_amount")
   reasonExemption String?  @map("reason_exemption")
+
+  generalDiscount Decimal? @default(0.00) @map("general_discount")
 
   // Totais
   total               Decimal? @default(0.00)
@@ -77,8 +84,10 @@ model Invoice {
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(3)
   updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
 
-  products InvoiceProduct[]
-  payments InvoicePayment[]
+  products  InvoiceProduct[]
+  payments  InvoicePayment[]
+  invoices  InvoiceDocument[] @relation(name: "documents_main_invoice")
+  documents InvoiceDocument[] @relation(name: "document_invoices")
 
   @@map("invoices")
 }
@@ -92,17 +101,15 @@ model InvoiceProduct {
   invoice   Invoice @relation(fields: [invoiceId], references: [id])
   invoiceId String  @map("invoice_id")
 
-  date           DateTime?
-  productName    String    @map("product_name")
-  unitMeasure    String?   @default("UN") @map("unit_measure")
-  price          Decimal?  @default(0.00)
-  quantity       Decimal?  @default(0.00)
-  discount       Decimal?  @default(0.00)
-  discountAmount Decimal?  @default(0.00)
-  iva            Decimal?  @default(0.00)
-  ivaAmount      Decimal?  @default(0.00)
-  total          Decimal?  @default(0.00)
-  paid           Decimal?  @default(0.00)
+  productName    String   @map("product_name")
+  unitMeasure    String?  @default("UN") @map("unit_measure")
+  price          Decimal? @default(0.00)
+  quantity       Decimal? @default(0.00)
+  discount       Decimal? @default(0.00)
+  discountAmount Decimal? @default(0.00)
+  iva            Decimal? @default(0.00)
+  ivaAmount      Decimal? @default(0.00)
+  total          Decimal? @default(0.00)
 
   @@map("invoice_products")
 }
@@ -110,13 +117,27 @@ model InvoiceProduct {
 model InvoicePayment {
   id String @id @unique @default(uuid())
 
-  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
   invoiceId String  @map("invoice_id")
 
   method String
   amount Decimal
 
   @@map("invoice_payments")
+}
+
+model InvoiceDocument {
+  id String @id @unique @default(uuid())
+
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade, name: "documents_main_invoice")
+  invoiceId String  @map("invoice_id")
+
+  document   Invoice @relation(fields: [documentId], references: [id], name: "document_invoices")
+  documentId String  @map("document_id")
+
+  paid Decimal @default(0.00)
+
+  @@map("invoice_documents")
 }
 
 model Bank {

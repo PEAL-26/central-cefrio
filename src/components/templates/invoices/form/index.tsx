@@ -1,14 +1,13 @@
 "use client";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
 
+import { Resume } from "./resume";
 import { CustomerForm } from "./customer";
+import { useInvoiceForm } from "./use-invoice-form";
 import { DocumentSettings } from "./document-settings";
 import { ItemListingTable } from "./item-listing-table";
-import { Resume } from "./resume";
-import { Form } from "@/components/ui/form";
-import { useInvoiceForm } from "./use-invoice-form";
+import { InvoicePayments } from "./payment";
 
 export function InvoiceForm() {
   const { form, onSubmit } = useInvoiceForm();
@@ -21,7 +20,10 @@ export function InvoiceForm() {
           <CustomerForm />
         </div>
         <ItemListingTable />
-        <Resume />
+        <div className="flex justify-between items-start w-full">
+          <InvoicePayments />
+          <Resume />
+        </div>
         <div className="flex justify-start">
           <Button
             className="bg-primary-900 text-white hover:bg-primary-800"

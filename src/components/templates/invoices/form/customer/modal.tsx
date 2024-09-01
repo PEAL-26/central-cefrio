@@ -35,15 +35,8 @@ export function CustomerModal(props: CustomerModalProps) {
 
   return (
     <Popover modal open={open} onOpenChange={handleClose}>
-      <PopoverTrigger>
-        <Button
-          type="button"
-          variant="ghost"
-          className="p-0 hover:bg-transparent"
-          onClick={handleOpen}
-        >
-          <BoltIcon />
-        </Button>
+      <PopoverTrigger onClick={handleOpen}>
+        <BoltIcon />
       </PopoverTrigger>
       <PopoverContent
         align="end"
