@@ -58,22 +58,22 @@ export async function POST(request: NextRequest) {
     const data = await request.json();
     const { id = randomUUID() } = invoiceSchema.parse(data);
 
-    const invoice = await prisma.invoice.findFirst({ where: { id } });
+    let invoice = await prisma.invoice.findFirst({ where: { id } });
 
     if (invoice) {
-      // await prisma.invoice.update({
+      //invoice = await prisma.invoice.update({
       //   data: {},
       //   where: { id },
       // });
     } else {
-      // await prisma.invoice.create({
+      //invoice = await prisma.invoice.create({
       //   data: {
       //     id,
       //   },
       // });
     }
 
-    return NextResponse.json({ message: "success" }, { status: 200 });
+    return NextResponse.json(invoice, { status: 200 });
   } catch (error: any) {
     return responseError(error);
   }

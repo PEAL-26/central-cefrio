@@ -26,6 +26,7 @@ export const invoiceItemSchema = z.object({
 
 export const invoiceSchema = z.object({
   id: z.string().uuid().optional(),
+  customerId: z.string().optional(),
   items: z.array(invoiceItemSchema),
 });
 

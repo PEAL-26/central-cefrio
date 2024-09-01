@@ -75,10 +75,10 @@ export async function POST(request: NextRequest) {
       iva,
     } = productSchema.parse(data);
 
-    const product = await prisma.product.findFirst({ where: { id } });
+    let product = await prisma.product.findFirst({ where: { id } });
 
     if (product) {
-      await prisma.product.update({
+      product = await prisma.product.update({
         data: {
           name,
           unitMeasure,
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
         where: { id },
       });
     } else {
-      await prisma.product.create({
+      product = await prisma.product.create({
         data: {
           id,
           name,
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    return NextResponse.json({ message: "success" }, { status: 200 });
+    return NextResponse.json(product, { status: 200 });
   } catch (error: any) {
     return responseError(error);
   }

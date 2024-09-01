@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./columns";
 import { useList } from "./use-list";
-import { CreateEditCustomerDialog } from "./create-edit-modal";
+import { CreateEditCustomerDialog } from "../../../modals/customer-create-edit-dialog";
 import { ReactLoading } from "@/libs/react-loading";
 
 export function ListCustomers() {

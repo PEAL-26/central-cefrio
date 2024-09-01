@@ -19,12 +19,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { DialogProps } from "./types";
-import { useDialog } from "./use-dialog";
+import { CreateEditProductDialogProps } from "./types";
+import { useCreateEditProduct } from "./use-dialog";
 
-export function CreateEditProductDialog(props: DialogProps) {
+export function CreateEditProductDialog(props: CreateEditProductDialogProps) {
   const { id, open, onClose } = props;
-  const { isPending, isLoading, form, onSubmit } = useDialog({
+  const { isPending, isLoading, form, onSubmit } = useCreateEditProduct({
     id,
     open,
     onClose,

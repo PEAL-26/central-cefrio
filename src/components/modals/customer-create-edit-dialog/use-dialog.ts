@@ -10,11 +10,13 @@ import {
 import { useQueryGetDataCached } from "@/hooks";
 
 import { customerSchema, CustomerSchemaType } from "./customer";
-import { UseDialogProps } from "./types";
+import { UseCustomerCreateEditDialogProps } from "./types";
 import { customerService } from "@/services/customers";
 
-export function useDialog(props: UseDialogProps) {
-  const { id, open, onClose } = props;
+export function useCustomerCreateEdit(
+  props?: UseCustomerCreateEditDialogProps
+) {
+  const { id, open, onClose, onSubmitted } = props || {};
   const queryClient = useQueryClient();
   const { getDataCached } = useQueryGetDataCached();
 
@@ -45,7 +47,8 @@ export function useDialog(props: UseDialogProps) {
 
   const handleSubmit = async (data: CustomerSchemaType) => {
     if (isPending) return;
-    await mutateAsync(data);
+    const response = await mutateAsync(data);
+    onSubmitted?.(response);
   };
 
   useEffect(() => {
@@ -61,8 +64,8 @@ export function useDialog(props: UseDialogProps) {
       if (response) {
         form.setValue("id", response.id);
         form.setValue("name", response.name);
-        form.setValue("address", response?.address || '');
-        form.setValue("location", response?.location || '');
+        form.setValue("address", response?.address || "");
+        form.setValue("location", response?.location || "");
         form.setValue("taxpayer", response?.taxpayer || "");
         form.setValue("telephone", response?.telephone || "");
         form.setValue("email", response?.email || "");

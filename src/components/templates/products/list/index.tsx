@@ -4,7 +4,7 @@ import { DataTable } from "@/components/ui/data-table";
 
 import { columns } from "./columns";
 import { useList } from "./use-list";
-import { CreateEditProductDialog } from "./create-edit-modal";
+import { CreateEditProductDialog } from "../../../modals/product-create-edit-dialog";
 import { ReactLoading } from "@/libs/react-loading";
 
 export function ListProducts() {

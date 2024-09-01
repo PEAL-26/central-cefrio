@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import { CustomerForm } from "./customer-form";
+import { CustomerForm } from "./customer";
 import { DocumentSettings } from "./document-settings";
 import { ItemListingTable } from "./item-listing-table";
 import { Resume } from "./resume";

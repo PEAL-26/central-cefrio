@@ -25,5 +25,6 @@ export const customerService = crud<
   CustomerRequestData,
   CustomerRequestData,
   CustomerListResponseData,
-  CustomerParams
+  CustomerParams,
+  CustomerRequestData
 >({ route: "customers" });

@@ -10,11 +10,11 @@ import {
 import { useQueryGetDataCached } from "@/hooks";
 
 import { productSchema, ProductSchemaType } from "./product";
-import { UseDialogProps } from "./types";
+import { UseCreateEditProductDialogProps } from "./types";
 import { productService } from "@/services/products";
 
-export function useDialog(props: UseDialogProps) {
-  const { id, open, onClose } = props;
+export function useCreateEditProduct(props: UseCreateEditProductDialogProps) {
+  const { id, open, onClose, onSubmitted } = props;
   const queryClient = useQueryClient();
   const { getDataCached } = useQueryGetDataCached();
 
@@ -46,7 +46,8 @@ export function useDialog(props: UseDialogProps) {
   const handleSubmit = async (data: ProductSchemaType) => {
     if (isPending) return;
     try {
-      await mutateAsync(data);
+      const response = await mutateAsync(data);
+      onSubmitted?.(response);
     } catch (error) {
       toastResponseError(error);
     }

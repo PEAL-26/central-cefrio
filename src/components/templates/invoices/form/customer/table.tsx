@@ -1,16 +1,7 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { useState } from "react";
+import { LoaderIcon, PlusCircle } from "lucide-react";
+
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import {
   Table,
   TableBody,
@@ -20,15 +11,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useDebounceValue, useQueryPagination } from "@/hooks";
-import { ProductListResponseData, productService } from "@/services/products";
-import { LoaderIcon } from "lucide-react";
-import { KeyboardEvent, useState } from "react";
+import {
+  CustomerListResponseData,
+  customerService,
+} from "@/services/customers";
+import { Button } from "@/components/ui/button";
 
-interface ItemSearchProps {
-  onSelect?(data: ProductListResponseData): void;
+interface CustomerTablePros {
+  open: boolean;
+  onAdd?(): void;
+  onSelect?(customer: CustomerListResponseData): void;
 }
-
-export function ItemSearchTable({ onSelect }: ItemSearchProps) {
+export function CustomerTable(props: CustomerTablePros) {
+  const { open, onAdd, onSelect } = props;
   const [page, setPage] = useState<string | undefined>(undefined);
   const [size, setSize] = useState<string | undefined>("10");
   const [query, setQuery] = useState<string | undefined>(undefined);
@@ -36,12 +31,13 @@ export function ItemSearchTable({ onSelect }: ItemSearchProps) {
   const q = useDebounceValue(query);
 
   const { data, isLoading, isError } = useQueryPagination({
-    fn: async () => await productService.list({ page, q, size }),
-    queryKey: ["products", q, size, page],
+    fn: async () => await customerService.list({ page, q, size }),
+    queryKey: ["customers", q, size, page],
+    disableFetch: !open,
   });
 
   return (
-    <div className="h-full">
+    <div className="h-full w-full p-4">
       <Input
         placeholder="Pesquisar"
         value={query}
@@ -50,7 +46,7 @@ export function ItemSearchTable({ onSelect }: ItemSearchProps) {
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
-            <TableHead className="hover:bg-transparent">Descrição</TableHead>
+            <TableHead className="hover:bg-transparent">Cliente</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -78,6 +74,9 @@ export function ItemSearchTable({ onSelect }: ItemSearchProps) {
             <div className="flex justify-center items-center">
               <TableRow className="hover:bg-transparent h-full">
                 <TableCell>Nenhum item</TableCell>
+                <Button className="gap-2" variant="ghost" onClick={onAdd}>
+                  <PlusCircle /> Adicionar
+                </Button>
               </TableRow>
             </div>
           )}

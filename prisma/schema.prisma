@@ -92,15 +92,17 @@ model InvoiceProduct {
   invoice   Invoice @relation(fields: [invoiceId], references: [id])
   invoiceId String  @map("invoice_id")
 
-  date        DateTime?
-  productName String    @map("product_name")
-  unitMeasure String?   @default("UN") @map("unit_measure")
-  price       Decimal?  @default(0.00)
-  quantity    Decimal?  @default(0.00)
-  discount    Decimal?  @default(0.00)
-  iva         Decimal?  @default(0.00)
-  total       Decimal?  @default(0.00)
-  paid        Decimal?  @default(0.00)
+  date           DateTime?
+  productName    String    @map("product_name")
+  unitMeasure    String?   @default("UN") @map("unit_measure")
+  price          Decimal?  @default(0.00)
+  quantity       Decimal?  @default(0.00)
+  discount       Decimal?  @default(0.00)
+  discountAmount Decimal?  @default(0.00)
+  iva            Decimal?  @default(0.00)
+  ivaAmount      Decimal?  @default(0.00)
+  total          Decimal?  @default(0.00)
+  paid           Decimal?  @default(0.00)
 
   @@map("invoice_products")
 }

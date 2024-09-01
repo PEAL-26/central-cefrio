@@ -91,10 +91,10 @@ export async function POST(request: NextRequest) {
       telephone,
     } = customerSchema.parse(data);
 
-    const customer = await prisma.customer.findFirst({ where: { id } });
+    let customer = await prisma.customer.findFirst({ where: { id } });
 
     if (customer) {
-      await prisma.customer.update({
+      customer = await prisma.customer.update({
         data: {
           name,
           address,
@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
         where: { id },
       });
     } else {
-      await prisma.customer.create({
+      customer = await prisma.customer.create({
         data: {
           id,
           name,
@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    return NextResponse.json({ message: "success" }, { status: 200 });
+    return NextResponse.json(customer, { status: 200 });
   } catch (error: any) {
     return responseError(error);
   }
