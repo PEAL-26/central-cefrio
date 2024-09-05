@@ -14,6 +14,7 @@ import {
 import { useEffect } from "react";
 import { InputSearchPopover } from "./input-search-popover";
 import { formatCurrency } from "@/helpers/currency";
+import { useInvoiceUpdateTotal } from "../use-invoice-update-total";
 
 interface TableItemProps {
   index: number;
@@ -22,26 +23,7 @@ interface TableItemProps {
 
 export function TableItemRow(props: TableItemProps) {
   const { index, remove } = props;
-  const form = useFormContext<InvoiceSchemaType>();
-
-  useEffect(() => {
-    const quantity = form.watch(`items.${index}.quantity`) ?? 0;
-    const price = form.watch(`items.${index}.price`) ?? 0;
-    const discount = form.watch(`items.${index}.discount`) ?? 0;
-    const iva = form.watch(`items.${index}.iva`) ?? 0;
-
-    const discountAmount = (discount * price) / 100;
-    const priceDiscount = price - discountAmount;
-
-    const ivaAmount = (iva * priceDiscount) / 100;
-    const priceIva = priceDiscount + ivaAmount;
-
-    const total = quantity * priceIva;
-
-    form.setValue(`items.${index}.discountAmount`, discountAmount);
-    form.setValue(`items.${index}.ivaAmount`, ivaAmount);
-    form.setValue(`items.${index}.total`, total);
-  }, [form]);
+  const { updateTotal, form } = useInvoiceUpdateTotal();
 
   return (
     <TableRow>
@@ -75,6 +57,10 @@ export function TableItemRow(props: TableItemProps) {
                   type="number"
                   className="w-20 text-center"
                   {...field}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    updateTotal(index);
+                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -95,6 +81,10 @@ export function TableItemRow(props: TableItemProps) {
                   type="number"
                   className="w-40 text-right"
                   {...field}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    updateTotal(index);
+                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -115,6 +105,10 @@ export function TableItemRow(props: TableItemProps) {
                   type="number"
                   className="w-40 text-right"
                   {...field}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    updateTotal(index);
+                  }}
                 />
               </FormControl>
               <FormMessage />
@@ -135,6 +129,10 @@ export function TableItemRow(props: TableItemProps) {
                   type="number"
                   className="w-40 text-right"
                   {...field}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    updateTotal(index);
+                  }}
                 />
               </FormControl>
               <FormMessage />

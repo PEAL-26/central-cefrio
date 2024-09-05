@@ -28,7 +28,7 @@ export function ResumeTax() {
           className="text-right"
           value={formatCurrency(form.watch("totalIva"))}
         />
-        <span className="text-[8pt] text-right px-1 flex items-start gap-2">
+        {/* <span className="text-[8pt] text-right px-1 flex items-start gap-2">
           {form.watch("reasonExemption") || "Motivo de isenção de imposto"}
           <Popover modal>
             <PopoverTrigger>
@@ -48,7 +48,7 @@ export function ResumeTax() {
               />
             </PopoverContent>
           </Popover>
-        </span>
+        </span> */}
       </div>
     </div>
   );

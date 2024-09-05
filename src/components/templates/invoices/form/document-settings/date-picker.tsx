@@ -10,7 +10,7 @@ import { cn } from "@/libs/utils";
 import { DateDayPicker } from "@/components/ui/date-day-picker";
 
 interface DatePickerProps {
-  value: Date;
+  value?: Date;
   onChange?(date: Date): void;
 }
 
@@ -29,7 +29,7 @@ export function DatePicker(props: DatePickerProps) {
     <Popover modal onOpenChange={setOpen} open={open}>
       <PopoverTrigger>
         <span className={cn("flex gap-2 items-center")}>
-          {value.toLocaleDateString()}
+          {value ? value.toLocaleDateString(): 'Selecione a data'}
           <ChevronDownIcon className="text-gray-400" />
         </span>
       </PopoverTrigger>

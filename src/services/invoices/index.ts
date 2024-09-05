@@ -15,28 +15,41 @@ export interface InvoiceParams extends ListRequestParams {
 
 export interface InvoiceRequestData {
   id?: string;
-  number?: string;
   type: string;
-  customerId: string;
-  customerDiscount?: number;
-  financialDiscount?: number;
-  exchange?: number;
+  customerId?: string;
   date: Date;
   dueDate?: Date;
-  paymentCondition?: string;
-  items: Product[];
+  currency?: string;
+  exchange?: number;
+  paymentTerms?: string;
+  reference?: string;
+  observation?: string;
+  generalDiscount?: number;
+  withholdingTax?: { type?: string; percentage?: number };
+  items?: Product[];
   payments?: Payment[];
+  documents?: Document[];
 }
 
 interface Product {
   id: string;
+  unitMeasure?: string;
+  price?: number;
   quantity: number;
   discount: number;
+  iva: number;
+  reasonExemption?: string;
 }
 
 interface Payment {
+  id?: string;
   method: string;
   amount: number;
+}
+
+interface Document {
+  id: string;
+  paid: number;
 }
 
 export const invoiceService = crud<

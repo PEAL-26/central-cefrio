@@ -62,6 +62,7 @@ const productSchema = z.object({
   unitMeasure: z.string().optional(),
   price: z.coerce.string().optional(),
   iva: z.coerce.string().optional(),
+  reasonExemption: z.string().optional(),
 });
 
 export async function POST(request: NextRequest) {
@@ -73,6 +74,7 @@ export async function POST(request: NextRequest) {
       unitMeasure,
       price,
       iva,
+      reasonExemption,
     } = productSchema.parse(data);
 
     let product = await prisma.product.findFirst({ where: { id } });
@@ -84,6 +86,9 @@ export async function POST(request: NextRequest) {
           unitMeasure,
           price,
           iva,
+          reasonExemption: reasonExemption
+            ? reasonExemption
+            : "Transmissão de bens e serviços não sujeita",
         },
         where: { id },
       });
@@ -95,6 +100,7 @@ export async function POST(request: NextRequest) {
           unitMeasure,
           price,
           iva,
+          reasonExemption,
         },
       });
     }

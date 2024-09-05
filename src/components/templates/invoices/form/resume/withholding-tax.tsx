@@ -48,14 +48,15 @@ export function WithholdingTax() {
             }` || "Não aplicar"}
             <Popover modal open={open} onOpenChange={setOpen}>
               <PopoverTrigger>
-                <Button className="p-0 h-4 mt-1" variant="ghost">
-                  <EditIcon size={16} />
-                </Button>
+                <EditIcon size={16} />
               </PopoverTrigger>
               <PopoverContent align="end" className="w-fit">
                 <div className="flex flex-col">
-                  {WITHHOLDING_TAX_TYPES.map((tax) => (
-                    <label className="flex items-center gap-2 line-clamp-1 pr-10">
+                  {WITHHOLDING_TAX_TYPES.map((tax, key) => (
+                    <label
+                      key={key}
+                      className="flex items-center gap-2 line-clamp-1 pr-10"
+                    >
                       <input
                         name="withholding-tax"
                         type="radio"

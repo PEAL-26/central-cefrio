@@ -1,58 +1,55 @@
-import { useFormContext } from "react-hook-form";
-import { InvoiceSchemaType } from "./schema";
-import { useEffect } from "react";
+import { useFieldArray, useFormContext } from "react-hook-form";
+import { InvoiceItemSchemaType, InvoiceSchemaType } from "./schema";
+import {
+  invoiceUpdateItemTotal,
+  invoiceUpdateResume,
+} from "@/helpers/invoice-total-update";
 
 export function useInvoiceUpdateTotal() {
   const form = useFormContext<InvoiceSchemaType>();
 
+  const updateTotal = (index: number) => {
+    const quantity = form.watch(`items.${index}.quantity`) ?? 0;
+    const price = form.watch(`items.${index}.price`) ?? 0;
+    const discount = form.watch(`items.${index}.discount`) ?? 0;
+    const iva = form.watch(`items.${index}.iva`) ?? 0;
+
+    const { discountAmount, ivaAmount, total } = invoiceUpdateItemTotal({
+      quantity,
+      price,
+      discount,
+      iva,
+    });
+
+    form.setValue(`items.${index}.discountAmount`, discountAmount);
+    form.setValue(`items.${index}.ivaAmount`, ivaAmount);
+    form.setValue(`items.${index}.total`, total);
+
+    updateResume();
+  };
+
   const updateResume = () => {
-    const items = form.getValues("items");
-    const subtotal = items?.reduce((total, item) => total + item.total, 0);
-    const ivaTotal = items?.reduce((total, item) => total + item.ivaAmount, 0);
-    const totalDiscount = items?.reduce(
-      (total, item) => total + item.discountAmount,
-      0
-    );
-    let withholdingTaxPercentage = 0;
-    if (form.getValues("customerId")) {
-      withholdingTaxPercentage =
-        form.getValues("withholdingTax")?.percentage ?? 0;
-    }
-    const totalWithholdingTax = (subtotal * withholdingTaxPercentage) / 100;
-    const total = subtotal - totalWithholdingTax;
+    const { subtotal, totalDiscount, totalIva, totalWithholdingTax, total } =
+      invoiceUpdateResume({
+        items: (form.watch("items") ?? []).map((item) => ({
+          discountAmount: item?.discountAmount ?? 0,
+          ivaAmount: item?.ivaAmount ?? 0,
+          total: item?.total ?? 0,
+        })),
+        customerId: form.watch("customerId"),
+        withholdingTaxPercentage: form.watch("withholdingTax")?.percentage,
+      });
+
     form.setValue("subtotal", subtotal);
     form.setValue("totalDiscount", totalDiscount);
-    form.setValue("totalIva", ivaTotal);
+    form.setValue("totalIva", totalIva);
     form.setValue("totalWithholdingTax", totalWithholdingTax);
     form.setValue("total", total);
   };
 
-  // useEffect(() => {
-  //   const items = form.watch("items");
-  //   const subtotal = items?.reduce((total, item) => total + item.total, 0);
-  //   const ivaTotal = items?.reduce((total, item) => total + item.ivaAmount, 0);
-  //   const totalDiscount = items?.reduce(
-  //     (total, item) => total + item.discountAmount,
-  //     0
-  //   );
-
-  //   let withholdingTaxPercentage = 0;
-  //   if (form.watch("customerId")) {
-  //     withholdingTaxPercentage = form.watch("withholdingTax")?.percentage ?? 0;
-  //   }
-
-  //   const totalWithholdingTax = (subtotal * withholdingTaxPercentage) / 100;
-  //   const total = subtotal - totalWithholdingTax;
-
-  //   form.setValue("subtotal", subtotal);
-  //   form.setValue("totalDiscount", totalDiscount);
-  //   form.setValue("totalIva", ivaTotal);
-  //   form.setValue("totalWithholdingTax", totalWithholdingTax);
-  //   form.setValue("total", total);
-  // }, [form]);
-
   return {
     form,
     updateResume,
+    updateTotal,
   };
 }

@@ -10,11 +10,11 @@ import { TableItemRow } from "./table-item-row";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { InvoiceSchemaType } from "../schema";
 
-export function ItemListingTable() {
+export function ListDocumentsPaidTable() {
   const { control } = useFormContext<InvoiceSchemaType>();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "items",
+    name: "documents",
     rules: {
       minLength: 1,
     },
@@ -27,16 +27,8 @@ export function ItemListingTable() {
 
   const handleAppend = () => {
     append({
-      itemId: "",
-      name: "",
-      unitMeasure: "un",
-      quantity: 1,
-      price: 0,
-      discount: 0,
-      iva: 0,
-      discountAmount: 0,
-      ivaAmount: 0,
-      total: 0,
+      documentId: "",
+      paid: 0,
     });
   };
 
@@ -46,13 +38,9 @@ export function ItemListingTable() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Descrição</TableHead>
-            <TableHead className="w-[1%]">Uni</TableHead>
-            <TableHead>Quantidade</TableHead>
-            <TableHead className="text-right">Preço</TableHead>
-            <TableHead className="text-right">Desc.(%)</TableHead>
-            <TableHead className="text-right">IVA(%)</TableHead>
+            <TableHead>Documento</TableHead>
             <TableHead className="text-right">Total</TableHead>
+            <TableHead className="text-right">Pago</TableHead>
             <TableHead className="w-[1%]"></TableHead>
           </TableRow>
         </TableHeader>

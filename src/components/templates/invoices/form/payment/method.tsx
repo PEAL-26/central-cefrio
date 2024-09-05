@@ -25,7 +25,7 @@ export function PaymentMethod({ index }: PAymentMethodProps) {
 
   const handleSelect = (paymentCode: string) => {
     const payments = form.getValues("payments");
-    const paymentFound = payments.find(
+    const paymentFound = payments?.find(
       (payment) => payment.method === paymentCode
     );
 

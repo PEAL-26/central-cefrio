@@ -5,7 +5,6 @@ export function formatCurrency(value?: number) {
   const formatNumber = new Intl.NumberFormat("pt-AO", {
     style: "currency",
     currency: "AOA",
-    maximumSignificantDigits: 2,
   });
 
   return formatNumber.format(newValue);

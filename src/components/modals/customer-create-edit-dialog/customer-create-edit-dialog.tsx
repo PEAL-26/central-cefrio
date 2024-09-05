@@ -1,7 +1,6 @@
 "use client";
 import { Loader2 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,20 +8,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-import { CustomerCreateEditDialogProps } from "./types";
-import { useCustomerCreateEdit } from "./use-dialog";
-import { Textarea } from "@/components/ui/textarea";
 import { CreateEditCustomerForm } from "./form";
+import { useCustomerCreateEdit } from "./use-dialog";
+import { CustomerCreateEditDialogProps } from "./types";
 
 export function CreateEditCustomerDialog(props: CustomerCreateEditDialogProps) {
   const { id, open, onClose } = props;

@@ -23,14 +23,14 @@ export function Change() {
             "flex gap-2 items-center line-clamp-1 whitespace-nowrap w-full"
           )}
         >
-          {form?.watch("change") || "0.00"}
+          {form?.watch("exchange") || "0.00"}
         </span>
         <ChevronDownIcon className="text-gray-400" />
       </PopoverTrigger>
       <PopoverContent align="end" className="w-fit">
         <FormField
           control={form.control}
-          name="change"
+          name="exchange"
           render={({ field }) => (
             <FormItem className="w-full flex-1">
               <FormControl>

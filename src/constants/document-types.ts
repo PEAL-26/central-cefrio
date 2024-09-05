@@ -52,3 +52,5 @@ export const DOCUMENT_TYPES = [
 ];
 
 export const DOCUMENTS_WITH_PAYMENT = ["FT", "FG", "FR", "RE"];
+export const DOCUMENTS_NOT_INCLUDE = ["NC", "ND"];
+export const DOCUMENTS_INCLUDE = ["RE", "NC", "ND"];

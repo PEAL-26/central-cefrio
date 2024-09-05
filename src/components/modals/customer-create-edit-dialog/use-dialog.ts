@@ -41,8 +41,16 @@ export function useCustomerCreateEdit(
 
   const form = useForm<CustomerSchemaType>({
     resolver: zodResolver(customerSchema),
-    defaultValues: { id },
     mode: "onChange",
+    defaultValues: {
+      id,
+      address: "",
+      email: "",
+      location: "",
+      name: "",
+      taxpayer: "",
+      telephone: "",
+    },
   });
 
   const handleSubmit = async (data: CustomerSchemaType) => {

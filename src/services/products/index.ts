@@ -17,11 +17,22 @@ export interface ProductRequestData {
   unitMeasure?: string;
   price?: number;
   iva?: number;
+  reasonExemption?: string;
+}
+
+export interface ProductData {
+  id: string;
+  name: string;
+  unitMeasure?: string;
+  price?: number;
+  iva?: number;
+  reasonExemption?: string;
 }
 
 export const productService = crud<
   ProductRequestData,
   ProductRequestData,
   ProductListResponseData,
-  ProductParams
+  ProductParams,
+  ProductData
 >({ route: "products" });

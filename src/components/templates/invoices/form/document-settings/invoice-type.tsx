@@ -5,7 +5,10 @@ import {
 } from "@/components/ui/popover";
 import { ChevronDownIcon } from "lucide-react";
 import { useDocumentSettings } from "./use-document-settings";
-import { DOCUMENT_TYPES } from "@/constants/document-types";
+import {
+  DOCUMENT_TYPES,
+  DOCUMENTS_NOT_INCLUDE,
+} from "@/constants/document-types";
 import { cn } from "@/libs/utils";
 import { useState } from "react";
 
@@ -37,7 +40,9 @@ export function InvoiceType() {
       </PopoverTrigger>
       <PopoverContent align="end" className="w-fit">
         <div className="flex flex-col">
-          {DOCUMENT_TYPES.map((doc, key) => (
+          {DOCUMENT_TYPES.filter(
+            (filter) => !DOCUMENTS_NOT_INCLUDE.includes(filter.code)
+          ).map((doc, key) => (
             <span
               key={key}
               className="hover:bg-gray-100 p-1 pr-14 rounded cursor-pointer"

@@ -15,9 +15,9 @@ import { generateFileFromUrl } from "@/helpers/url";
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 5; //5MB
 const ACCEPT_FILE_TYPE = {
-  "image/png": [],
-  "image/jpeg": [],
-  "image/jpg": [],
+  // "image/png": [''],
+  // "image/jpeg": [''],
+  // "image/jpg": [''],
 };
 
 export const ImageSelector = forwardRef<HTMLInputElement, ImageSelectorProps>(

@@ -39,8 +39,8 @@ export function useCreateEditProduct(props: UseCreateEditProductDialogProps) {
 
   const form = useForm<ProductSchemaType>({
     resolver: zodResolver(productSchema),
-    defaultValues: { id },
     mode: "onChange",
+    defaultValues: { id, name: "", unitMeasure: "un" },
   });
 
   const handleSubmit = async (data: ProductSchemaType) => {

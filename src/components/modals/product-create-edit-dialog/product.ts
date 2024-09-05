@@ -15,6 +15,10 @@ export const productSchema = z.object({
   unitMeasure: z.string().optional().default(""),
   price: z.coerce.number().optional().default(0),
   iva: z.coerce.number().optional().default(0),
+  reasonExemption: z
+    .string()
+    .optional()
+    .default("Transmissão de bens e serviços não sujeita"),
 });
 
 export type ProductSchemaType = z.infer<typeof productSchema>;
