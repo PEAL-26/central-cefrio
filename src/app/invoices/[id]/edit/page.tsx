@@ -5,6 +5,10 @@ export const metadata: Metadata = {
   title: "Alterar Factura",
 };
 
-export default function EditInvoicePage() {
-  return <EditInvoice />;
+export default function EditInvoicePage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  return <EditInvoice id={params.id} />;
 }

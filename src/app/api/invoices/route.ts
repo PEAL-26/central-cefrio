@@ -37,7 +37,32 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const { limit: take, offset: skip } = setPagination({ size, page });
 
   const queryParams: Prisma.InvoiceWhereInput = {
-    OR: [],
+    OR: [
+      {
+        number: {
+          contains: q,
+          mode: "insensitive",
+        },
+      },
+      {
+        customer: {
+          name: {
+            contains: q,
+            mode: "insensitive",
+          },
+        },
+      },
+      {
+        products: {
+          some: {
+            productName: {
+              contains: q,
+              mode: "insensitive",
+            },
+          },
+        },
+      },
+    ],
     type,
   };
 
@@ -50,7 +75,13 @@ export async function GET(req: NextRequest, res: NextResponse) {
         id: true,
         number: true,
         type: true,
-        customer: true,
+        date: true,
+        customer: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         total: true,
       },
       where: queryParams,
@@ -72,12 +103,13 @@ export async function GET(req: NextRequest, res: NextResponse) {
 export async function POST(request: NextRequest) {
   try {
     const input = await request.json();
-    console.log(input);
-    let invoice = await prisma.invoice.findFirst({ where: { id: input?.id } });
+    let invoice = await prisma.invoice.findFirst({
+      where: { id: input?.id || "" },
+    });
 
-    if (invoice) {
-      invoice = await update({ ...input, number: invoice.number });
-    }
+    // if (invoice) {
+    //   invoice = await update({ ...input, number: invoice.number });
+    // }
 
     if (!invoice) {
       invoice = await create(input);
@@ -85,14 +117,14 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(invoice, { status: 200 });
   } catch (error: any) {
-    console.log(error);
+    console.log(error)
     return responseError(error);
   }
 }
 
 async function create(input: any) {
   const data = await prepareData(input);
-
+  console.log(data);
   return prisma.invoice.create({
     data: {
       id: data.id,

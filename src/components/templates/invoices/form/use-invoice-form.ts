@@ -6,6 +6,7 @@ import {
   InvoiceSchemaType,
 } from "./schema";
 import {
+  generateResponseError,
   toastResponseError,
   toastResponseRegisterSuccess,
 } from "@/helpers/response/response";
@@ -24,6 +25,7 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
     []
   );
   const [isLoadingPage, setIsLoadingPage] = useState(false);
+  const [isNotFound, setIsNotFound] = useState(false);
 
   const form = useForm<InvoiceSchemaType>({
     resolver: zodResolver(invoiceSchema),
@@ -98,6 +100,7 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
       queryClient.invalidateQueries({ queryKey: ["invoices"] });
       toastResponseRegisterSuccess(data?.id);
     } catch (error) {
+      setErrors([{ property: "", message: generateResponseError(error) }]);
       toastResponseError(error);
     } finally {
       setIsLoading(false);
@@ -105,6 +108,8 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
   };
 
   const onInvalid = (errors: FieldErrors<InvoiceSchemaType>) => {
+    setErrors(() => []);
+
     const _errors = Object.entries(errors).map(([property, error]) => {
       if (Array.isArray(error)) {
         for (const errorProperties of error) {
@@ -134,10 +139,78 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
   };
 
   const loadingInvoice = async () => {
+    if (!id) return;
+
+    setIsNotFound(false);
     const invoice = await invoiceService.getById(id);
+
+    if (!invoice) {
+      setIsNotFound(true);
+    }
 
     if (invoice) {
       form.setValue("id", invoice.id);
+      form.setValue("number", invoice.number);
+      form.setValue("type", invoice.type);
+      form.setValue("customerId", invoice.customer?.id);
+      form.setValue("date", invoice.date);
+      form.setValue("dueDate", invoice.dueDate);
+      form.setValue("currency", invoice.currency);
+      form.setValue("exchange", invoice.exchange);
+      form.setValue("paymentTerms", invoice.paymentTerms);
+      form.setValue("observation", invoice.observation);
+      form.setValue("reference", invoice.reference);
+      form.setValue("totalWithholdingTax", invoice.totalWithholdingTax);
+      form.setValue("withholdingTax.type", invoice.withholdingTaxType);
+      form.setValue(
+        "withholdingTax.percentage",
+        invoice.withholdingTaxPercentage
+      );
+      form.setValue("generalDiscount", invoice.generalDiscount);
+      form.setValue("subtotal", invoice.subtotal);
+      form.setValue("totalIva", invoice.totalIva);
+      form.setValue("totalDiscount", invoice.totalDiscount);
+      form.setValue("total", invoice.total);
+      form.setValue(
+        "items",
+        invoice?.products?.map((prod) => ({
+          itemId: prod.product.id || "",
+          name: prod.product.name,
+          unitMeasure: prod.product.unitMeasure,
+          quantity: prod.quantity,
+          price: prod.price,
+          discount: prod.discount,
+          discountAmount: prod.discountAmount,
+          iva: prod.iva,
+          ivaAmount: prod.ivaAmount,
+          total: prod.total,
+        }))
+      );
+      form.setValue(
+        "payments",
+        invoice.payments?.map((payment) => ({
+          paymentId: payment.id || "",
+          method: payment.method,
+          amount: payment.amount,
+        }))
+      );
+      form.setValue(
+        "documents",
+        invoice.documents?.map((doc) => ({
+          documentId: doc.document.id,
+          paid: doc.paid,
+        }))
+      );
+      form.setValue(
+        "taxes",
+        invoice.taxes?.map((tax) => ({
+          taxId: tax.id,
+          value: tax.value,
+          amount: tax.amount,
+          incidence: tax.incidence,
+          observation: tax.observation,
+        }))
+      );
     }
   };
 
@@ -148,13 +221,15 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
       setIsLoadingPage(false);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id]);
 
   return {
     errors,
     form,
     isLoading,
     isLoadingPage,
+    isNotFound,
+    setErrors,
     onSubmit: form.handleSubmit(handleSubmit, onInvalid),
   };
 }

@@ -28,6 +28,7 @@ import {
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { IQueryPaginationResponse } from "@/hooks/use-query-pagination/types";
+import { ReactLoading } from "@/libs/react-loading";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -42,7 +43,7 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const { data } = response || { data: [] };
+  const { data, isLoading } = response || { data: [] };
   const table = useReactTable({
     data,
     columns,
@@ -91,31 +92,49 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
+            {isLoading && (
+              <TableRow className="hover:bg-transparent">
                 <TableCell
                   colSpan={columns.length}
-                  className="text-center"
+                  className="hover:bg-transparent"
                 >
-                  No results.
+                  <div className="flex justify-center items-center  h-full">
+                    <ReactLoading
+                      type="spinningBubbles"
+                      color={"#1B3D7A"}
+                      height={90}
+                      width={90}
+                    />
+                  </div>
                 </TableCell>
               </TableRow>
+            )}
+            {!isLoading && (
+              <>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={columns.length} className="text-center">
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </>
             )}
           </TableBody>
         </Table>

@@ -27,24 +27,13 @@ export function ListCustomers() {
 
           <Button onClick={() => handleOpenDialog()}>Novo</Button>
         </div>
-        {response.isLoading && !response.isError ? (
-          <div className="flex justify-center items-center  h-full">
-            <ReactLoading
-              type="spinningBubbles"
-              color={"#1B3D7A"}
-              height={90}
-              width={90}
-            />
-          </div>
-        ) : (
-          <DataTable
-            response={response}
-            columns={columns({
-              onEdit: handleOpenDialog,
-              onDelete: handleDelete,
-            })}
-          />
-        )}
+        <DataTable
+          response={response}
+          columns={columns({
+            onEdit: handleOpenDialog,
+            onDelete: handleDelete,
+          })}
+        />
       </div>
       <CreateEditCustomerDialog
         id={id}

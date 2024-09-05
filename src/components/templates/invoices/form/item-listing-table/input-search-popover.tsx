@@ -13,6 +13,7 @@ import {
 import { useState } from "react";
 import { TableItemsSearch } from "./table-items-search";
 import { ProductListResponseData } from "@/services/products";
+import { useInvoiceUpdateTotal } from "../use-invoice-update-total";
 
 interface ItemSearchProps {
   form: any;
@@ -22,6 +23,7 @@ interface ItemSearchProps {
 export function InputSearchPopover(props: ItemSearchProps) {
   const { form, index } = props;
   const [open, setOpen] = useState(() => false);
+  const { updateTotal } = useInvoiceUpdateTotal();
 
   const handleSelect = (data: ProductListResponseData) => {
     const items = form.getValues("items");
@@ -35,6 +37,8 @@ export function InputSearchPopover(props: ItemSearchProps) {
     form.setValue(`items.${index}.price`, data.price ?? 0);
     form.setValue(`items.${index}.unitMeasure`, data.unitMeasure || "un");
     form.setValue(`items.${index}.iva`, data.iva ?? 0);
+
+    updateTotal(index);
     setOpen(false);
   };
 

@@ -19,7 +19,7 @@ export function ResumeTax() {
   return (
     <div className="flex items-start gap-2 relative ">
       <Label className="pt-4" htmlFor="ivaTotal">
-        IVA
+        Total IVA
       </Label>
       <div className="flex flex-col w-[204px] gap-1 items-end">
         <Input

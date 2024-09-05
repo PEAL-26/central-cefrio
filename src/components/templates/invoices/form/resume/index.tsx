@@ -30,7 +30,9 @@ export function Resume() {
       </div>
       <ResumeTax />
       <div className="flex items-center gap-2">
-        <Label htmlFor="discountTotal">Desconto</Label>
+        <Label htmlFor="discountTotal" className="whitespace-nowrap">
+          Total Desconto
+        </Label>
         <Input
           readOnly
           id="discountTotal"

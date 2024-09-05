@@ -22,6 +22,8 @@ export function useList() {
       toastResponseError(error);
     }
   };
-
+  
+  console.log(response);
+  
   return { response, handleDelete };
 }

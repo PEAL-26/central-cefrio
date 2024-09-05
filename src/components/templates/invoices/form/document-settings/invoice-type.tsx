@@ -7,7 +7,9 @@ import { ChevronDownIcon } from "lucide-react";
 import { useDocumentSettings } from "./use-document-settings";
 import {
   DOCUMENT_TYPES,
+  DOCUMENTS_INCLUDE,
   DOCUMENTS_NOT_INCLUDE,
+  DOCUMENTS_WITH_PAYMENT,
 } from "@/constants/document-types";
 import { cn } from "@/libs/utils";
 import { useState } from "react";
@@ -23,6 +25,18 @@ export function InvoiceType() {
     form.setValue("type", typeCode);
     updateDocumentNumber(typeCode);
     setOpen(false);
+
+    if (!DOCUMENTS_WITH_PAYMENT.includes(typeCode)) {
+      form.setValue("payments", []);
+    }
+
+    if (!DOCUMENTS_INCLUDE.includes(typeCode)) {
+      form.setValue("documents", []);
+    }
+
+    if (DOCUMENTS_INCLUDE.includes(typeCode)) {
+      form.setValue("items", []);
+    }
   };
 
   return (

@@ -113,6 +113,18 @@ model InvoiceProduct {
   @@map("invoice_products")
 }
 
+model InvoicePayment {
+  id String @id @unique @default(uuid())
+
+  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  invoiceId String  @map("invoice_id")
+
+  method String
+  amount Decimal
+
+  @@map("invoice_payments")
+}
+
 model InvoiceTax {
   id String @id @unique @default(uuid())
 
@@ -127,17 +139,6 @@ model InvoiceTax {
   @@map("invoice_taxes")
 }
 
-model InvoicePayment {
-  id String @id @unique @default(uuid())
-
-  invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
-  invoiceId String  @map("invoice_id")
-
-  method String
-  amount Decimal
-
-  @@map("invoice_payments")
-}
 
 model InvoiceDocument {
   id String @id @unique @default(uuid())

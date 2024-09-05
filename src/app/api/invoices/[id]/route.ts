@@ -19,7 +19,24 @@ export async function GET(
       include: {
         customer: true,
         payments: true,
-        products: true,
+        products: {
+          include: {
+            product: true
+          }
+        },
+        documents: {
+          include: {
+            document: true,
+            invoice: true,
+          },
+        },
+        invoices: {
+          include: {
+            document: true,
+            invoice: true,
+          },
+        },
+        taxes: true,
       },
     });
 
