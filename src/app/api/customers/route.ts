@@ -6,6 +6,7 @@ import { getAllParams } from "../../../helpers/search-params";
 import { NextRequest, NextResponse } from "next/server";
 import { responseError } from "../../../helpers/response/route-response";
 import { paginationData, setPagination } from "../../../helpers/pagination";
+import { END_CONSUMER } from "@/constants/cutomer";
 
 const listParamsSchema = z.object({
   q: z.string().optional(),
@@ -38,6 +39,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
         },
       },
     ],
+    id: {
+      not: END_CONSUMER.id,
+    },
   };
 
   const [total, customers] = await Promise.all([

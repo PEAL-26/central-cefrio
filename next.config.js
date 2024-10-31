@@ -18,14 +18,20 @@ const nextConfig = {
   //     },
   //   ],
   // },
-  // webpack: (config, options) => {
-  //   config.module.rules.push({
-  //     test: /\.svg$/,
-  //     use: ["@svgr/webpack"],
-  //   });
-  //   config.plugins.push();
-  //   return config;
-  // },
+  webpack: (config, options) => {
+    config.module.rules.push(
+      //   {
+      //   test: /\.svg$/,
+      //   use: ["@svgr/webpack"],
+      // },
+      {
+        test: /\.hbs$/i,
+        use: "raw-loader",
+      }
+    );
+    config.plugins.push();
+    return config;
+  },
   // images: {
   //   unoptimized: true,
   // },

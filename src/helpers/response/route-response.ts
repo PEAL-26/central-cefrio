@@ -4,6 +4,7 @@ import { ZodError } from 'zod';
 import { INTERNAL_SERVER_ERROR_MESSAGE } from './messages';
 
 export function responseError(error: any) {
+  console.error(error)
   if (error instanceof PrismaClientKnownRequestError) {
     if (error.code === 'P2002') {
       const meta = error.meta as any;

@@ -107,9 +107,9 @@ export async function POST(request: NextRequest) {
       where: { id: input?.id || "" },
     });
 
-    // if (invoice) {
-    //   invoice = await update({ ...input, number: invoice.number });
-    // }
+    if (invoice) {
+      invoice = await update({ ...input, number: invoice.number });
+    }
 
     if (!invoice) {
       invoice = await create(input);
@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(invoice, { status: 200 });
   } catch (error: any) {
-    console.log(error)
+    console.error(error)
     return responseError(error);
   }
 }

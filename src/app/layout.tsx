@@ -5,6 +5,7 @@ import { PrimeReactProvider } from "primereact/api";
 import { cn } from "@/libs/utils";
 import { QueryClientProvider } from "@/providers";
 import Tailwind from "primereact/passthrough/tailwind";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import "./globals.css";
 
@@ -22,11 +23,13 @@ export default function RootLayout({
   return (
     <html lang="pt">
       <body className={cn(inter.className, "overflow-hidden")}>
-        <QueryClientProvider>
-          <PrimeReactProvider value={{ unstyled: true, pt: Tailwind }}>
-            <AppLayout>{children}</AppLayout>
-          </PrimeReactProvider>
-        </QueryClientProvider>
+        <NuqsAdapter>
+          <QueryClientProvider>
+            <PrimeReactProvider value={{ unstyled: true, pt: Tailwind }}>
+              <AppLayout>{children}</AppLayout>
+            </PrimeReactProvider>
+          </QueryClientProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );
