@@ -1,3 +1,4 @@
+import { generateUrlFromName } from "@/helpers/file";
 import { responseError } from "../../../../helpers/response/route-response";
 import { prisma } from "../../../../libs/prisma";
 import { NextRequest, NextResponse } from "next/server";
@@ -14,13 +15,16 @@ export async function GET(
   try {
     const { id } = paramsSchema.parse(params);
 
-    const response = await prisma.product.findUnique({
+    const company = await prisma.company.findUnique({
       where: { id },
     });
 
-    return NextResponse.json(response, {
-      status: 200,
-    });
+    return NextResponse.json(
+      { ...company, logo: generateUrlFromName(company?.logo) },
+      {
+        status: 200,
+      }
+    );
   } catch (error) {
     return responseError(error);
   }

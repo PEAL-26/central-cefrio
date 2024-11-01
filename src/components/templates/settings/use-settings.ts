@@ -9,12 +9,14 @@ import {
 } from "@/helpers/response/response";
 import { createFormData } from "@/helpers/form-data";
 import { useMultipleFileUploads } from "@/hooks/use-multiple-file-uploads";
+import { useVercelBlobUpload } from "@/hooks/use-vercel-blob-upload";
 
 export function useSettings() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingPage, setIsLoadingPage] = useState(false);
 
   const { uploads, progress: uploadProgress } = useMultipleFileUploads();
+  const vercel = useVercelBlobUpload();
 
   const form = useForm<CompanySchemaType>({
     resolver: zodResolver(companySchema),
@@ -29,21 +31,25 @@ export function useSettings() {
 
       let logo = undefined;
       if (data.logo?.file) {
-        const imageFormData = createFormData(data.logo?.file);
-        const [imageFileName] = await uploads([imageFormData]);
-        logo =
-          imageFileName && imageFileName?.length > 0
-            ? imageFileName[0]
-            : undefined;
+        // const imageFormData = createFormData(data.logo?.file);
+        const blob = await vercel.upload(data.logo.file)
+        
+        console.log(blob);
+    
+        // const [imageFileName] = await uploads([imageFormData]);
+        // logo =
+        //   imageFileName && imageFileName?.length > 0
+        //     ? imageFileName[0]
+        //     : undefined;
       }
 
-      await companyService.create({
-        ...data,
-        logo,
-      });
+      // await companyService.create({
+      //   ...data,
+      //   logo,
+      // });
 
-      toastResponseRegisterSuccess(data?.id);
-      await loadingCompany();
+      // toastResponseRegisterSuccess(data?.id);
+      // await loadingCompany();
     } catch (error) {
       toastResponseError(error);
     } finally {

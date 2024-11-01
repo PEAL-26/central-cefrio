@@ -137,7 +137,7 @@ export const ImageSelector = forwardRef<HTMLInputElement, ImageSelectorProps>(
                 alt={""}
                 src={file.preview}
                 fill
-                className="rounded-sm object-center"
+                className="rounded-sm object-contain h-[150px] w-[150px]"
                 onLoad={() => URL.revokeObjectURL(file.preview)}
               />
               <button

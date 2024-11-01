@@ -1,5 +1,6 @@
 import { getDocumentTypeName } from "@/constants/document-types";
 import { formatCurrency } from "@/helpers/currency";
+import { generateUrlFromName } from "@/helpers/file";
 import { generatePDFPuppeteer } from "@/helpers/generate-pdf";
 import { responseError } from "@/helpers/response/route-response";
 import { prisma } from "@/libs/prisma";
@@ -61,7 +62,7 @@ export async function GET(
 
     const typeName = getDocumentTypeName(invoice.type);
     const templateHtml = await invoiceTemplate({
-      logo_url: company?.logo || "",
+      logo_url: generateUrlFromName(company?.logo) || "",
       company: {
         name: company.name,
         slogan: company?.slogan || false,

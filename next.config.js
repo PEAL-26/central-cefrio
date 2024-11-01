@@ -1,23 +1,27 @@
-// const dotenv = require("dotenv");
-// const dotenvExpand = require("dotenv-expand");
+const dotenv = require("dotenv");
+const dotenvExpand = require("dotenv-expand");
 
-// const myEnv = dotenv.config();
-// dotenvExpand.expand(myEnv);
+const myEnv = dotenv.config({ path: ".env.local" });
+dotenvExpand.expand(myEnv);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // output: "export",
-  // distDir: "dist",
-  // images: {
-  //   remotePatterns: [
-  //     {
-  //       protocol: "https",
-  //       hostname: "source.unsplash.com",
-  //       port: "",
-  //       pathname: "/random/**",
-  //     },
-  //   ],
-  // },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "source.unsplash.com",
+        port: "",
+        pathname: "/random/**",
+      },
+
+      {
+        protocol: process.env.UPLOAD_FILE_PROTOCOL,
+        hostname: process.env.UPLOAD_FILE_HOSTNAME,
+        port: "",
+      },
+    ],
+  },
   webpack: (config, options) => {
     config.module.rules.push(
       //   {
@@ -32,12 +36,9 @@ const nextConfig = {
     config.plugins.push();
     return config;
   },
-  // images: {
-  //   unoptimized: true,
-  // },
   eslint: {
-    ignoreDuringBuilds: true
-  }
+    ignoreDuringBuilds: true,
+  },
 };
 
 module.exports = nextConfig;

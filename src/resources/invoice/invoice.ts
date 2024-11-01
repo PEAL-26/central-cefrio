@@ -41,12 +41,12 @@ export async function invoiceTemplate(data: InvoiceData) {
   } = data;
 
   const { total_pages, pages } = await generateItems(items, 22);
-  const logoUrl = await generateImageDataURLFromURL(logo_url);
-
+  // const logoUrl = await generateImageDataURLFromURL(logo_url);
+// console.log({ logoUrl, logo_url });
   const context = {
     total_pages,
     pages,
-    logo_url: logoUrl,
+    logo_url,//: logoUrl,
     company: {
       name: company?.name || false,
       slogan: company?.slogan || false,
