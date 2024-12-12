@@ -12,7 +12,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Cefrio Invoice",
+  title: { default: "Cefrio", template: "%s | Cefrio" },
 };
 
 export default function RootLayout({

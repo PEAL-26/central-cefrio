@@ -40,6 +40,8 @@ export async function GET(
       },
     });
 
+    console.log(response);
+    
     return NextResponse.json(response, {
       status: 200,
     });

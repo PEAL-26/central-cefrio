@@ -103,6 +103,7 @@ interface InvoiceDetailsProduct {
   iva?: number;
   ivaAmount?: number;
   total: number;
+  reasonExemption?: string;
 }
 
 interface InvoiceDetailsPayment {

@@ -1,4 +1,4 @@
-import { getDocumentTypeName } from "@/constants/document-types";
+import { getDocumentTypeNameByCode } from "@/constants/document-types";
 import { formatCurrency } from "@/helpers/currency";
 import { generateUrlFromName } from "@/helpers/file";
 import { generatePDFPuppeteer } from "@/helpers/generate-pdf";
@@ -60,7 +60,7 @@ export async function GET(
       throw new Error("Não existe nenhum item deste documento.");
     }
 
-    const typeName = getDocumentTypeName(invoice.type);
+    const typeName = getDocumentTypeNameByCode(invoice.type);
     const templateHtml = await invoiceTemplate({
       logo_url: generateUrlFromName(company?.logo) || "",
       company: {

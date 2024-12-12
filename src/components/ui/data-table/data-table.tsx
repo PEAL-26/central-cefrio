@@ -98,7 +98,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="hover:bg-transparent"
                 >
-                  <div className="flex justify-center items-center  h-full">
+                  <div className="flex justify-center items-center h-full aspect-[9/4]">
                     <ReactLoading
                       type="spinningBubbles"
                       color={"#1B3D7A"}

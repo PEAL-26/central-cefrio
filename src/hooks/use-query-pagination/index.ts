@@ -1,8 +1,12 @@
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import {
+  InfiniteData,
+  keepPreviousData,
+  useInfiniteQuery,
+} from "@tanstack/react-query";
 import { useSetSearchParams } from "../use-search-params";
 import {
   IQueryPaginationResponse,
+  ListResponseData,
   QueryFn,
   QueryPaginationProps,
 } from "./types";
@@ -12,13 +16,31 @@ export function useQueryPagination<T>(
 ): IQueryPaginationResponse<T> {
   const { queryKey, fn, disableFetch = false, ...rest } = props;
   const { setParams } = useSetSearchParams();
-  const [index, setIndex] = useState(0);
 
   const queryFn = async (props?: QueryFn) => {
-    const page = Number(props?.pageParam || 1);
-    setIndex(page - 1);
     if (disableFetch) return;
     return await fn(props);
+  };
+
+  const getQueryKey = () => {
+    const keys = queryKey.filter((value) => value);
+
+    return keys;
+  };
+
+  const select = (
+    data?: InfiniteData<ListResponseData<T> | undefined, number>
+  ) => {
+    if (!data) return undefined;
+
+    return {
+      ...data.pages.slice(-1)[0],
+      data: data.pages.flatMap((page) => {
+        if (!page?.data) return [];
+
+        return [...page.data];
+      }),
+    };
   };
 
   const {
@@ -34,13 +56,13 @@ export function useQueryPagination<T>(
   } = useInfiniteQuery({
     ...rest,
     queryFn,
-    queryKey: queryKey.filter((value) => value),
+    queryKey: getQueryKey(),
     initialPageParam: 1,
     getNextPageParam: (data) => data?.next || undefined,
     getPreviousPageParam: (data) => data?.prev || undefined,
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
-    select: (data) => data?.pages?.[index],
+    select,
   });
 
   const nextPage = async () => {
@@ -67,7 +89,8 @@ export function useQueryPagination<T>(
 
   return {
     data: response?.data || [],
-    isLoading:
+    isLoading,
+    isLoadingAll:
       isLoading || isFetching || isFetchingNextPage || isFetchingPreviousPage,
     isError,
     currentPage: response?.currentPage,

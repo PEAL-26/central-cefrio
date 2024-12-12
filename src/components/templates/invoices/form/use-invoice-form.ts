@@ -13,6 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import { invoiceService } from "@/services/invoices";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 interface InvoiceFormProps {
   id?: string;
@@ -57,6 +58,8 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
   });
 
   const queryClient = useQueryClient();
+  const router = useRouter();
+
   const handleSubmit = async (data: InvoiceSchemaType) => {
     if (isLoading) return;
 
@@ -64,7 +67,7 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
       setErrors([]);
       setIsLoading(true);
       const { items, payments, documents, ...rest } = data;
-      await invoiceService.create({
+      const response = await invoiceService.create({
         id: rest?.id,
         type: rest.type,
         customerId: rest?.customerId,
@@ -99,6 +102,7 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
       });
       queryClient.invalidateQueries({ queryKey: ["invoices"] });
       toastResponseRegisterSuccess(data?.id);
+      router.replace(`/invoices/${response.id}`);
     } catch (error) {
       setErrors([{ property: "", message: generateResponseError(error) }]);
       toastResponseError(error);

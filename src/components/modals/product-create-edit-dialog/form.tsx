@@ -127,7 +127,7 @@ export function CreateEditProductForm(props: CreateEditProductFormProps) {
               )}
             />
           </div>
-          <div>
+          <div className="col-span-3">
             <FormField
               control={form.control}
               name="reasonExemption"

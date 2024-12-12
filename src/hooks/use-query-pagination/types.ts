@@ -39,6 +39,7 @@ export type QueryFn<
 export interface IQueryPaginationResponse<TData> {
   data: TData[];
   isLoading: boolean;
+  isLoadingAll: boolean;
   isError: boolean;
   currentPage?: number;
   totalPages?: number;
