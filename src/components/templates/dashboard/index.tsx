@@ -55,12 +55,18 @@ export function Dashboard() {
               <Loader2Icon className="animate-spin text-primary size-5" />
             </div>
           )}
-          {!isFetching && (
-            <LineChart
-              className="aspect-[9/4]"
-              data={data?.monthlyInvoices || []}
-            />
-          )}
+          {!isFetching &&
+            data?.monthlyInvoices &&
+            data?.monthlyInvoices?.length === 0 && (
+              <div className="flex items-center justify-center aspect-[9/4]">
+                <span>Nenhum informação</span>
+              </div>
+            )}
+          {!isFetching &&
+            data?.monthlyInvoices &&
+            data?.monthlyInvoices?.length > 0 && (
+              <LineChart className="aspect-[9/4]" data={data.monthlyInvoices} />
+            )}
         </CardContent>
       </Card>
     </div>
