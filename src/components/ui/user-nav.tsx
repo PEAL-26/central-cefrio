@@ -24,21 +24,24 @@ export function UserNav() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
+        {/* <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">shadcn</p>
             <p className="text-xs leading-none text-muted-foreground">
               m@example.com
             </p>
           </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        </DropdownMenuLabel> */}
+        {/* <DropdownMenuSeparator /> */}
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          {/* <DropdownMenuItem>
             <Link href="/profile">Profile</Link>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
+          {/* <DropdownMenuItem asChild>
+            <Link href="/settings/company">Empresa</Link>
+          </DropdownMenuItem> */}
           <DropdownMenuItem asChild>
-            <Link href="/settings">Settings</Link>
+            <Link href="/settings">Configurações</Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

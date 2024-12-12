@@ -37,7 +37,8 @@
     ".next/types/**/*.ts",
     "dist/types/**/*.ts",
     "prisma/seeds/index.ts",
-    "**/*.png"
+    "**/*.png",
+    "src/components/templates/settings/settings.tss"
   ],
   "exclude": [
     "node_modules"

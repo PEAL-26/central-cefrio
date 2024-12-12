@@ -1,15 +1,15 @@
+import "./globals.css";
+
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { AppLayout } from "@/components/layout";
 import { PrimeReactProvider } from "primereact/api";
-import { cn } from "@/libs/utils";
-import { QueryClientProvider } from "@/providers";
 import Tailwind from "primereact/passthrough/tailwind";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
-import "./globals.css";
+import { cn } from "@/libs/utils";
+import { AppLayout } from "@/components/layout";
+import { QueryClientProvider } from "@/providers";
 
-const inter = Inter({ subsets: ["latin"] });
+import { inter } from "./fonts";
 
 export const metadata: Metadata = {
   title: { default: "Cefrio", template: "%s | Cefrio" },

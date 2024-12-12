@@ -1,10 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useSettings } from "./use-settings";
-import { ReactLoading } from "@/libs/react-loading";
 import {
   Form,
   FormControl,
@@ -13,9 +8,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ReactLoading } from "@/libs/react-loading";
+import { Textarea } from "@/components/ui/textarea";
 import { ImageSelector } from "@/components/ui/image-selector";
 
-export function Settings() {
+import { useSettings } from "./use-settings";
+
+export function SettingsCompany() {
   const { form, isLoading, isLoadingPage, onSubmit, uploadProgress } =
     useSettings();
 

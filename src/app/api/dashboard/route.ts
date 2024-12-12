@@ -17,12 +17,20 @@ const MONTH = [
 ];
 
 export async function GET(req: NextRequest, res: NextResponse) {
+  const sixMonthsAgo = new Date();
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
   const [customers, products, invoices, monthly] = await Promise.all([
     prisma.customer.count(),
     prisma.product.count(),
     prisma.invoice.count({ where: { type: "FT" } }),
     prisma.invoice.findMany({
-      where: { AND: [{ type: "FT" }, { type: "FR" }, { type: "RE" }] },
+      where: {
+        OR: [{ type: "FT" }, { type: "FR" }, { type: "RE" }],
+        createdAt: {
+          gte: sixMonthsAgo,
+        },
+      },
       orderBy: [{ type: "asc" }],
       include: {
         payments: true,
@@ -30,57 +38,48 @@ export async function GET(req: NextRequest, res: NextResponse) {
     }),
   ]);
 
-  let lastMonth = "";
-  let value = 0;
-  let invoice = [];
-  let payments = [];
   const monthlyInvoices = [];
+  const invoice: Record<string, number> = {};
+  const payment: Record<string, number> = {};
 
-  for (const doc of monthly) {
-    const month = new Date(doc.date).getMonth();
-
-    if (lastMonth === "") {
-      lastMonth = MONTH[month];
-    }
-
-    if (lastMonth !== MONTH[month]) {
-      if (doc.type === "FT") {
-        invoice.push({ x: lastMonth, y: value });
-      }
-
-      if (doc.type === "FR" || doc.type === "RE") {
-        payments.push({ x: lastMonth, y: value });
-      }
-
-      value = 0;
-      lastMonth = MONTH[month];
-    }
+  monthly.forEach((doc) => {
+    const month = MONTH[new Date(doc.date).getMonth()];
 
     if (doc.type === "FT") {
-      value += doc.total ? Number(doc.total) : 0;
+      invoice[month] =
+        (invoice[month] || 0) + (doc.total ? Number(doc.total) : 0);
     }
 
-    if (doc.type === "FR" || doc.type === "RE") {
-      value += doc.payments.reduce(
-        (total, item) => Number(total) + Number(item.amount),
+    if (["FR", "RE"].includes(doc.type)) {
+      const totalPayments = doc.payments.reduce(
+        (total, item) => total + Number(item.amount),
         0
       );
+      payment[month] = (payment[month] || 0) + totalPayments;
     }
-  }
+  });
 
-  if (invoice.length) {
+  const transformData = (data: Record<string, number>) =>
+    Object.entries(data).map(([x, y]) => ({ x, y }));
+
+  const invoiceData = transformData(invoice);
+  const paymentData = transformData(payment);
+
+  if (invoiceData.length) {
     monthlyInvoices.push({
       id: "Invoices",
-      data: invoice,
+      data: invoiceData,
     });
   }
 
-  if (payments.length) {
+  if (paymentData.length) {
     monthlyInvoices.push({
       id: "Payments",
-      data: payments,
+      data: paymentData,
     });
   }
+
+  console.log(JSON.stringify(monthlyInvoices));
   return NextResponse.json(
     { customers, invoices, products, monthlyInvoices },
     { status: 200 }
