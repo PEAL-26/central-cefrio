@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import { invoiceService } from "@/services/invoices";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { getDocumentTypeNameByCode } from "@/constants/document-types";
+import { formatDate } from "@/helpers/date";
 
 interface InvoiceFormProps {
   id?: string;
@@ -203,9 +205,14 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
       form.setValue(
         "documents",
         invoice.documents?.map((doc) => ({
+          customerId: doc.document.customer.id,
+          description: `${getDocumentTypeNameByCode(doc.document.type)} ${
+            doc.document.number
+          } (${formatDate(doc.document.date)}) - ${doc.document.customer.name}`,
           documentId: doc.document.id,
-          paid: doc.paid,
-        }))
+          total: doc.document.total || 0,
+          paid: doc.paid || 0,
+        })) || []
       );
       form.setValue(
         "taxes",
