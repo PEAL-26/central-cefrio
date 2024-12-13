@@ -4,7 +4,7 @@ const { withSentryConfig } = require("@sentry/nextjs");
 const dotenv = require("dotenv");
 const dotenvExpand = require("dotenv-expand");
 
-const myEnv = dotenv.config({ path: ".env.local" });
+const myEnv = dotenv.config({ path: ".env" });
 dotenvExpand.expand(myEnv);
 
 /** @type {import('next').NextConfig} */
@@ -42,7 +42,7 @@ const nextConfig = {
 
 module.exports = withSentryConfig(nextConfig, {
   org: "pealsystems",
-  project: "javascript-nextjs",
+  project: "cefrio-invoice",
   silent: !process.env.CI,
   widenClientFileUpload: true,
   reactComponentAnnotation: {

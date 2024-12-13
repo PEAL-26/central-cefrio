@@ -9,12 +9,18 @@ import { ReactLoading } from "@/libs/react-loading";
 import { UserNav } from "../ui/user-nav";
 import { MainNav } from "../ui/main-nav";
 
+const APP = {
+  mails: [],
+  documents: [],
+};
+
 export function AppLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   const [isLoadingPage, setIsLoadingPage] = useState(true);
+  const [app, setApp] = useState<keyof typeof APP>("documents");
 
   useEffect(() => {
     setIsLoadingPage(false);
@@ -46,6 +52,7 @@ export function AppLayout({
               height={32}
             />
           </Link>
+          
           <MainNav className="mx-6" />
           <div className="ml-auto flex items-center space-x-4">
             <UserNav />

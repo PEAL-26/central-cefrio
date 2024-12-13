@@ -1,7 +1,9 @@
-export default function AppLayout({
+import { AppLayout } from "@/components/layout";
+
+export default function AppMainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return <AppLayout>{children}</AppLayout>;
 }
