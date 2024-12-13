@@ -32,7 +32,7 @@ export function InputSearchPopover(props: ItemSearchProps) {
       return;
     }
 
-    form.setValue(`items.${index}.itemId`, data.id);
+    form.setValue(`items.${index}.productId`, data.id);
     form.setValue(`items.${index}.name`, data.name);
     form.setValue(`items.${index}.price`, data.price ?? 0);
     form.setValue(`items.${index}.unitMeasure`, data.unitMeasure || "un");

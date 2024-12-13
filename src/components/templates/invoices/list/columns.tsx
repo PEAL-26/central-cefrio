@@ -14,11 +14,12 @@ interface ColumnProps {
   onDelete?: (id: string) => void;
 }
 
-export const columns = (
-  props?: ColumnProps
-): ColumnDef<InvoiceListResponseData>[] => [
+type Column = ColumnDef<InvoiceListResponseData> & { className?: string };
+
+export const columns = (props?: ColumnProps): Column[] => [
   {
     id: "select",
+    className: "w-[1%]",
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
@@ -39,28 +40,20 @@ export const columns = (
     enableHiding: false,
   },
   {
-    accessorKey: "number",
+    id: "document",
+    className: "w-[1%]",
+    accessorKey: "document",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Nº" />
-    ),
-    cell: ({ row }) => (
-      <div className="whitespace-nowrap">{row.getValue("number")}</div>
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "type",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tipo" />
+      <DataTableColumnHeader column={column} title="Documento" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="whitespace-nowrap flex items-center">
+        <div className="whitespace-nowrap flex items-center gap-2 font-bold">
           <span>
             {DOCUMENT_TYPES.find((doc) => doc.code === row.getValue("type"))
               ?.name || ""}
           </span>
+          <span>{row.original.number}</span>
         </div>
       );
     },
@@ -69,7 +62,9 @@ export const columns = (
     },
   },
   {
+    id: "date",
     accessorKey: "date",
+    className: "w-[1%]",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Data" />
     ),
@@ -100,13 +95,15 @@ export const columns = (
     },
   },
   {
+    id: "total",
     accessorKey: "total",
+    className: "w-[1%]",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Total" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex items-center">
+        <div className="flex items-center whitespace-nowrap">
           <span>{formatCurrency(row.getValue("total"))}</span>
         </div>
       );
@@ -116,6 +113,7 @@ export const columns = (
     },
   },
   {
+    className: "w-[1%]",
     id: "actions",
     cell: ({ row }) => (
       <div className="w-fit whitespace-nowrap flex items-center">

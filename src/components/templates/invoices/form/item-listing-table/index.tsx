@@ -27,7 +27,7 @@ export function ItemListingTable() {
 
   const handleAppend = () => {
     append({
-      itemId: "",
+      productId: "",
       name: "",
       unitMeasure: "un",
       quantity: 1,

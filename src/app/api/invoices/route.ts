@@ -85,6 +85,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         total: true,
       },
       where: queryParams,
+      orderBy: [{ createdAt: "desc" }],
       skip,
       take,
     }),
@@ -117,14 +118,14 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(invoice, { status: 200 });
   } catch (error: any) {
-    console.error(error)
+    console.error(error);
     return responseError(error);
   }
 }
 
 async function create(input: any) {
   const data = await prepareData(input);
-  console.log(data);
+
   return prisma.invoice.create({
     data: {
       id: data.id,
@@ -363,8 +364,10 @@ async function generateNumber(type: string) {
 async function getItems(items: InvoiceItemSchemaType[]) {
   let productsData = [];
   let taxesData = [];
+  let order = 0;
   for (const {
     id,
+    productId,
     name,
     discount,
     iva,
@@ -375,14 +378,18 @@ async function getItems(items: InvoiceItemSchemaType[]) {
     const { discountAmount, ivaAmount, priceDiscount, priceIva, total } =
       invoiceUpdateItemTotal({ discount, iva, price, quantity });
 
-    const product = await prisma.product.findFirst({ where: { id } });
+    const product = await prisma.product.findFirst({
+      where: { id: productId },
+    });
     if (!product) throw new Error(`Item (${name}) não encontrado.`);
 
     const newItem = {
+      order: ++order,
       id: id ? id : randomUUID(),
       productId: product.id,
       productName: product.name,
       unitMeasure: product.unitMeasure,
+      reasonExemption: product.reasonExemption,
       price,
       quantity,
       discount,

@@ -81,7 +81,8 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
         currency: rest?.currency,
         exchange: rest?.exchange,
         items: items?.map((item) => ({
-          id: item.itemId,
+          id: item?.itemId,
+          productId: item.productId,
           name: item.name,
           price: item?.price,
           unitMeasure: item?.unitMeasure,
@@ -100,9 +101,9 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
           paid: item.paid,
         })),
       });
-      queryClient.invalidateQueries({ queryKey: ["invoices"] });
-      toastResponseRegisterSuccess(data?.id);
-      router.replace(`/invoices/${response.id}`);
+      // queryClient.invalidateQueries({ queryKey: ["invoices"] });
+      // toastResponseRegisterSuccess(data?.id);
+      // router.replace(`/invoices/${response.id}`);
     } catch (error) {
       setErrors([{ property: "", message: generateResponseError(error) }]);
       toastResponseError(error);
@@ -178,7 +179,8 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
       form.setValue(
         "items",
         invoice?.products?.map((prod) => ({
-          itemId: prod.product.id || "",
+          itemId: prod.id || "",
+          productId: prod.product.id || "",
           name: prod.product.name,
           unitMeasure: prod.product.unitMeasure,
           quantity: prod.quantity,

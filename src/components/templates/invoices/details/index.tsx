@@ -85,9 +85,11 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
               <TableRow>
                 <TableHead>Nome</TableHead>
                 <TableHead>Preço</TableHead>
-                <TableHead>Unidade de Medida</TableHead>
-                <TableHead>IVA</TableHead>
-                <TableHead>Razão de Isenção</TableHead>
+                <TableHead>Unidade</TableHead>
+                <TableHead className="text-center">Quantidade</TableHead>
+                <TableHead className="text-center">IVA</TableHead>
+                <TableHead className="text-center">Desc.</TableHead>
+                <TableHead>TOTAL</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -100,8 +102,21 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
                     })}
                   </TableCell>
                   <TableCell>{product.unitMeasure}</TableCell>
-                  <TableCell>{product.iva}%</TableCell>
-                  <TableCell>{product.reasonExemption || "N/A"}</TableCell>
+                  <TableCell className="text-center">
+                    {product.quantity}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {product?.iva ?? 0}%
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {product?.discount ?? 0}%
+                  </TableCell>
+                  <TableCell>
+                    {" "}
+                    {currencyFormatter(product.total, {
+                      code: invoice.currency,
+                    })}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -35,7 +35,8 @@ export interface InvoiceRequestData {
 }
 
 interface Product {
-  id: string;
+  id?: string;
+  productId: string;
   unitMeasure?: string;
   price?: number;
   quantity: number;

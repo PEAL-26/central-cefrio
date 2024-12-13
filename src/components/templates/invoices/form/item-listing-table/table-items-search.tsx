@@ -25,7 +25,7 @@ export function TableItemsSearch({ onSelect }: ItemSearchProps) {
   const q = useDebounceValue(query);
 
   const { data, isLoading, isError } = useQueryPagination({
-    fn: async () => await productService.list({ page, q, size }),
+    fn: () => productService.list({ page, q, size }),
     queryKey: ["products", q, size, page],
   });
 

@@ -2,7 +2,8 @@ import { numericString } from "@/helpers/zod";
 import { z } from "zod";
 
 export const invoiceItemSchema = z.object({
-  itemId: z.string().min(1, "Campo Obrigatório"),
+  itemId: z.string().optional(),
+  productId: z.string().min(1, "Campo Obrigatório"),
   name: z.string().min(1, "Campo Obrigatório"),
   unitMeasure: z.string().optional(),
   quantity: numericString(z.number()),
