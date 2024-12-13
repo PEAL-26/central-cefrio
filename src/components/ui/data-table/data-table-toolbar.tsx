@@ -1,23 +1,29 @@
 "use client";
 
-import { Cross2Icon } from "@radix-ui/react-icons";
+import Link from "next/link";
 import { Table } from "@tanstack/react-table";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Cross2Icon } from "@radix-ui/react-icons";
 import { useCallback, useEffect, useState } from "react";
+
 import {
   useDebounceValue,
   useGetSearchParams,
   useSetSearchParams,
 } from "@/hooks";
+import { cn } from "@/libs/utils";
+import { Input } from "@/components/ui/input";
+import { Button, buttonVariants } from "@/components/ui/button";
 
+
+type OnAdd = () => void;
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  onAdd?: string | OnAdd;
 }
 
 export function DataTableToolbar<TData>({
   table,
+  onAdd,
 }: DataTableToolbarProps<TData>) {
   const { setParams } = useSetSearchParams();
   const [q, size] = useGetSearchParams({ params: ["q", "size"] });
@@ -31,12 +37,12 @@ export function DataTableToolbar<TData>({
       { name: "page", value: debounced ? "1" : "" },
       { name: "size", value: size },
     ]);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounced]);
 
   useEffect(() => {
     setParamsSearch();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounced]);
 
   const reset = () => {
@@ -60,6 +66,29 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
+
+      <AddButton onAdd={onAdd} />
     </div>
+  );
+}
+
+function AddButton({ onAdd }: { onAdd?: string | OnAdd }) {
+  if (!onAdd) return null;
+
+  if (typeof onAdd === "string") {
+    return (
+      <Link
+        className={cn(buttonVariants({ variant: "default" }), "h-8")}
+        href={onAdd}
+      >
+        Adicionar
+      </Link>
+    );
+  }
+
+  return (
+    <Button className="h-8" onClick={onAdd}>
+      Adicionar
+    </Button>
   );
 }

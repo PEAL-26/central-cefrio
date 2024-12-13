@@ -161,7 +161,7 @@ model Bank {
   name         String
   abbreviation String
   account      String
-  iban         String
+  iban         String?
   show         Boolean? @default(true)
 
   @@map("banks")

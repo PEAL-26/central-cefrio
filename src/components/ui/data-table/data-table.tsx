@@ -29,15 +29,22 @@ import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { IQueryPaginationResponse } from "@/hooks/use-query-pagination/types";
 import { ReactLoading } from "@/libs/react-loading";
+import { cn } from "@/libs/utils";
+
+type OnAdd = () => void;
+
+type Column<TData, TValue> = ColumnDef<TData, TValue> & { className?: string };
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+  columns: Column<TData, TValue>[];
   response?: IQueryPaginationResponse<TData>;
+  onAdd?: string | OnAdd;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   response,
+  onAdd,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -69,7 +76,7 @@ export function DataTable<TData, TValue>({
   return (
     <div className="space-y-4 h-full">
       <Suspense>
-        <DataTableToolbar table={table} />
+        <DataTableToolbar table={table} onAdd={onAdd} />
       </Suspense>
       <div className="rounded-md border">
         <Table>
@@ -78,7 +85,12 @@ export function DataTable<TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      className={cn(
+                        columns.find((c) => c.id === header.id)?.className
+                      )}
+                    >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -98,12 +110,12 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="hover:bg-transparent"
                 >
-                  <div className="flex justify-center items-center h-20">
+                  <div className="flex justify-center items-center h-80">
                     <ReactLoading
                       type="spinningBubbles"
                       color={"#1B3D7A"}
-                      height={90}
-                      width={90}
+                      height={60}
+                      width={60}
                     />
                   </div>
                 </TableCell>
@@ -129,8 +141,11 @@ export function DataTable<TData, TValue>({
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={columns.length} className="text-center">
-                      No results.
+                    <TableCell
+                      colSpan={columns.length}
+                      className="text-center h-80 hover:bg-transparent"
+                    >
+                      Sem resultados.
                     </TableCell>
                   </TableRow>
                 )}

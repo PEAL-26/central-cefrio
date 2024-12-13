@@ -20,7 +20,7 @@ const config = {
     extend: {
       colors,
       height: {
-        "screen-custom": "calc(100vh - 120px)",
+        "screen-custom": "calc(100vh - 88px)",
       },
       keyframes: {
         "accordion-down": {

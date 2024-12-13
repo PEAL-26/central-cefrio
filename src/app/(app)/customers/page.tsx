@@ -1,5 +1,6 @@
 import { Suspense } from "react";
-import { ListCustomers } from "../../../components/templates/customers";
+import { ListCustomers } from "@/components/templates/customers";
+import { Loading } from "@/components/ui/loading";
 
 export const metadata = {
   title: "Clientes",
@@ -7,7 +8,7 @@ export const metadata = {
 
 export default function CustomersPage() {
   return (
-    <Suspense>
+    <Suspense fallback={<Loading />}>
       <ListCustomers />
     </Suspense>
   );

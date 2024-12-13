@@ -1,4 +1,4 @@
-import { ListProducts } from "../../../components/templates/products";
+import { Loading } from "@/components/ui/loading";
 import { Suspense } from "react";
 
 export const metadata = {
@@ -7,8 +7,8 @@ export const metadata = {
 
 export default function ProductsPage() {
   return (
-    <Suspense>
-      <ListProducts />
+    <Suspense fallback={<Loading />}>
+      <></>
     </Suspense>
   );
 }

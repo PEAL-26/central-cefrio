@@ -1,4 +1,5 @@
 import { InvoiceDetails } from "@/components/templates/invoices";
+import { Loading } from "@/components/ui/loading";
 import { getItemCached } from "@/helpers/cache";
 import { invoiceService } from "@/services/invoices";
 import { Metadata, ResolvingMetadata } from "next";
@@ -31,7 +32,7 @@ export default async function InvoiceDetailsPage(props: Props) {
   if (!invoice) return notFound();
 
   return (
-    <Suspense>
+    <Suspense fallback={<Loading />}>
       <InvoiceDetails invoice={invoice} />
     </Suspense>
   );

@@ -13,7 +13,7 @@ import { useVercelBlobUpload } from "@/hooks/use-vercel-blob-upload";
 
 export function useSettings() {
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingPage, setIsLoadingPage] = useState(false);
+  const [isLoadingData, setIsLoadingData] = useState(true);
 
   const { uploads, progress: uploadProgress } = useMultipleFileUploads();
   const vercel = useVercelBlobUpload();
@@ -75,9 +75,9 @@ export function useSettings() {
 
   useEffect(() => {
     (async () => {
-      setIsLoadingPage(true);
+      setIsLoadingData(true);
       await loadingCompany();
-      setIsLoadingPage(false);
+      setIsLoadingData(false);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -86,7 +86,7 @@ export function useSettings() {
     form,
     onSubmit: form.handleSubmit(handleSubmit),
     isLoading,
-    isLoadingPage,
     uploadProgress,
+    isLoadingData,
   };
 }

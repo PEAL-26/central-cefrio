@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { ReactLoading } from "@/libs/react-loading";
 import { DataTable } from "@/components/ui/data-table";
 
 import { columns } from "./columns";

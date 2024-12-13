@@ -8,7 +8,7 @@ export function useList() {
   const [q, size, page] = useGetSearchParams({ params: ["q", "size", "page"] });
 
   const response = useQueryPagination({
-    fn: async () => await invoiceService.list({ page, q, size }),
+    fn: () => invoiceService.list({ page, q, size }),
     queryKey: ["invoices", q, size, page],
   });
 

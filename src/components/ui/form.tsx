@@ -12,6 +12,7 @@ import {
 
 import { cn } from "@/libs/utils";
 import { Label } from "@/components/ui/label";
+import { Input } from "./input";
 
 const Form = FormProvider;
 

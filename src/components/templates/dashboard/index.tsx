@@ -47,7 +47,7 @@ export function Dashboard() {
       </Card>
       <Card className="col-span-1 lg:col-span-2 xl:col-span-3">
         <CardHeader>
-          <CardTitle>Monthly Invoices</CardTitle>
+          <CardTitle>Facturação nos últimos 6 meses</CardTitle>
         </CardHeader>
         <CardContent>
           {isFetching && (
