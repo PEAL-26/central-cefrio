@@ -10,24 +10,20 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "source.unsplash.com",
-        port: "",
-        pathname: "/random/**",
+        hostname: "**",
       },
-
       {
-        protocol: process.env.UPLOAD_FILE_PROTOCOL,
-        hostname: process.env.UPLOAD_FILE_HOSTNAME,
-        port: "",
+        protocol: "http",
+        hostname: "**",
       },
     ],
   },
   webpack: (config, options) => {
     config.module.rules.push(
-      //   {
-      //   test: /\.svg$/,
-      //   use: ["@svgr/webpack"],
-      // },
+        {
+        test: /\.svg$/,
+        use: ["@svgr/webpack"],
+      },
       {
         test: /\.hbs$/i,
         use: "raw-loader",
