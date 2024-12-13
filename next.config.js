@@ -1,3 +1,6 @@
+// Injected content via Sentry wizard below
+const { withSentryConfig } = require("@sentry/nextjs");
+
 const dotenv = require("dotenv");
 const dotenvExpand = require("dotenv-expand");
 
@@ -20,7 +23,7 @@ const nextConfig = {
   },
   webpack: (config, options) => {
     config.module.rules.push(
-        {
+      {
         test: /\.svg$/,
         use: ["@svgr/webpack"],
       },
@@ -37,4 +40,16 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withSentryConfig(nextConfig, {
+  org: "pealsystems",
+  project: "javascript-nextjs",
+  silent: !process.env.CI,
+  widenClientFileUpload: true,
+  reactComponentAnnotation: {
+    enabled: true,
+  },
+  tunnelRoute: "/monitoring",
+  hideSourceMaps: true,
+  disableLogger: true,
+  automaticVercelMonitors: true,
+});
