@@ -3,7 +3,9 @@ import { z } from "zod";
 
 export const invoiceItemSchema = z.object({
   itemId: z.string().optional(),
-  productId: z.string().min(1, "Campo Obrigatório"),
+  productId: z
+    .string({ message: "Campo Obrigatório." })
+    .min(1, "Campo Obrigatório"),
   name: z.string().min(1, "Campo Obrigatório"),
   unitMeasure: z.string().optional(),
   quantity: numericString(z.number()),
@@ -96,6 +98,7 @@ export const INVOICE_SCHEMA_PROPERTY = {
   totalDiscount: "Total Desconto",
   total: "Total",
   itemId: "Descrição Item",
+  productId: "Descrição Item",
   name: "Descrição Item",
   unitMeasure: "Unidade",
   quantity: "Quantidade",

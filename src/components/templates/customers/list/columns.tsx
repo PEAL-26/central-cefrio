@@ -1,9 +1,10 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
-
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "@/components/ui/data-table";
+import {
+  ColumnDefProps,
+  DataTableColumnHeader,
+} from "@/components/ui/data-table";
 import { CustomerListResponseData } from "@/services/customers";
 
 import { DataTableRowActions } from "./data-table-row-actions";
@@ -15,7 +16,7 @@ interface ColumnProps {
 
 export const columns = (
   props?: ColumnProps
-): ColumnDef<CustomerListResponseData>[] => [
+): ColumnDefProps<CustomerListResponseData>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -91,6 +92,7 @@ export const columns = (
   },
   {
     id: "actions",
+    className: "w-[1%]",
     cell: ({ row }) => <DataTableRowActions row={row} actions={props} />,
   },
 ];

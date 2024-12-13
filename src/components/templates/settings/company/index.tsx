@@ -16,6 +16,7 @@ import { ImageSelector } from "@/components/ui/image-selector";
 
 import { useSettings } from "./use-settings";
 import { Loading } from "@/components/ui/loading";
+import { Loader2Icon } from "lucide-react";
 
 export function SettingsCompany() {
   const { form, isLoading, isLoadingData, onSubmit, uploadProgress } =
@@ -196,6 +197,9 @@ export function SettingsCompany() {
         </div>
         <div className="flex justify-end">
           <Button disabled={isLoading} type="submit">
+            {isLoading && (
+              <Loader2Icon className="text-white animate-spin size-4 mr-2" />
+            )}
             Salvar
           </Button>
         </div>

@@ -19,17 +19,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-import { CreateEditProductDialogProps } from "./types";
-import { useCreateEditProduct } from "./use-dialog";
 import { BaseSyntheticEvent, ReactNode } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { ProductSchemaType } from "./product";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/libs/utils";
 
 interface CreateEditProductFormProps {
   children: ReactNode;
   isPending?: boolean;
   isLoading?: boolean;
+  addInvoice?: boolean;
+  formClassName?: string;
   form: UseFormReturn<ProductSchemaType>;
   onSubmit?(e?: BaseSyntheticEvent): void;
 }
@@ -40,13 +41,18 @@ export function CreateEditProductForm(props: CreateEditProductFormProps) {
     form,
     isLoading = false,
     isPending = false,
+    formClassName,
+    addInvoice = false,
     onSubmit,
   } = props;
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className="grid w-full gap-4 sm:rounded-lg">
-        <div className="grid grid-cols-3 gap-6 ">
+      <form
+        onSubmit={onSubmit}
+        className={cn("grid w-full gap-4 sm:rounded-lg", formClassName)}
+      >
+        <div className={cn("grid grid-cols-3 gap-6 ", addInvoice && "w-full")}>
           <div className="col-span-3">
             <FormField
               control={form.control}
@@ -67,7 +73,7 @@ export function CreateEditProductForm(props: CreateEditProductFormProps) {
               )}
             />
           </div>
-          <div>
+          <div className={cn(addInvoice && "col-span-3 w-full")}>
             <FormField
               control={form.control}
               name="unitMeasure"
@@ -87,7 +93,7 @@ export function CreateEditProductForm(props: CreateEditProductFormProps) {
               )}
             />
           </div>
-          <div>
+          <div className={cn(addInvoice && "col-span-3 w-full")}>
             <FormField
               control={form.control}
               name="price"
@@ -107,7 +113,7 @@ export function CreateEditProductForm(props: CreateEditProductFormProps) {
               )}
             />
           </div>
-          <div>
+          <div className={cn(addInvoice && "col-span-3 w-full")}>
             <FormField
               control={form.control}
               name="iva"

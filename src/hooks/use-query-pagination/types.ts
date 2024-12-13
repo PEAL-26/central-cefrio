@@ -43,6 +43,7 @@ export interface IQueryPaginationResponse<TData> {
   isError: boolean;
   currentPage?: number;
   totalPages?: number;
+  totalItems?: number;
   next?: number | null;
   prev?: number | null;
   nextPage?(): void;

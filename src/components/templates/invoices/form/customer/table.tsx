@@ -16,6 +16,7 @@ import {
   customerService,
 } from "@/services/customers";
 import { Button } from "@/components/ui/button";
+import { Pagination } from "@/components/ui/pagination";
 
 interface CustomerTablePros {
   open: boolean;
@@ -30,7 +31,7 @@ export function CustomerTable(props: CustomerTablePros) {
 
   const q = useDebounceValue(query);
 
-  const { data, isLoading, isError } = useQueryPagination({
+  const { data, isLoading, isError, ...pagination } = useQueryPagination({
     fn: async () => await customerService.list({ page, q, size }),
     queryKey: ["customers", q, size, page],
     disableFetch: !open,
@@ -38,11 +39,17 @@ export function CustomerTable(props: CustomerTablePros) {
 
   return (
     <div className="h-full w-full p-4">
-      <Input
-        placeholder="Pesquisar"
-        value={query}
-        onChange={(e) => setQuery(e.target.value || "")}
-      />
+      <div className="flex items-center gap-1">
+        <Input
+          placeholder="Pesquisar"
+          value={query}
+          onChange={(e) => setQuery(e.target.value || "")}
+        />
+        <Button variant="ghost" className="p-0 h-10 w-10" onClick={onAdd}>
+          <PlusCircle />
+        </Button>
+      </div>
+
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
@@ -93,6 +100,18 @@ export function CustomerTable(props: CustomerTablePros) {
             ))}
         </TableBody>
       </Table>
+
+      <div className="absolute bottom-0 left-0 right-0 py-1 bg-gray-100">
+        <Pagination
+          show={{
+            totalItems: true,
+            nextPage: true,
+            prevPage: true,
+            currentTotalPages: true,
+          }}
+          navigation={pagination}
+        />
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { LoaderIcon } from "lucide-react";
+import { LoaderIcon, PlusCircleIcon } from "lucide-react";
 
 import {
   Table,
@@ -10,27 +10,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { useDebounceValue, useQueryPagination } from "@/hooks";
-import { ProductListResponseData, productService } from "@/services/products";
+import { ProductListResponseData } from "@/services/products";
 import { useInvoiceContext } from "@/contexts/invoice-context";
+import { Button } from "@/components/ui/button";
+import { Pagination } from "@/components/ui/pagination";
 
-interface ItemSearchProps {
+interface ProductListingProps {
   open: boolean;
+  onAdd?(): void;
   onSelect?(data: ProductListResponseData): void;
 }
 
-export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
-  // const [page, setPage] = useState<string | undefined>(undefined);
-  // const [size, setSize] = useState<string | undefined>("10");
-  // const [query, setQuery] = useState<string | undefined>(undefined);
-
-  // const q = useDebounceValue(query);
-
-  // const { data, isLoading, isError } = useQueryPagination({
-  //   fn: () => productService.list({ page, q, size }),
-  //   queryKey: ["products", q, size, page],
-  // });
-
+export function ProductListing(props: ProductListingProps) {
+  const { open, onSelect, onAdd } = props;
   const { productsQuery, filterProducts, clearFilterProducts } =
     useInvoiceContext();
   const { data, isLoading, isError } = productsQuery;
@@ -41,12 +33,18 @@ export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
   }, [open]);
 
   return (
-    <div className="h-full">
-      <Input
-        placeholder="Pesquisar"
-        // value={query}
-        onChange={(e) => filterProducts({ q: e.target.value || "" })}
-      />
+    <div className="h-full w-full p-4">
+      <div className="flex items-center gap-1">
+        <Input
+          placeholder="Pesquisar"
+          // value={query}
+          onChange={(e) => filterProducts({ q: e.target.value || "" })}
+        />
+        <Button variant="ghost" className="p-0 h-10 w-10" onClick={onAdd}>
+          <PlusCircleIcon />
+        </Button>
+      </div>
+
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
@@ -94,6 +92,18 @@ export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
             ))}
         </TableBody>
       </Table>
+
+      <div className="absolute bottom-0 left-0 right-0 py-1 bg-gray-100">
+        <Pagination
+          show={{
+            totalItems: true,
+            nextPage: true,
+            prevPage: true,
+            currentTotalPages: true,
+          }}
+          navigation={productsQuery}
+        />
+      </div>
     </div>
   );
 }

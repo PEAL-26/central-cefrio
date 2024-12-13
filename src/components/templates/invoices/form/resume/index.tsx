@@ -44,7 +44,7 @@ export function Resume() {
       <WithholdingTax />
       <div className="flex items-center gap-2">
         <Label htmlFor="total" className="font-bold">
-          Total
+          TOTAL
         </Label>
         <Input
           readOnly

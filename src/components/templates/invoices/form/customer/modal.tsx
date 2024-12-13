@@ -1,6 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { BoltIcon } from "lucide-react";
+import { BoltIcon, SearchIcon } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -36,11 +35,11 @@ export function CustomerModal(props: CustomerModalProps) {
   return (
     <Popover modal open={open} onOpenChange={handleClose}>
       <PopoverTrigger onClick={handleOpen}>
-        <BoltIcon />
+        <SearchIcon />
       </PopoverTrigger>
       <PopoverContent
         align="end"
-        className="w-80 h-96 bg-white overflow-hidden  p-0"
+        className="w-80 h-96 bg-white overflow-hidden p-0"
       >
         <div className="flex-1 h-full w-full relative">
           <div

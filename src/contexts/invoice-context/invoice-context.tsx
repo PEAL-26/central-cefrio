@@ -53,6 +53,8 @@ export const InvoiceProvider: React.FC<InvoiceProviderProps> = ({
       value={{
         documentsQuery,
         productsQuery,
+        documentFilters,
+        productFilters,
         filterDocuments,
         filterProducts,
         clearFilterDocuments,

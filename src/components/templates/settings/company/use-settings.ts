@@ -30,26 +30,26 @@ export function useSettings() {
       setIsLoading(true);
 
       let logo = undefined;
-      if (data.logo?.file) {
-        // const imageFormData = createFormData(data.logo?.file);
-        const blob = await vercel.upload(data.logo.file)
+      // if (data.logo?.file) {
+      //   // const imageFormData = createFormData(data.logo?.file);
+      //   const blob = await vercel.upload(data.logo.file)
         
-        console.log(blob);
+      //   console.log(blob);
     
-        // const [imageFileName] = await uploads([imageFormData]);
-        // logo =
-        //   imageFileName && imageFileName?.length > 0
-        //     ? imageFileName[0]
-        //     : undefined;
-      }
+      //   // const [imageFileName] = await uploads([imageFormData]);
+      //   // logo =
+      //   //   imageFileName && imageFileName?.length > 0
+      //   //     ? imageFileName[0]
+      //   //     : undefined;
+      // }
 
-      // await companyService.create({
-      //   ...data,
-      //   logo,
-      // });
+      await companyService.create({
+        ...data,
+        logo,
+      });
 
-      // toastResponseRegisterSuccess(data?.id);
-      // await loadingCompany();
+      toastResponseRegisterSuccess(data?.id);
+      await loadingCompany();
     } catch (error) {
       toastResponseError(error);
     } finally {

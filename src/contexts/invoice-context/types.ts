@@ -24,6 +24,8 @@ export interface InvoiceProviderProps {
 export interface InvoiceContextData {
   documentsQuery: IQueryPaginationResponse<InvoiceListResponseData>;
   productsQuery: IQueryPaginationResponse<ProductListResponseData>;
+  documentFilters: DocumentFilterTypes;
+  productFilters: ProductFilterTypes;
   filterDocuments: (filters: DocumentFilterTypes) => void;
   filterProducts: (filters: ProductFilterTypes) => void;
   clearFilterDocuments: () => void;

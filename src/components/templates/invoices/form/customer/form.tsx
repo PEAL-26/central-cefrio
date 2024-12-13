@@ -24,11 +24,12 @@ export function CustomerForm(props: CustomerFormProps) {
       formClassName="grid-cols-1 w-full p-4"
       addInvoice
     >
-      <div className="col-span-2 gap-2 flex justify-center items-center mb-4">
+      <div className="col-span-2 gap-2 flex justify-center items-center pb-4">
         <Button
           disabled={isLoading || isPending}
           variant="link"
           onClick={onBack}
+          className='hover:no-underline'
         >
           Voltar
         </Button>

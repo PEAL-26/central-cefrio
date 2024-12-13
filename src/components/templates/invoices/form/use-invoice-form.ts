@@ -15,7 +15,7 @@ import { invoiceService } from "@/services/invoices";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { getDocumentTypeNameByCode } from "@/constants/document-types";
-import { formatDate } from "@/helpers/date";
+import { addDate, formatDate } from "@/helpers/date";
 
 interface InvoiceFormProps {
   id?: string;
@@ -35,7 +35,7 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
     mode: "onChange",
     defaultValues: {
       date: new Date(),
-      dueDate: new Date(),
+      dueDate: addDate(15, "day"),
       currency: "AOA",
       subtotal: 0,
       totalDiscount: 0,
@@ -105,7 +105,7 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
       });
       // queryClient.invalidateQueries({ queryKey: ["invoices"] });
       // toastResponseRegisterSuccess(data?.id);
-      // router.replace(`/invoices/${response.id}`);
+      // router.replace(`/documents/invoices/${response.id}`);
     } catch (error) {
       setErrors([{ property: "", message: generateResponseError(error) }]);
       toastResponseError(error);
@@ -142,6 +142,8 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
       };
     });
 
+    
+    console.log(_errors);
     setErrors(_errors);
   };
 

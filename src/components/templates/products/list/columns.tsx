@@ -1,12 +1,14 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
-
 import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "@/components/ui/data-table";
+import {
+  ColumnDefProps,
+  DataTableColumnHeader,
+} from "@/components/ui/data-table";
 import { ProductListResponseData } from "@/services/products";
 
 import { DataTableRowActions } from "./data-table-row-actions";
+import { currencyFormatter } from "@/helpers/currency";
 
 interface ColumnProps {
   onEdit?: (id: string) => void;
@@ -15,9 +17,10 @@ interface ColumnProps {
 
 export const columns = (
   props?: ColumnProps
-): ColumnDef<ProductListResponseData>[] => [
+): ColumnDefProps<ProductListResponseData>[] => [
   {
     id: "select",
+    className: "w-[1%]",
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
@@ -69,6 +72,8 @@ export const columns = (
     },
   },
   {
+    id: "price",
+    className: "w-[1%]",
     accessorKey: "price",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Preço" />
@@ -76,7 +81,7 @@ export const columns = (
     cell: ({ row }) => {
       return (
         <div className="flex items-center">
-          <span>{row.getValue("price")}</span>
+          <span>{currencyFormatter(row.getValue("price"))}</span>
         </div>
       );
     },
@@ -85,6 +90,8 @@ export const columns = (
     },
   },
   {
+    id: "iva",
+    className: "w-[1%]",
     accessorKey: "iva",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="IVA" />
@@ -92,7 +99,7 @@ export const columns = (
     cell: ({ row }) => {
       return (
         <div className="flex items-center">
-          <span>{row.getValue("iva")}</span>
+          <span>{currencyFormatter(row.getValue("iva"))}</span>
         </div>
       );
     },
@@ -102,6 +109,7 @@ export const columns = (
   },
   {
     id: "actions",
+    className: "w-[1%]",
     cell: ({ row }) => <DataTableRowActions row={row} actions={props} />,
   },
 ];

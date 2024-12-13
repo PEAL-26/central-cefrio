@@ -1,4 +1,4 @@
-import { AppLayout } from "@/components/layout";
+import { AppLayout } from "@/components/layouts";
 
 export default function AppMainLayout({
   children,

@@ -4,10 +4,8 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/ui/data-table";
-import { Button } from "@/components/ui/button";
-import { Pencil1Icon } from "@radix-ui/react-icons";
-import { Trash2Icon } from "lucide-react";
 import { BankListResponseData } from "@/services/banks";
+import { DataTableRowActions } from "./data-table-row-actions";
 
 type Column = ColumnDef<BankListResponseData> & { className?: string };
 
@@ -84,23 +82,6 @@ export const columns = (props?: ColumnProps): Column[] => [
   {
     id: "actions",
     className: "w-[1%]",
-    cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        <Button
-          variant="outline"
-          className="p-0 w-10 h-10"
-          onClick={() => props?.onEdit?.(row.original.id)}
-        >
-          <Pencil1Icon className="size-5" />
-        </Button>
-        <Button
-          variant="destructive"
-          className="p-0 w-10 h-10"
-          onClick={() => props?.onDelete?.(row.original.id)}
-        >
-          <Trash2Icon className="size-5" />
-        </Button>
-      </div>
-    ),
+    cell: ({ row }) => <DataTableRowActions row={row} actions={props} />,
   },
 ];

@@ -93,6 +93,7 @@ export function useQueryPagination<T>(
     isLoadingAll:
       isLoading || isFetching || isFetchingNextPage || isFetchingPreviousPage,
     isError,
+    totalItems: response?.totalItems,
     currentPage: response?.currentPage,
     totalPages: response?.totalPages,
     next: response?.next,

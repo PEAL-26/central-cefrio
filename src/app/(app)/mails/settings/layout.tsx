@@ -1,4 +1,4 @@
-import { SidebarNav } from "@/components/ui/sidebar-nav";
+import { SettingsLayout } from "@/components/layouts";
 
 export const metadata = {
   title: { default: "Configurações", template: "%s | Configurações" },
@@ -15,17 +15,10 @@ const sidebarNavItems = [
   },
 ];
 
-export default function SettingsLayout({
+export default function SettingsMainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <div className="flex-1 flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-      <aside className="-mx-4 lg:w-1/5">
-        <SidebarNav items={sidebarNavItems} />
-      </aside>
-      <div className="flex-1 flex flex-col lg:max-w-2xl">{children}</div>
-    </div>
-  );
+  return <SettingsLayout items={sidebarNavItems}>{children}</SettingsLayout>;
 }

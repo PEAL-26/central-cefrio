@@ -5,5 +5,5 @@ export const metadata = {
 };
 
 export default function SettingsPage() {
-  return redirect("/settings/company");
+  return redirect("/documents/settings/company");
 }

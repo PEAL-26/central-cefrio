@@ -33,10 +33,13 @@ import { cn } from "@/libs/utils";
 
 type OnAdd = () => void;
 
-type Column<TData, TValue> = ColumnDef<TData, TValue> & { className?: string };
+export type ColumnDefProps<TData = any, TValue = any> = ColumnDef<
+  TData,
+  TValue
+> & { className?: string };
 
 interface DataTableProps<TData, TValue> {
-  columns: Column<TData, TValue>[];
+  columns: ColumnDefProps<TData, TValue>[];
   response?: IQueryPaginationResponse<TData>;
   onAdd?: string | OnAdd;
 }
