@@ -1,17 +1,8 @@
 "use client";
 import { TableRow, TableCell } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { InvoiceSchemaType } from "../schema";
 import { Button } from "@/components/ui/button";
 import { TrashIcon } from "lucide-react";
-import { useFormContext } from "react-hook-form";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { useEffect } from "react";
+
 import { InputSearchPopover } from "./input-search-popover";
 import { formatCurrency } from "@/helpers/currency";
 import { useInvoiceUpdateTotal } from "../use-invoice-update-total";
@@ -23,7 +14,7 @@ interface TableItemProps {
 
 export function TableItemRow(props: TableItemProps) {
   const { index, remove } = props;
-  const { updateTotal, form } = useInvoiceUpdateTotal();
+  const { form } = useInvoiceUpdateTotal();
 
   return (
     <TableRow>
@@ -31,31 +22,10 @@ export function TableItemRow(props: TableItemProps) {
         <InputSearchPopover form={form} index={index} />
       </TableCell>
       <TableCell className="text-right font-bold align-top pt-4">
-        {formatCurrency(form.getValues(`items.${index}.total`))}
+        {formatCurrency(form.watch(`documents.${index}.total`))}
       </TableCell>
-      <TableCell className="w-[1%] align-top">
-        <FormField
-          control={form.control}
-          name={`items.${index}.iva`}
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  min="0.00"
-                  step="0.01"
-                  type="number"
-                  className="w-40 text-right"
-                  {...field}
-                  onChange={(e) => {
-                    field.onChange(e);
-                    updateTotal(index);
-                  }}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <TableCell className="w-[1%] text-right align-top pt-4">
+        {formatCurrency(form.watch(`documents.${index}.paid`))}
       </TableCell>
       <TableCell className="text-right font-bold align-top">
         <Button

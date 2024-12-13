@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LoaderIcon } from "lucide-react";
 
 import {
@@ -10,31 +10,34 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { useDebounceValue, useQueryPagination } from "@/hooks";
 import { ProductListResponseData, productService } from "@/services/products";
+import { useInvoiceContext } from "@/contexts/invoice-context";
+import { InvoiceListResponseData } from "@/services/invoices";
+import { currencyFormatter } from "@/helpers/currency";
+import { getDocumentTypeNameByCode } from "@/constants/document-types";
+import { formatDate } from "@/helpers/date";
 
 interface ItemSearchProps {
-  onSelect?(data: ProductListResponseData): void;
+  open: boolean;
+  onSelect?(data: InvoiceListResponseData): void;
 }
 
-export function TableItemsSearch({ onSelect }: ItemSearchProps) {
-  const [page, setPage] = useState<string | undefined>(undefined);
-  const [size, setSize] = useState<string | undefined>("10");
-  const [query, setQuery] = useState<string | undefined>(undefined);
+export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
+  const { documentsQuery, filterDocuments, clearFilterDocuments } =
+    useInvoiceContext();
+  const { data, isError, isLoading } = documentsQuery;
 
-  const q = useDebounceValue(query);
-
-  const { data, isLoading, isError } = useQueryPagination({
-    fn: async () => await productService.list({ page, q, size }),
-    queryKey: ["products", q, size, page],
-  });
+  useEffect(() => {
+    clearFilterDocuments();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   return (
     <div className="h-full">
       <Input
         placeholder="Pesquisar"
-        value={query}
-        onChange={(e) => setQuery(e.target.value || "")}
+        // value={query}
+        onChange={(e) => filterDocuments({ q: e.target.value || "" })}
       />
       <Table>
         <TableHeader>
@@ -78,7 +81,20 @@ export function TableItemsSearch({ onSelect }: ItemSearchProps) {
                 className="hover:cursor-pointer"
                 onClick={() => onSelect?.(item)}
               >
-                <TableCell>{item.name}</TableCell>
+                <TableCell>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold flex flex-col">
+                      {`${getDocumentTypeNameByCode(item.type)} ${item.number}`}
+                      <span className="font-normal">{item.customer.name}</span>
+                    </span>
+                    <span className="font-bold flex flex-col text-right">
+                      {currencyFormatter(item?.total ?? 0)}
+                      <span className="font-normal text-xs">
+                        {formatDate(item.date)}
+                      </span>
+                    </span>
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>

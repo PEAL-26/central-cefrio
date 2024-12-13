@@ -25,7 +25,10 @@ export const invoicePaymentSchema = z.object({
 });
 
 export const invoiceDocumentSchema = z.object({
+  description: z.string().optional(),
+  customerId: z.string().optional(),
   documentId: z.string(),
+  total: z.number(),
   paid: numericString(z.number().gt(0, "O valor deve ser maior que zero (0)")),
 });
 

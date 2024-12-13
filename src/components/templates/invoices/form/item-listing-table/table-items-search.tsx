@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { LoaderIcon } from "lucide-react";
 
 import {
@@ -12,29 +12,40 @@ import {
 import { Input } from "@/components/ui/input";
 import { useDebounceValue, useQueryPagination } from "@/hooks";
 import { ProductListResponseData, productService } from "@/services/products";
+import { useInvoiceContext } from "@/contexts/invoice-context";
 
 interface ItemSearchProps {
+  open: boolean;
   onSelect?(data: ProductListResponseData): void;
 }
 
-export function TableItemsSearch({ onSelect }: ItemSearchProps) {
-  const [page, setPage] = useState<string | undefined>(undefined);
-  const [size, setSize] = useState<string | undefined>("10");
-  const [query, setQuery] = useState<string | undefined>(undefined);
+export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
+  // const [page, setPage] = useState<string | undefined>(undefined);
+  // const [size, setSize] = useState<string | undefined>("10");
+  // const [query, setQuery] = useState<string | undefined>(undefined);
 
-  const q = useDebounceValue(query);
+  // const q = useDebounceValue(query);
 
-  const { data, isLoading, isError } = useQueryPagination({
-    fn: () => productService.list({ page, q, size }),
-    queryKey: ["products", q, size, page],
-  });
+  // const { data, isLoading, isError } = useQueryPagination({
+  //   fn: () => productService.list({ page, q, size }),
+  //   queryKey: ["products", q, size, page],
+  // });
+
+  const { productsQuery, filterProducts, clearFilterProducts } =
+    useInvoiceContext();
+  const { data, isLoading, isError } = productsQuery;
+
+  useEffect(() => {
+    clearFilterProducts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   return (
     <div className="h-full">
       <Input
         placeholder="Pesquisar"
-        value={query}
-        onChange={(e) => setQuery(e.target.value || "")}
+        // value={query}
+        onChange={(e) => filterProducts({ q: e.target.value || "" })}
       />
       <Table>
         <TableHeader>

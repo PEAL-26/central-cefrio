@@ -8,6 +8,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { cn } from "@/libs/utils";
 import { AppLayout } from "@/components/layout";
 import { QueryClientProvider } from "@/providers";
+import { Toaster } from "@/components/ui/toaster";
 
 import { inter } from "./fonts";
 
@@ -26,7 +27,10 @@ export default function RootLayout({
         <NuqsAdapter>
           <QueryClientProvider>
             <PrimeReactProvider value={{ unstyled: true, pt: Tailwind }}>
-              <AppLayout>{children}</AppLayout>
+              <AppLayout>
+                {children}
+                <Toaster />
+              </AppLayout>
             </PrimeReactProvider>
           </QueryClientProvider>
         </NuqsAdapter>

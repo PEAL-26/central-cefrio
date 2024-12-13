@@ -12,7 +12,10 @@ import {
 } from "@/components/ui/popover";
 import { useState } from "react";
 import { TableItemsSearch } from "./table-items-search";
-import { ProductListResponseData } from "@/services/products";
+import { InvoiceListResponseData } from "@/services/invoices";
+import { getDocumentTypeNameByCode } from "@/constants/document-types";
+import { formatDate } from "@/helpers/date";
+import { toastResponseError } from "@/helpers/response/response";
 
 interface ItemSearchProps {
   form: any;
@@ -23,18 +26,34 @@ export function InputSearchPopover(props: ItemSearchProps) {
   const { form, index } = props;
   const [open, setOpen] = useState(() => false);
 
-  const handleSelect = (data: ProductListResponseData) => {
-    const items = form.getValues("items");
+  const handleSelect = (data: InvoiceListResponseData) => {
+    const items = form.getValues("documents");
     if (items.find(({ itemId }: any) => itemId === data.id)) {
       setOpen(false);
       return;
     }
 
-    form.setValue(`items.${index}.itemId`, data.id);
-    form.setValue(`items.${index}.name`, data.name);
-    form.setValue(`items.${index}.price`, data.price ?? 0);
-    form.setValue(`items.${index}.unitMeasure`, data.unitMeasure || "un");
-    form.setValue(`items.${index}.iva`, data.iva ?? 0);
+    if (items.length > 1) {
+      if (!items.some((i: any) => i.customerId === data.customer.id)) {
+        toastResponseError(
+          "Ao emitir recibo de várias facturas, não pode adicionar facturas de outro cliente."
+        );
+      }
+    }
+
+    form.setValue(
+      `documents.${index}.description`,
+      `${getDocumentTypeNameByCode(data.type)} ${data.number} (${formatDate(
+        data.date
+      )}) - ${data.customer.name}`
+    );
+    form.setValue(`documents.${index}.customerId`, data.customer.id);
+    form.setValue(`documents.${index}.documentId`, data.id);
+    form.setValue(`documents.${index}.total`, data?.total ?? 0);
+
+    // TODO Verificar quanto já foi pago
+    form.setValue(`documents.${index}.paid`, 0);
+
     setOpen(false);
   };
 
@@ -42,7 +61,7 @@ export function InputSearchPopover(props: ItemSearchProps) {
     <Popover modal open={open} onOpenChange={setOpen}>
       <FormField
         control={form.control}
-        name={`items.${index}.name`}
+        name={`documents.${index}.description`}
         render={({ field }) => (
           <FormItem>
             <FormControl>
@@ -59,7 +78,7 @@ export function InputSearchPopover(props: ItemSearchProps) {
         )}
       />
       <PopoverContent align="start" className="w-80 h-96 bg-white">
-        <TableItemsSearch onSelect={handleSelect} />
+        <TableItemsSearch open={open} onSelect={handleSelect} />
       </PopoverContent>
     </Popover>
   );

@@ -27,7 +27,9 @@ export function InputSearchPopover(props: ItemSearchProps) {
 
   const handleSelect = (data: ProductListResponseData) => {
     const items = form.getValues("items");
-    if (items.find(({ itemId }: any) => itemId === data.id)) {
+    const itemFound = items.find(({ productId }: any) => productId === data.id);
+
+    if (itemFound) {
       setOpen(false);
       return;
     }
@@ -63,7 +65,7 @@ export function InputSearchPopover(props: ItemSearchProps) {
         )}
       />
       <PopoverContent align="start" className="w-80 h-96 bg-white">
-        <TableItemsSearch onSelect={handleSelect} />
+        <TableItemsSearch open={open} onSelect={handleSelect} />
       </PopoverContent>
     </Popover>
   );

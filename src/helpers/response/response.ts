@@ -9,6 +9,8 @@ export function getResponse<T = any, D = any>(response: AxiosResponse<T, D>) {
 }
 
 export function generateResponseError(error: any) {
+  if (typeof error === "string") return error;
+
   let message = INTERNAL_SERVER_ERROR_MESSAGE;
 
   if (error instanceof Error) {

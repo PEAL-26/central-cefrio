@@ -28,6 +28,7 @@ export function ListDocumentsPaidTable() {
   const handleAppend = () => {
     append({
       documentId: "",
+      total: 0,
       paid: 0,
     });
   };
