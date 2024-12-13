@@ -19,7 +19,7 @@ export function ListInvoices() {
 
         <Link
           className={buttonVariants({ variant: "default" })}
-          href="/invoices/create"
+          href="/documents/invoices/create"
         >
           Emitir
         </Link>

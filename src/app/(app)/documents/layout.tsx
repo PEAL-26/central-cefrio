@@ -9,5 +9,5 @@ export default function DocumentLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return <div className="flex-1 p-8">{children}</div>;
 }

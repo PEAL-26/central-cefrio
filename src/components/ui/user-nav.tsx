@@ -12,7 +12,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 
-export function UserNav() {
+interface Props {
+  route: string;
+}
+
+export function UserNav(props: Props) {
+  const { route } = props;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -40,9 +45,11 @@ export function UserNav() {
           {/* <DropdownMenuItem asChild>
             <Link href="/settings/company">Empresa</Link>
           </DropdownMenuItem> */}
-          <DropdownMenuItem asChild>
-            <Link href="/settings">Configurações</Link>
-          </DropdownMenuItem>
+          {route && (
+            <DropdownMenuItem asChild>
+              <Link href={`/${route}/settings`}>Configurações</Link>
+            </DropdownMenuItem>
+          )}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

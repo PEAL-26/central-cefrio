@@ -3,24 +3,25 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 import { ReactLoading } from "@/libs/react-loading";
 
 import { UserNav } from "../ui/user-nav";
-import { MainNav } from "../ui/main-nav";
+import { AppDropdownMenu } from "../ui/app-dropdown-menu";
+import { DocumentsMainNav, MailsMainNav } from "../ui/navs";
 
-const APP = {
-  mails: [],
-  documents: [],
-};
+type AppType = "mails" | "documents" | undefined;
 
 export function AppLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+  const route = pathname.split("/")[1];
+
   const [isLoadingPage, setIsLoadingPage] = useState(true);
-  const [app, setApp] = useState<keyof typeof APP>("documents");
 
   useEffect(() => {
     setIsLoadingPage(false);
@@ -43,7 +44,7 @@ export function AppLayout({
     <>
       <div className="border-b fixed inset-x-0 top-0 z-40 bg-white">
         <div className="flex h-16 items-center px-4">
-          <Link href="/" className="relative ">
+          <Link href={`/${route}`} className="relative mr-4">
             <Image
               src="/logo.png"
               alt="cefrio-logo"
@@ -52,15 +53,16 @@ export function AppLayout({
               height={32}
             />
           </Link>
-          
-          <MainNav className="mx-6" />
+          <AppDropdownMenu defaultRoute={route} />
+          {route === "mails" && <MailsMainNav className="mx-6" />}
+          {route === "documents" && <DocumentsMainNav className="mx-6" />}
           <div className="ml-auto flex items-center space-x-4">
-            <UserNav />
+            <UserNav route={route} />
           </div>
         </div>
       </div>
 
-      <main className="mt-16 overflow-y-auto h-screen-custom flex-1 p-8 mb-6 flex flex-col">
+      <main className="mt-16 overflow-y-auto h-screen-custom flex-1 mb-6 flex flex-col">
         {children}
       </main>
       <footer className="fixed inset-x-0 bg-primary-900 text-white bottom-0 z-50 py-1 px-6 flex items-center justify-center">

@@ -3,9 +3,9 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: "Contactos",
 };
 
-export default async function MailsHomePage() {
-  return <Suspense fallback={<Loading />}>Conteúdo Home Mails</Suspense>;
+export default async function MailsContactosPage() {
+  return <Suspense fallback={<Loading />}>Contactos</Suspense>;
 }

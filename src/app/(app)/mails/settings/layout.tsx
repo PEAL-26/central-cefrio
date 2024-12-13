@@ -7,11 +7,11 @@ export const metadata = {
 const sidebarNavItems = [
   {
     title: "Empresa",
-    href: "/documents/settings/company",
+    href: "/settings/company",
   },
   {
     title: "Bancos",
-    href: "/documents/settings/banks",
+    href: "/settings/banks",
   },
 ];
 
