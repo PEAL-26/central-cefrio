@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Table,
   TableBody,
@@ -16,15 +14,17 @@ import { getDocumentTypeNameByCode } from "@/constants/document-types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { ActionsButtons } from "./button-actions";
+import { getPaymentMethodNameByCode } from "@/constants/payment-methods";
 
 export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
   return (
     <div className="container mx-auto py-10">
       <div className="flex items-center gap-2 mb-6">
-        <h1 className="text-3xl font-bold">Detalhes da Fatura</h1>
+        <h1 className="text-3xl font-bold">Detalhes do documento</h1>
         <ActionsButtons id={invoice.id} />
       </div>
 
+      {/* Informações gerais */}
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
@@ -75,6 +75,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
         </Card>
       </div>
 
+      {/* Produtos */}
       <Card className="mt-6">
         <CardHeader>
           <CardTitle>Produtos</CardTitle>
@@ -124,6 +125,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
         </CardContent>
       </Card>
 
+      {/* Resumo Financeiro */}
       <div className="grid gap-6 md:grid-cols-2 mt-6">
         <Card>
           <CardHeader>
@@ -179,18 +181,26 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>Data</TableHead>
                   <TableHead>Método</TableHead>
                   <TableHead>Valor</TableHead>
+                  <TableHead>Obs</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {invoice?.payments?.map((payment, index) => (
                   <TableRow key={index}>
-                    <TableCell>{payment.method}</TableCell>
+                    <TableCell>{formatDate(payment.date)}</TableCell>
+                    <TableCell>
+                      {getPaymentMethodNameByCode(payment.method)}
+                    </TableCell>
                     <TableCell>
                       {currencyFormatter(payment.amount, {
                         code: invoice.currency,
                       })}
+                    </TableCell>
+                    <TableCell className="line-clamp-1">
+                      {payment.observation}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -200,6 +210,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
         </Card>
       </div>
 
+      {/* Documentos Relacionados */}
       <div className="grid gap-6 md:grid-cols-2 mt-6">
         <Card>
           <CardHeader>
@@ -272,6 +283,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
         </Card>
       </div>
 
+      {/* Observação */}
       {invoice.observation && (
         <Card className="mt-6">
           <CardHeader>

@@ -9,9 +9,9 @@ import { ReactLoading } from "@/libs/react-loading";
 
 import { UserNav } from "../ui/user-nav";
 import { AppDropdownMenu } from "../ui/app-dropdown-menu";
-import { DocumentsMainNav, MailsMainNav } from "../ui/navs";
+import { ComercialMainNav, MailsMainNav } from "../ui/navs";
 
-type AppType = "mails" | "documents" | undefined;
+type AppType = "mails" | "comercial" | undefined;
 
 export function AppLayout({
   children,
@@ -55,14 +55,14 @@ export function AppLayout({
           </Link>
           <AppDropdownMenu defaultRoute={route} />
           {route === "mails" && <MailsMainNav className="mx-6" />}
-          {route === "documents" && <DocumentsMainNav className="mx-6" />}
+          {route === "comercial" && <ComercialMainNav className="mx-6" />}
           <div className="ml-auto flex items-center space-x-4">
             <UserNav route={route} />
           </div>
         </div>
       </div>
 
-      <main className="mt-16 overflow-y-auto h-screen-custom flex-1 mb-6 flex flex-col">
+      <main className="overflow-y-auto h-screen-custom mt-16 mb-6 flex-1  flex flex-col">
         {children}
       </main>
       <footer className="fixed inset-x-0 bg-primary-900 text-white bottom-0 z-50 py-1 px-6 flex items-center justify-center">

@@ -94,13 +94,13 @@ export function DataTableRowActions<TData extends { id: string }>({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem asChild>
-            <Link href={`/documents/invoices/${row.original?.id}`}>
+            <Link href={`/comercial/invoices/${row.original?.id}`}>
               Ver Detalhes
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link href={`/documents/invoices/${row.original?.id}/edit`}>
+            <Link href={`/comercial/invoices/${row.original?.id}/edit`}>
               Alterar
             </Link>
           </DropdownMenuItem>

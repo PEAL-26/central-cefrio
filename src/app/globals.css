@@ -42,3 +42,22 @@
     --chart-5: 27 87% 67%;
   }
 }
+
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #1b3c7a31;
+  border-radius: 1rem;
+  cursor: pointer !important;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #1b3c7a;
+  border-radius: 1.4rem;
+}
+
+.webkit-center {
+  text-align: -webkit-center;
+}

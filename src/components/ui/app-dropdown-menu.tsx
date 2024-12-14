@@ -6,7 +6,11 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "./dropdown-menu";
-import { ChevronsDownUpIcon, ChevronsUpDownIcon } from "lucide-react";
+import {
+  ChevronsDownUpIcon,
+  ChevronsUpDownIcon,
+  LoaderIcon,
+} from "lucide-react";
 
 import { useState } from "react";
 
@@ -20,27 +24,34 @@ export function AppDropdownMenu(props: Props) {
 
   const selected = {
     mails: "Emails",
-    documents: "Documentos",
-    undefined: "Selecione um aplicativo",
+    comercial: "Comercial",
+    undefined: "Selecione app",
   }[
-    app === "mails" ? "mails" : app === "documents" ? "documents" : "undefined"
+    app === "mails" ? "mails" : app === "comercial" ? "comercial" : "undefined"
   ];
+
+  const isLoading = app !== "" && defaultRoute !== app;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="flex h-8 data-[state=open]:bg-muted items-center justify-between gap-3"
+          className="flex h-8 data-[state=open]:bg-muted items-center justify-between gap-3 w-44"
         >
-          {selected}
+          <div className="flex items-center gap-1">
+            {selected}
+            {isLoading && (
+              <LoaderIcon className="animate-spin size-4 text-gray-300" />
+            )}
+          </div>
           <ChevronsUpDownIcon className="size-4 text-gray-300" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem asChild>
-          <Link href="/documents" onClick={() => setApp("documents")}>
-            Documentos
+          <Link href="/comercial" onClick={() => setApp("comercial")}>
+            Comercial
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

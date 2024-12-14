@@ -109,7 +109,7 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
 
       queryClient.invalidateQueries({ queryKey: ["invoices"] });
       toastResponseRegisterSuccess(data?.id);
-      router.replace(`/documents/invoices/${response.id}`);
+      router.replace(`/comercial/invoices/${response.id}`);
     } catch (error) {
       setErrors([{ property: "", message: generateResponseError(error) }]);
     } finally {

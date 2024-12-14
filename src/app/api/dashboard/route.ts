@@ -16,6 +16,10 @@ const MONTH = [
   "DEZ",
 ];
 
+const getMonthIndex = (month: string) => {
+  return MONTH.findIndex((m) => m === month);
+};
+
 export async function GET(req: NextRequest, res: NextResponse) {
   const sixMonthsAgo = new Date();
   sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
@@ -59,8 +63,26 @@ export async function GET(req: NextRequest, res: NextResponse) {
     }
   });
 
-  const transformData = (data: Record<string, number>) =>
-    Object.entries(data).map(([x, y]) => ({ x, y }));
+  const transformData = (data: Record<string, number>) => {
+    const rows = Object.entries(data).map(([x, y]) => ({ x, y }));
+    const rowsLength = rows.length;
+    let restMonth = [];
+
+    if (rowsLength > 0 && rowsLength < 6) {
+      const indexMonth = getMonthIndex(rows[0].x) - 1;
+      let count = 6 - rowsLength;
+      for (let i = indexMonth; i >= 0; i--) {
+        if (count === 0) {
+          break;
+        }
+
+        count--;
+        restMonth.push({ x: MONTH[i], y: 0 });
+      }
+    }
+
+    return [...restMonth.reverse(), ...rows];
+  };
 
   const invoiceData = transformData(invoice);
   const paymentData = transformData(payment);
@@ -79,7 +101,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
     });
   }
 
-  console.log(JSON.stringify(monthlyInvoices));
   return NextResponse.json(
     { customers, invoices, products, monthlyInvoices },
     { status: 200 }

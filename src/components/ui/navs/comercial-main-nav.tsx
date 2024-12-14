@@ -8,13 +8,13 @@ import { usePathname } from "next/navigation";
 import { activeLink } from "./utils";
 
 const LINKS = [
-  { href: "/documents", label: "Dashboard" },
-  { href: "/documents/invoices", label: "Facturas" },
-  { href: "/documents/products", label: "Produtos\\Serviços" },
-  { href: "/documents/customers", label: "Clientes" },
+  { href: "/comercial", label: "Dashboard" },
+  { href: "/comercial/invoices", label: "Documentos" },
+  { href: "/comercial/products", label: "Serviços" },
+  { href: "/comercial/customers", label: "Clientes" },
 ];
 
-export function DocumentsMainNav(props: HTMLAttributes<HTMLElement>) {
+export function ComercialMainNav(props: HTMLAttributes<HTMLElement>) {
   const { className, ...rest } = props;
 
   const pathname = usePathname();

@@ -6,6 +6,8 @@ import { HTMLAttributes } from "react";
 import { cn } from "@/libs/utils";
 import { usePathname } from "next/navigation";
 import { activeLink } from "./utils";
+import { buttonVariants } from "../button";
+import { MailIcon } from "lucide-react";
 
 const LINKS = [
   { href: "/mails/inputs", label: "Caixa de Entrada" },
@@ -33,7 +35,16 @@ export function MailsMainNav(props: HTMLAttributes<HTMLElement>) {
         </Link>
       ))}
       {/* TODO: DROPDOWN Com mais opções */}
-      <Link href={"/mails/new"}>Novo email</Link>
+      <Link
+        href="/mails/new"
+        className={cn(
+          buttonVariants({ variant: "outline" }),
+          "gap-2 bg-primary-100 hover:bg-primary-300"
+        )}
+      >
+        <MailIcon className="size-4" />
+        Novo email
+      </Link>
     </nav>
   );
 }

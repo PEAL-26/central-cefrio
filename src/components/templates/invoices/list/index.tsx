@@ -13,13 +13,15 @@ export function ListInvoices() {
     <div className="flex-col space-y-8 flex h-full">
       <div className="flex items-center justify-between space-y-2">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Facturas</h2>
-          <p className="text-muted-foreground">Listagem de facturas emitidas</p>
+          <h2 className="text-2xl font-bold tracking-tight">Documentos</h2>
+          <p className="text-muted-foreground">
+            Listagem de documentos emitidas
+          </p>
         </div>
 
         <Link
           className={buttonVariants({ variant: "default" })}
-          href="/documents/invoices/create"
+          href="/comercial/invoices/create"
         >
           Emitir
         </Link>
