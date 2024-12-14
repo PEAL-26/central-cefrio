@@ -95,7 +95,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const response = paginationData({
     rows: invoices.map((inv) => ({
       ...inv,
-      total: inv.total || inv.totalPaid,
+      total: Number(inv?.total ?? 0) | Number(inv?.totalPaid ?? 0),
     })),
     total,
     limit: take,
