@@ -11,9 +11,10 @@ export function useCustomer() {
 
   const form = useFormContext<InvoiceSchemaType>();
   const customerId = form.watch("customerId");
+  const type = form.watch("type");
 
   const { data, isLoading } = useQuery({
-    queryFn: () => customerService.getById(customerId || ""),
+    queryFn: () => (customerId ? customerService.getById(customerId) : null),
     queryKey: ["customer", customerId],
   });
 
@@ -47,5 +48,6 @@ export function useCustomer() {
     setAdd,
     handleAddCustomer,
     handleSelect,
+    disabled: type === "RE",
   };
 }

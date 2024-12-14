@@ -10,6 +10,7 @@ import { CustomerForm } from "./form";
 import { CustomerTable } from "./table";
 import { useCustomer } from "./use-customer";
 import { useEffect, useState } from "react";
+import { cn } from "@/libs/utils";
 
 interface CustomerModalProps {}
 
@@ -23,6 +24,7 @@ export function CustomerModal(props: CustomerModalProps) {
     handleOpen,
     handleAddCustomer,
     handleSelect,
+    disabled,
   } = useCustomer();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -34,8 +36,8 @@ export function CustomerModal(props: CustomerModalProps) {
 
   return (
     <Popover modal open={open} onOpenChange={handleClose}>
-      <PopoverTrigger onClick={handleOpen}>
-        <SearchIcon />
+      <PopoverTrigger onClick={handleOpen} disabled={disabled}>
+        <SearchIcon className={cn(disabled && "text-gray-400")} />
       </PopoverTrigger>
       <PopoverContent
         align="end"

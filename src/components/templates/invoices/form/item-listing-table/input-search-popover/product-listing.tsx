@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { LoaderIcon, PlusCircleIcon } from "lucide-react";
+import { LoaderIcon, PlusCircleIcon, RefreshCwIcon } from "lucide-react";
 
 import {
   Table,
@@ -48,7 +48,16 @@ export function ProductListing(props: ProductListingProps) {
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
-            <TableHead className="hover:bg-transparent">Descrição</TableHead>
+            <TableHead className="hover:bg-transparent flex items-center justify-between">
+              <span>Descrição</span>
+              <Button
+                variant="ghost"
+                className="p-0 hover:bg-transparent"
+                onClick={productsQuery?.refetch}
+              >
+                <RefreshCwIcon className="size-4" />
+              </Button>
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -101,7 +110,17 @@ export function ProductListing(props: ProductListingProps) {
             prevPage: true,
             currentTotalPages: true,
           }}
-          navigation={productsQuery}
+          navigation={{
+            ...productsQuery,
+            prevPage: () =>
+              filterProducts({
+                page: String(productsQuery?.totalPages || 2 - 1),
+              }),
+            nextPage: () =>
+              filterProducts({
+                page: String(productsQuery?.totalPages || 0 + 1),
+              }),
+          }}
         />
       </div>
     </div>

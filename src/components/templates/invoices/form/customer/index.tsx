@@ -6,6 +6,7 @@ import { useCustomer } from "./use-customer";
 
 export function CustomerForm() {
   const { customer, isLoading } = useCustomer();
+
   return (
     <div className="flex flex-col max-w-lg w-72 gap-4">
       <div className="flex justify-between items-center w-full gap-4 border-b">

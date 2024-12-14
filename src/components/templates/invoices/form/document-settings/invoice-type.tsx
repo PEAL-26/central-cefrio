@@ -10,13 +10,18 @@ import {
   DOCUMENTS_INCLUDE,
   DOCUMENTS_NOT_INCLUDE,
   DOCUMENTS_WITH_PAYMENT,
+  PAYMENT,
 } from "@/constants/document-types";
 import { cn } from "@/libs/utils";
 import { useState } from "react";
+import { useInvoiceUpdateTotal } from "../use-invoice-update-total";
 
 export function InvoiceType() {
-  const { form, updateDocumentNumber } = useDocumentSettings();
   const [open, setOpen] = useState(false);
+
+  const { form, updateDocumentNumber } = useDocumentSettings();
+  const { updateResume } = useInvoiceUpdateTotal();
+
   const type = DOCUMENT_TYPES.find(
     (doc) => doc.code === form.getValues("type")
   );
@@ -37,6 +42,13 @@ export function InvoiceType() {
     if (DOCUMENTS_INCLUDE.includes(typeCode)) {
       form.setValue("items", []);
     }
+
+    if (PAYMENT.includes(typeCode)) {
+      form.setValue("dueDate", undefined);
+      form.setValue("paymentTerms", undefined);
+    }
+
+    updateResume();
   };
 
   return (

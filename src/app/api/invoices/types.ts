@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const invoiceItemSchema = z.object({
   id: z.string().optional(),
-  productId:z.string().min(1, "Campo Obrigatório"),
+  productId: z.string().min(1, "Campo Obrigatório"),
   name: z.string().min(1, "Campo Obrigatório"),
   unitMeasure: z.string().optional(),
   quantity: numericString(z.number()),
@@ -16,6 +16,8 @@ export const invoiceItemSchema = z.object({
 export const invoicePaymentSchema = z.object({
   id: z.string().optional(),
   method: z.string().min(1, "Campo Obrigatório"),
+  date: z.coerce.date({ message: "Campo Obrigatório" }),
+  observation: z.string().optional(),
   amount: numericString(
     z.number().gt(0, "O valor deve ser maior que zero (0)")
   ),

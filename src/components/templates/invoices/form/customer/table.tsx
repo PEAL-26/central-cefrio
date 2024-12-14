@@ -1,5 +1,10 @@
-import { useState } from "react";
-import { LoaderIcon, PlusCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import {
+  Loader2Icon,
+  LoaderIcon,
+  PlusCircle,
+  RefreshCwIcon,
+} from "lucide-react";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -25,25 +30,37 @@ interface CustomerTablePros {
 }
 export function CustomerTable(props: CustomerTablePros) {
   const { open, onAdd, onSelect } = props;
-  const [page, setPage] = useState<string | undefined>(undefined);
-  const [size, setSize] = useState<string | undefined>("10");
-  const [query, setQuery] = useState<string | undefined>(undefined);
+  const [filters, setFilters] = useState<{
+    page?: string;
+    q?: string;
+    size?: string;
+  }>({});
 
-  const q = useDebounceValue(query);
+  const filtersDebounced = useDebounceValue(filters);
 
-  const { data, isLoading, isError, ...pagination } = useQueryPagination({
-    fn: async () => await customerService.list({ page, q, size }),
-    queryKey: ["customers", q, size, page],
-    disableFetch: !open,
-  });
+  const { data, isLoading, isError, refetch, ...pagination } =
+    useQueryPagination({
+      fn: async () => customerService.list(filtersDebounced),
+      queryKey: ["customers", { ...filtersDebounced }],
+      disableFetch: !open,
+    });
+
+  useEffect(() => {
+    setFilters({});
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   return (
     <div className="h-full w-full p-4">
       <div className="flex items-center gap-1">
         <Input
           placeholder="Pesquisar"
-          value={query}
-          onChange={(e) => setQuery(e.target.value || "")}
+          onChange={(e) =>
+            setFilters({
+              ...filters,
+              q: e.target.value || "",
+            })
+          }
         />
         <Button variant="ghost" className="p-0 h-10 w-10" onClick={onAdd}>
           <PlusCircle />
@@ -53,7 +70,16 @@ export function CustomerTable(props: CustomerTablePros) {
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
-            <TableHead className="hover:bg-transparent">Cliente</TableHead>
+            <TableHead className="hover:bg-transparent flex items-center justify-between">
+              <span>Cliente</span>
+              <Button
+                variant="ghost"
+                className="p-0 hover:bg-transparent"
+                onClick={refetch}
+              >
+                <RefreshCwIcon className="size-4" />
+              </Button>
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -109,7 +135,19 @@ export function CustomerTable(props: CustomerTablePros) {
             prevPage: true,
             currentTotalPages: true,
           }}
-          navigation={pagination}
+          navigation={{
+            ...pagination,
+            prevPage: () =>
+              setFilters({
+                ...filters,
+                page: String(pagination?.totalPages || 2 - 1),
+              }),
+            nextPage: () =>
+              setFilters({
+                ...filters,
+                page: String(pagination?.totalPages || 0 + 1),
+              }),
+          }}
         />
       </div>
     </div>

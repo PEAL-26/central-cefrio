@@ -83,6 +83,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
           },
         },
         total: true,
+        totalPaid: true,
       },
       where: queryParams,
       orderBy: [{ createdAt: "desc" }],
@@ -92,7 +93,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
   ]);
 
   const response = paginationData({
-    rows: invoices,
+    rows: invoices.map((inv) => ({
+      ...inv,
+      total: inv.total || inv.totalPaid,
+    })),
     total,
     limit: take,
     page,
@@ -125,7 +129,6 @@ export async function POST(request: NextRequest) {
 
 async function create(input: any) {
   const data = await prepareData(input);
-
   return prisma.invoice.create({
     data: {
       id: data.id,
@@ -144,6 +147,8 @@ async function create(input: any) {
       generalDiscount: data.generalDiscount,
       subtotal: data.subtotal,
       total: data.total,
+      totalPaid: data.totalPaid,
+      balance: data.balance,
       totalIva: data.totalIva,
       totalDiscount: data.totalDiscount,
       totalWithholdingTax: data.totalWithholdingTax,
@@ -200,6 +205,8 @@ async function update(input: any) {
       generalDiscount: data.generalDiscount,
       subtotal: data.subtotal,
       total: data.total,
+      totalPaid: data.totalPaid,
+      balance: data.balance,
       totalIva: data.totalIva,
       totalDiscount: data.totalDiscount,
       totalWithholdingTax: data.totalWithholdingTax,
@@ -295,7 +302,10 @@ async function prepareData(input: any) {
 
   const { productsData, taxesData } = await getItems(items ?? []);
   const paymentsData = getPayments(payments ?? []);
-  const { documentsData, invoicesData } = getDocuments(id, documents ?? []);
+  const { documentsData, invoicesData, totalInvoices } = await getDocuments(
+    id,
+    documents ?? []
+  );
 
   const { type: withholdingTaxType, percentage: withholdingTaxPercentage } =
     withholdingTax || {};
@@ -306,6 +316,19 @@ async function prepareData(input: any) {
       customerId,
       withholdingTaxPercentage,
     });
+
+  const totalPaid = paymentsData.reduce(
+    (total, item) => total + item.amount,
+    0
+  );
+
+  let balance = 0;
+  if (paymentsData.length) {
+    balance = totalPaid - total;
+    if (type === "RE") {
+      balance = totalPaid - totalInvoices;
+    }
+  }
 
   return {
     id,
@@ -324,6 +347,8 @@ async function prepareData(input: any) {
     generalDiscount,
     subtotal,
     total,
+    totalPaid,
+    balance,
     totalIva,
     totalDiscount,
     totalWithholdingTax,
@@ -435,12 +460,14 @@ async function getItems(items: InvoiceItemSchemaType[]) {
 function getPayments(payments: InvoicePaymentSchemaType[]) {
   return payments.map((payment) => ({
     id: payment?.id || randomUUID(),
+    date: payment.date,
     method: payment.method,
     amount: payment.amount,
+    observation: payment?.observation,
   }));
 }
 
-function getDocuments(
+async function getDocuments(
   mainInvoiceId: string,
   invoices: InvoiceDocumentSchemaType[]
 ) {
@@ -450,11 +477,21 @@ function getDocuments(
     paid,
   }));
 
-  const invoicesData = invoices.map(({ id, documentId, paid }) => ({
-    id: id || randomUUID(),
-    documentId,
-    paid,
-  }));
+  let totalInvoices = 0;
+  const invoicesData = [];
+  for (const inv of invoices) {
+    const invoiceFound = await prisma.invoice.findFirst({
+      where: { id: inv.documentId },
+    });
 
-  return { documentsData, invoicesData };
+    invoicesData.push({
+      id: inv?.id || randomUUID(),
+      documentId: inv.documentId,
+      paid: inv?.paid,
+    });
+
+    totalInvoices += Number(invoiceFound?.total ?? 0);
+  }
+
+  return { documentsData, invoicesData, totalInvoices };
 }

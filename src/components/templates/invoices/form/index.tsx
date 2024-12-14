@@ -68,7 +68,7 @@ export function InvoiceForm(props: { id?: string }) {
         {DOCUMENTS_INCLUDE.includes(form.watch("type")) && (
           <ListDocumentsPaidTable />
         )}
-        <div className="flex justify-between items-start w-full">
+        <div className="flex-1 flex justify-between items-start w-full">
           <InvoicePayments />
           <Resume />
         </div>

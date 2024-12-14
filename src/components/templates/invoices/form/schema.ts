@@ -20,13 +20,16 @@ export const invoiceItemSchema = z.object({
 
 export const invoicePaymentSchema = z.object({
   paymentId: z.string().optional(),
+  date: z.date(),
   method: z.string().min(1, "Campo Obrigatório"),
   amount: numericString(
     z.number().gt(0, "O valor deve ser maior que zero (0)")
   ),
+  observation: z.string().optional(),
 });
 
 export const invoiceDocumentSchema = z.object({
+  itemId: z.string().optional(),
   description: z.string().optional(),
   customerId: z.string().optional(),
   documentId: z.string(),
@@ -68,6 +71,8 @@ export const invoiceSchema = z.object({
   totalIva: numericString(z.number().optional()),
   totalDiscount: numericString(z.number().optional()),
   total: numericString(z.number().optional()),
+  totalPaid: numericString(z.number().optional()),
+  balance: numericString(z.number().optional()),
   items: z.array(invoiceItemSchema).optional(),
   payments: z.array(invoicePaymentSchema).optional(),
   documents: z.array(invoiceDocumentSchema).optional(),

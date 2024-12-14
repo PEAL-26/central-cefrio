@@ -96,19 +96,22 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
         payments: payments?.map((payment) => ({
           id: payment?.paymentId,
           method: payment.method,
+          date: payment.date,
           amount: payment.amount,
+          observation: payment.observation,
         })),
         documents: documents?.map((item) => ({
-          id: item.documentId,
+          id: item.itemId,
+          documentId: item.documentId,
           paid: item.paid,
         })),
       });
-      // queryClient.invalidateQueries({ queryKey: ["invoices"] });
-      // toastResponseRegisterSuccess(data?.id);
-      // router.replace(`/documents/invoices/${response.id}`);
+
+      queryClient.invalidateQueries({ queryKey: ["invoices"] });
+      toastResponseRegisterSuccess(data?.id);
+      router.replace(`/documents/invoices/${response.id}`);
     } catch (error) {
       setErrors([{ property: "", message: generateResponseError(error) }]);
-      toastResponseError(error);
     } finally {
       setIsLoading(false);
     }
@@ -142,8 +145,6 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
       };
     });
 
-    
-    console.log(_errors);
     setErrors(_errors);
   };
 
@@ -200,13 +201,16 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
         "payments",
         invoice.payments?.map((payment) => ({
           paymentId: payment.id || "",
+          date: payment.date,
           method: payment.method,
           amount: payment.amount,
+          observation: payment.observation,
         }))
       );
       form.setValue(
         "documents",
         invoice.documents?.map((doc) => ({
+          itemId: doc.id,
           customerId: doc.document.customer.id,
           description: `${getDocumentTypeNameByCode(doc.document.type)} ${
             doc.document.number

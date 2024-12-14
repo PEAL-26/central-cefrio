@@ -9,9 +9,12 @@ import { Button } from "@/components/ui/button";
 import { TableItemRow } from "./table-item-row";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { InvoiceSchemaType } from "../schema";
+import { useInvoiceUpdateTotal } from "../use-invoice-update-total";
 
 export function ListDocumentsPaidTable() {
   const { control } = useFormContext<InvoiceSchemaType>();
+  const { updatePayments } = useInvoiceUpdateTotal();
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "documents",
@@ -23,6 +26,7 @@ export function ListDocumentsPaidTable() {
   const handleRemove = (id: string) => {
     const index = fields.findIndex((p) => p.id === id);
     remove(index);
+    updatePayments();
   };
 
   const handleAppend = () => {

@@ -1,5 +1,5 @@
 import { InvoiceType } from "./invoice-type";
-import { DatePicker } from "./date-picker";
+import { DatePicker } from "../../../../ui/date-picker";
 import { Currency } from "./currency";
 import { PaymentTerms } from "./payment-terms";
 import { useDocumentSettings } from "./use-document-settings";
@@ -7,11 +7,11 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Change } from "./change";
+import { PAYMENT } from "@/constants/document-types";
 
 export function DocumentSettings() {
   const { form } = useDocumentSettings();
@@ -39,6 +39,7 @@ export function DocumentSettings() {
         <div className="flex items-center justify-between w-full  gap-4">
           <span className="font-bold">Vencimento: </span>
           <DatePicker
+            disabled={PAYMENT.includes(form.watch("type"))}
             value={form.watch("dueDate")}
             onChange={(date) => form.setValue("dueDate", date)}
           />

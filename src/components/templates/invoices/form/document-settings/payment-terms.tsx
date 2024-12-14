@@ -8,6 +8,7 @@ import { useDocumentSettings } from "./use-document-settings";
 import { cn } from "@/libs/utils";
 import { useState } from "react";
 import { PAYMENT_TERMS } from "@/constants/payment-terms";
+import { PAYMENT } from "@/constants/document-types";
 
 export function PaymentTerms() {
   const { form } = useDocumentSettings();
@@ -22,13 +23,18 @@ export function PaymentTerms() {
     setOpen(false);
   };
 
+  const disabled = PAYMENT.includes(form.watch("type"));
+
   return (
     <Popover modal onOpenChange={setOpen} open={open}>
-      <PopoverTrigger className="flex items-center line-clamp-1 flex-1 gap-2">
+      <PopoverTrigger
+        disabled={disabled}
+        className="flex items-center line-clamp-1 flex-1 gap-2"
+      >
         <span
           className={cn(
             "flex gap-2 items-center line-clamp-1 whitespace-nowrap w-full text-right",
-            !paymentTerms?.name && "text-gray-400"
+            (disabled || !paymentTerms?.name) && "text-gray-400"
           )}
         >
           {paymentTerms?.name || "Nenhum"}

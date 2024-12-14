@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LoaderIcon } from "lucide-react";
+import { LoaderIcon, RefreshCwIcon } from "lucide-react";
 
 import {
   Table,
@@ -16,6 +16,8 @@ import { InvoiceListResponseData } from "@/services/invoices";
 import { currencyFormatter } from "@/helpers/currency";
 import { getDocumentTypeNameByCode } from "@/constants/document-types";
 import { formatDate } from "@/helpers/date";
+import { Button } from "@/components/ui/button";
+import { Pagination } from "@/components/ui/pagination";
 
 interface ItemSearchProps {
   open: boolean;
@@ -28,12 +30,17 @@ export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
   const { data, isError, isLoading } = documentsQuery;
 
   useEffect(() => {
-    clearFilterDocuments();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!open) {
+      clearFilterDocuments();
+    }
+    if (open) {
+      filterDocuments({ type: "FT" });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   return (
-    <div className="h-full">
+    <div className="h-full w-full p-4">
       <Input
         placeholder="Pesquisar"
         // value={query}
@@ -42,7 +49,16 @@ export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
-            <TableHead className="hover:bg-transparent">Descrição</TableHead>
+            <TableHead className="hover:bg-transparent flex items-center justify-between">
+              <span>Descrição</span>
+              <Button
+                variant="ghost"
+                className="p-0 hover:bg-transparent"
+                onClick={documentsQuery?.refetch}
+              >
+                <RefreshCwIcon className="size-4" />
+              </Button>
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -99,6 +115,28 @@ export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
             ))}
         </TableBody>
       </Table>
+
+      <div className="absolute bottom-0 left-0 right-0 py-1 bg-gray-100">
+        <Pagination
+          show={{
+            totalItems: true,
+            nextPage: true,
+            prevPage: true,
+            currentTotalPages: true,
+          }}
+          navigation={{
+            ...documentsQuery,
+            prevPage: () =>
+              filterDocuments({
+                page: String(documentsQuery?.totalPages || 2 - 1),
+              }),
+            nextPage: () =>
+              filterDocuments({
+                page: String(documentsQuery?.totalPages || 0 + 1),
+              }),
+          }}
+        />
+      </div>
     </div>
   );
 }

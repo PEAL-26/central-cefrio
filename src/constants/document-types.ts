@@ -4,11 +4,6 @@ export const DOCUMENT_TYPES = [
     name: "Factura",
     slug: "factura",
   },
-  // {
-  //   code: "FG",
-  //   name: "Factura Global",
-  //   slug: "factura-global",
-  // },
   {
     code: "FR",
     name: "Factura/Recibo",
@@ -54,6 +49,7 @@ export const DOCUMENT_TYPES = [
 export const DOCUMENTS_WITH_PAYMENT = ["FT", "FG", "FR", "RE"];
 export const DOCUMENTS_NOT_INCLUDE = ["NC", "ND"];
 export const DOCUMENTS_INCLUDE = ["RE", "NC", "ND"];
+export const PAYMENT = ["RE", "FR"];
 
 export function getDocumentTypeNameByCode(code: string) {
   return DOCUMENT_TYPES.find((doc) => doc.code === code)?.name || "";

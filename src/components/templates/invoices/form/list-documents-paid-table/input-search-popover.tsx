@@ -16,6 +16,7 @@ import { InvoiceListResponseData } from "@/services/invoices";
 import { getDocumentTypeNameByCode } from "@/constants/document-types";
 import { formatDate } from "@/helpers/date";
 import { toastResponseError } from "@/helpers/response/response";
+import { useInvoiceUpdateTotal } from "../use-invoice-update-total";
 
 interface ItemSearchProps {
   form: any;
@@ -25,10 +26,11 @@ interface ItemSearchProps {
 export function InputSearchPopover(props: ItemSearchProps) {
   const { form, index } = props;
   const [open, setOpen] = useState(() => false);
+  const { updatePayments } = useInvoiceUpdateTotal();
 
   const handleSelect = (data: InvoiceListResponseData) => {
     const items = form.getValues("documents");
-    if (items.find(({ itemId }: any) => itemId === data.id)) {
+    if (items.find(({ documentId }: any) => documentId === data.id)) {
       setOpen(false);
       return;
     }
@@ -38,7 +40,13 @@ export function InputSearchPopover(props: ItemSearchProps) {
         toastResponseError(
           "Ao emitir recibo de várias facturas, não pode adicionar facturas de outro cliente."
         );
+
+        return;
       }
+    }
+
+    if (items.length === 1) {
+      form.setValue("customerId", data.customer.id);
     }
 
     form.setValue(
@@ -49,12 +57,13 @@ export function InputSearchPopover(props: ItemSearchProps) {
     );
     form.setValue(`documents.${index}.customerId`, data.customer.id);
     form.setValue(`documents.${index}.documentId`, data.id);
-    form.setValue(`documents.${index}.total`, data?.total ?? 0);
+    form.setValue(`documents.${index}.total`, Number(data?.total ?? 0));
 
     // TODO Verificar quanto já foi pago
     form.setValue(`documents.${index}.paid`, 0);
 
     setOpen(false);
+    updatePayments();
   };
 
   return (
@@ -77,8 +86,15 @@ export function InputSearchPopover(props: ItemSearchProps) {
           </FormItem>
         )}
       />
-      <PopoverContent align="start" className="w-80 h-96 bg-white">
-        <TableItemsSearch open={open} onSelect={handleSelect} />
+      <PopoverContent
+        align="start"
+        className="w-80 h-96 bg-white overflow-hidden p-0"
+      >
+        <div className="flex-1 h-full w-full relative">
+          <div className="flex w-full h-full overflow-y-auto absolute">
+            <TableItemsSearch open={open} onSelect={handleSelect} />
+          </div>
+        </div>
       </PopoverContent>
     </Popover>
   );

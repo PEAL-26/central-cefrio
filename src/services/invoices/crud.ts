@@ -52,7 +52,8 @@ interface Payment {
 }
 
 interface Document {
-  id: string;
+  id?: string;
+  documentId: string;
   paid: number;
 }
 
@@ -109,8 +110,10 @@ interface InvoiceDetailsProduct {
 
 interface InvoiceDetailsPayment {
   id: string;
+  date: Date;
   method: string;
   amount: number;
+  observation?: string;
 }
 
 interface InvoiceDetailsTax {

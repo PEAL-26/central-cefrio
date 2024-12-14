@@ -45,11 +45,41 @@ export function useInvoiceUpdateTotal() {
     form.setValue("totalIva", totalIva);
     form.setValue("totalWithholdingTax", totalWithholdingTax);
     form.setValue("total", total);
+
+    updatePayments();
+  };
+
+  const updatePayments = () => {
+    const type = form.watch("type");
+    const payments = form.watch("payments") || [];
+    const totalPaid = payments.reduce(
+      (total, item) => Number(total) + Number(item.amount),
+      0
+    );
+    let grossTotal = Number(form.watch("total") ?? 0);
+
+    if (type === "RE") {
+      const documents = form.watch("documents") || [];
+
+      grossTotal = documents.reduce(
+        (total, item) => Number(total) + Number(item.total),
+        0
+      );
+
+      documents.forEach((doc, index) => {
+        form.setValue(`documents.${index}.paid`, totalPaid);
+      });
+    }
+
+    form.setValue("total", Number(grossTotal));
+    form.setValue("totalPaid", Number(totalPaid));
+    form.setValue("balance", Number(totalPaid) - Number(grossTotal));
   };
 
   return {
     form,
     updateResume,
     updateTotal,
+    updatePayments,
   };
 }

@@ -78,6 +78,8 @@ model Invoice {
   totalDiscount       Decimal? @default(0.00) @map("total_discount")
   totalWithholdingTax Decimal? @default(0.00) @map("total_withholding_tax")
   total               Decimal? @default(0.00)
+  totalPaid           Decimal? @default(0.00) @map("total_paid")
+  balance             Decimal? @default(0.00)
 
   createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(3)
   updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
@@ -121,8 +123,10 @@ model InvoicePayment {
   invoice   Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
   invoiceId String  @map("invoice_id")
 
-  method String
-  amount Decimal
+  date        DateTime
+  method      String
+  amount      Decimal
+  observation String?
 
   @@map("invoice_payments")
 }

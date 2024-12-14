@@ -11,6 +11,7 @@ import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PAYMENT_METHODS } from "@/constants/payment-methods";
 import { useDocumentSettings } from "../document-settings/use-document-settings";
+import { toastResponseError } from "@/helpers/response/response";
 
 interface PAymentMethodProps {
   index: number;
@@ -29,7 +30,10 @@ export function PaymentMethod({ index }: PAymentMethodProps) {
       (payment) => payment.method === paymentCode
     );
 
-    if (paymentFound) return;
+    if (paymentFound) {
+      toastResponseError("Já existe essa forma de pagamento na lista.");
+      return;
+    }
 
     form.setValue(`payments.${index}.method`, paymentCode);
     setOpen(false);
@@ -37,10 +41,10 @@ export function PaymentMethod({ index }: PAymentMethodProps) {
 
   return (
     <Popover modal onOpenChange={setOpen} open={open}>
-      <PopoverTrigger className="flex line-clamp-1 gap-2 justify-between w-fit">
+      <PopoverTrigger className="flex line-clamp-1 gap-2 justify-between w-full">
         <span
           className={cn(
-            "flex line-clamp-1 whitespace-nowrap text-left",
+            "flex line-clamp-1 whitespace-nowrap text-left w-full",
             !payment?.code && "text-gray-400"
           )}
         >
@@ -48,8 +52,8 @@ export function PaymentMethod({ index }: PAymentMethodProps) {
         </span>
         <ChevronDownIcon className="text-gray-400" />
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-fit">
-        <div className="flex flex-col">
+      <PopoverContent align="end" className="w-full">
+        <div className="flex flex-col w-full">
           {PAYMENT_METHODS.map((payment, key) => (
             <span
               key={key}
