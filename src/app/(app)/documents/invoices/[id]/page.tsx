@@ -1,5 +1,6 @@
 import { InvoiceDetails } from "@/components/templates/invoices";
 import { Loading } from "@/components/ui/loading";
+import { getDocumentTypeNameByCode } from "@/constants/document-types";
 import { getItemCached } from "@/helpers/cache";
 import { invoiceService } from "@/services/invoices";
 import { Metadata, ResolvingMetadata } from "next";
@@ -18,7 +19,9 @@ export async function generateMetadata(
   const invoice = await getItemCached(() => invoiceService.getById(id));
 
   return {
-    title: invoice?.number || "",
+    title: invoice
+      ? `${getDocumentTypeNameByCode(invoice.type)} ${invoice?.number}`
+      : "",
   };
 }
 

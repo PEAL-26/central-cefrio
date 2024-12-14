@@ -209,8 +209,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Número</TableHead>
-                  <TableHead>Tipo</TableHead>
+                  <TableHead>Documento</TableHead>
                   <TableHead>Data</TableHead>
                   <TableHead>Pago</TableHead>
                 </TableRow>
@@ -218,9 +217,12 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
               <TableBody>
                 {invoice?.documents?.map((doc, index) => (
                   <TableRow key={index}>
-                    <TableCell>{doc.document.number}</TableCell>
-                    <TableCell>{doc.document.type}</TableCell>
-                    <TableCell>{formatDate(doc.document.date)}</TableCell>
+                    <TableCell>
+                      {`${getDocumentTypeNameByCode(doc.invoice.type)} ${
+                        doc.invoice.number
+                      }`}
+                    </TableCell>
+                    <TableCell>{formatDate(doc.invoice.date)}</TableCell>
                     <TableCell>
                       <Badge variant={doc.paid ? "default" : "destructive"}>
                         {doc.paid ? "Sim" : "Não"}

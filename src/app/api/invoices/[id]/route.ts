@@ -21,8 +21,8 @@ export async function GET(
         payments: true,
         products: {
           include: {
-            product: true
-          }
+            product: true,
+          },
         },
         documents: {
           include: {
@@ -39,6 +39,11 @@ export async function GET(
         taxes: true,
       },
     });
+
+    console.log('========================================================');
+    console.log(JSON.stringify(response?.invoices));
+    console.log(JSON.stringify(response?.invoices));
+    console.log('========================================================');
 
     return NextResponse.json(response, {
       status: 200,

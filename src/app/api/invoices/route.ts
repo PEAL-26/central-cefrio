@@ -471,9 +471,9 @@ async function getDocuments(
   mainInvoiceId: string,
   invoices: InvoiceDocumentSchemaType[]
 ) {
-  const documentsData = invoices.map(({ id, paid }) => ({
+  const documentsData = invoices.map(({ id, documentId, paid }) => ({
     id: id || randomUUID(),
-    invoiceId: mainInvoiceId,
+    invoiceId: documentId,
     paid,
   }));
 

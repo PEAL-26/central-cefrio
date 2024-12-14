@@ -7,7 +7,10 @@ import { InvoiceListResponseData } from "@/services/invoices";
 import { DataTableColumnHeader } from "@/components/ui/data-table";
 
 import { DataTableRowActions } from "./data-table-row-actions";
-import { DOCUMENT_TYPES } from "@/constants/document-types";
+import {
+  DOCUMENT_TYPES,
+  getDocumentTypeNameByCode,
+} from "@/constants/document-types";
 import { formatCurrency } from "@/helpers/currency";
 
 interface ColumnProps {
@@ -49,10 +52,7 @@ export const columns = (props?: ColumnProps): Column[] => [
     cell: ({ row }) => {
       return (
         <div className="whitespace-nowrap flex items-center gap-2 font-bold">
-          <span>
-            {DOCUMENT_TYPES.find((doc) => doc.code === row.getValue("type"))
-              ?.name || ""}
-          </span>
+          <span>{getDocumentTypeNameByCode(row.original.type)}</span>
           <span>{row.original.number}</span>
         </div>
       );

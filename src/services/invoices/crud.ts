@@ -126,6 +126,7 @@ interface InvoiceDetailsTax {
 
 interface InvoiceDetailsDocument {
   id: string;
+  invoice: InvoiceDetailsData;
   document: InvoiceDetailsData;
   paid: number;
 }
