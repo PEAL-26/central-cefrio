@@ -8,6 +8,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import Tailwind from "primereact/passthrough/tailwind";
 
 import { cn } from "@/libs/utils";
+import { AppProvider } from "@/contexts";
 import { colors } from "@/styles/colors";
 import { Toaster } from "@/components/ui/toaster";
 import { nextAuthOptions } from "@/libs/next-auth";
@@ -43,8 +44,10 @@ export default async function RootLayout({
           <QueryClientProvider>
             <PrimeReactProvider value={{ unstyled: true, pt: Tailwind }}>
               <NextAuthSessionProvider session={session}>
-                {children}
-                <Toaster />
+                <AppProvider>
+                  {children}
+                  <Toaster />
+                </AppProvider>
               </NextAuthSessionProvider>
             </PrimeReactProvider>
           </QueryClientProvider>

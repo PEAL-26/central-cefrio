@@ -1,7 +1,6 @@
 "use client";
+import Link from "next/link";
 
-import { AlertModal } from "@/components/modals/alert-modal";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,10 +8,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useInvoicePrint } from "@/hooks";
+import { Button } from "@/components/ui/button";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
+import { AlertModal } from "@/components/modals/alert-modal";
 
 export function ActionsButtons({ id }: { id: string }) {
+  const { isLoading, handlePrintInvoice } = useInvoicePrint();
+
   return (
     <>
       <DropdownMenu>
@@ -27,9 +30,9 @@ export function ActionsButtons({ id }: { id: string }) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem asChild>
-            <Link href={`/invoices/${id}/edit`}>Alterar</Link>
+            <Link href={`/comercial/invoices/${id}/edit`}>Alterar</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem /*onClick={() => handlePrintInvoice()}*/>
+          <DropdownMenuItem onClick={() => handlePrintInvoice(id)}>
             Imprimir
           </DropdownMenuItem>
           <DropdownMenuItem>Baixar</DropdownMenuItem>

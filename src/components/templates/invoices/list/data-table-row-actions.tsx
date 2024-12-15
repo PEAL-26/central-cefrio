@@ -17,6 +17,7 @@ import { AlertModal } from "@/components/modals/alert-modal";
 import { invoicePrint } from "@/services/invoices";
 import { ReactLoading } from "@/libs/react-loading";
 import { printJS } from "@/libs/print-js";
+import { useInvoicePrint } from "@/hooks";
 
 interface Actions {
   onDelete?: (id: string) => void;
@@ -32,53 +33,7 @@ export function DataTableRowActions<TData extends { id: string }>({
   actions,
 }: DataTableRowActionsProps<TData>) {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isShowModalPrint, setIsShowModalPrint] = useState(false);
-  const [isPrintError, setIsPrintError] = useState(false);
-
-  const onLoadingStart = () => {
-    setIsPrintError(false);
-    setIsShowModalPrint(false);
-  };
-
-  const onLoadingEnd = () => {
-    if (isPrintError) return;
-
-    setIsShowModalPrint(true);
-  };
-
-  const onError = () => {
-    setIsShowModalPrint(true);
-  };
-
-  const onPrintDialogClose = () => {
-    setIsPrintError(false);
-    setIsShowModalPrint(false);
-    setIsLoading(false);
-  };
-
-  const handlePrintInvoice = async () => {
-    try {
-      setIsLoading(true);
-      setIsShowModalPrint(false);
-      const response = await invoicePrint(row.original?.id);
-
-      printJS?.({
-        printable: response.pdf,
-        type: "pdf",
-        base64: true,
-        showModal: isShowModalPrint,
-        onLoadingStart,
-        onLoadingEnd,
-        onError,
-        onPrintDialogClose,
-      });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { handlePrintInvoice } = useInvoicePrint();
 
   return (
     <>
@@ -104,7 +59,9 @@ export function DataTableRowActions<TData extends { id: string }>({
               Alterar
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handlePrintInvoice()}>
+          <DropdownMenuItem
+            onClick={() => handlePrintInvoice(row.original?.id || "")}
+          >
             Imprimir
           </DropdownMenuItem>
           <DropdownMenuItem>Baixar</DropdownMenuItem>
@@ -119,16 +76,6 @@ export function DataTableRowActions<TData extends { id: string }>({
         onOpenChange={setIsOpenDeleteModal}
         onOk={() => actions?.onDelete?.(row.original?.id || "")}
       />
-      {isLoading && (
-        <div className="fixed z-50 inset-0 bg-black/50 h-screen flex justify-center items-center ">
-          <ReactLoading
-            type="spinningBubbles"
-            color={"#FFF"}
-            height={90}
-            width={90}
-          />
-        </div>
-      )}
     </>
   );
 }

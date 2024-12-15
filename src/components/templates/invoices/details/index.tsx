@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { EyeIcon, Printer } from "lucide-react";
+
 import {
   Table,
   TableBody,
@@ -7,7 +10,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { formatDate } from "@/helpers/date";
-import { Badge } from "@/components/ui/badge";
 import { currencyFormatter } from "@/helpers/currency";
 import { InvoiceDetailsData } from "@/services/invoices";
 import { getPaymentTermsNameByCode } from "@/constants/payment-terms";
@@ -16,6 +18,8 @@ import { getPaymentMethodNameByCode } from "@/constants/payment-methods";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { ActionsButtons } from "./button-actions";
+import { AddPayment } from "./add-payment";
+import { ButtonPrint } from "./button-print";
 
 export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
   return (
@@ -178,8 +182,9 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
         </Card>
 
         <Card>
-          <CardHeader>
+          <CardHeader className="flex-row flex justify-between items-center">
             <CardTitle>Pagamentos</CardTitle>
+            {invoice.type === "FT" && <AddPayment documentId={invoice.id} />}
           </CardHeader>
           <CardContent>
             <Table>
@@ -227,23 +232,27 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
                   <TableHead>Documento</TableHead>
                   <TableHead>Data</TableHead>
                   <TableHead>Pago</TableHead>
+                  <TableHead className="w-[1%]"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {invoice?.documents?.map((doc, index) => (
                   <TableRow key={index}>
-                    <TableCell>
-                      {`${getDocumentTypeNameByCode(doc.invoice.type)} ${
-                        doc.invoice.number
-                      }`}
+                    <TableCell className="text-primary">
+                      <Link href={`/comercial/invoices/${doc.invoice.id}`}>
+                        {`${getDocumentTypeNameByCode(doc.invoice.type)} ${
+                          doc.invoice.number
+                        }`}
+                      </Link>
                     </TableCell>
                     <TableCell>{formatDate(doc.invoice.date)}</TableCell>
                     <TableCell>
-                      <Badge variant={doc.paid ? "default" : "destructive"}>
-                        {currencyFormatter(doc.paid, {
-                          code: invoice.currency,
-                        })}
-                      </Badge>
+                      {currencyFormatter(doc.paid, {
+                        code: invoice.currency,
+                      })}
+                    </TableCell>
+                    <TableCell>
+                      <ButtonPrint documentId={invoice.id} />
                     </TableCell>
                   </TableRow>
                 ))}
