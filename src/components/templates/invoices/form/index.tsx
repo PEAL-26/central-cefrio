@@ -42,7 +42,7 @@ export function InvoiceForm(props: { id?: string }) {
   if (props?.id && isNotFound) {
     return (
       <div className="flex justify-center items-center  h-full">
-        <h2>Factura não encontrada</h2>
+        <h2>Documento não encontrado!</h2>
       </div>
     );
   }

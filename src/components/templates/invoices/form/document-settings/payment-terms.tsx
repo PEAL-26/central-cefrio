@@ -7,19 +7,25 @@ import { ChevronDownIcon } from "lucide-react";
 import { useDocumentSettings } from "./use-document-settings";
 import { cn } from "@/libs/utils";
 import { useState } from "react";
-import { PAYMENT_TERMS } from "@/constants/payment-terms";
+import {
+  getPaymentTerms,
+  getPaymentTermsNameByCode,
+  PAYMENT_TERMS,
+} from "@/constants/payment-terms";
 import { PAYMENT } from "@/constants/document-types";
 
 export function PaymentTerms() {
   const { form } = useDocumentSettings();
   const [open, setOpen] = useState(false);
 
-  const paymentTerms = PAYMENT_TERMS.find(
-    (payment) => payment.code === form.getValues("paymentTerms")
-  );
+  const paymentTerms = getPaymentTerms(form.getValues("paymentTerms") || "");
 
   const handleSelect = (terms?: string) => {
     form.setValue("paymentTerms", terms);
+    if (terms === "ready") {
+      form.setValue("date", new Date());
+      form.setValue("dueDate", new Date());
+    }
     setOpen(false);
   };
 

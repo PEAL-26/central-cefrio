@@ -40,16 +40,18 @@ const nextConfig = {
   },
 };
 
-module.exports = withSentryConfig(nextConfig, {
-  org: "pealsystems",
-  project: "cefrio-invoice",
-  silent: !process.env.CI,
-  widenClientFileUpload: true,
-  reactComponentAnnotation: {
-    enabled: true,
-  },
-  tunnelRoute: "/monitoring",
-  hideSourceMaps: true,
-  disableLogger: true,
-  automaticVercelMonitors: true,
-});
+// module.exports = withSentryConfig(nextConfig, {
+//   org: "pealsystems",
+//   project: "cefrio-invoice",
+//   silent: !process.env.CI,
+//   widenClientFileUpload: true,
+//   reactComponentAnnotation: {
+//     enabled: true,
+//   },
+//   tunnelRoute: "/monitoring",
+//   hideSourceMaps: true,
+//   disableLogger: true,
+//   automaticVercelMonitors: true,
+// });
+
+module.exports = nextConfig;

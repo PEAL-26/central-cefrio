@@ -7,6 +7,7 @@ import {
   FormMessage,
 } from "../form";
 import { Input } from "../input";
+import { HTMLInputTypeAttribute } from "react";
 
 interface Props<
   TFieldValues extends FieldValues = FieldValues,
@@ -17,13 +18,14 @@ interface Props<
   isLoading?: boolean;
   control?: Control<TFieldValues, TContext>;
   name: Path<TFieldValues>;
+  type?: HTMLInputTypeAttribute;
 }
 
 export function InputFormFieldControl<
   TFieldValues extends FieldValues = FieldValues,
   TContext = any
 >(props: Props<TFieldValues, TContext>) {
-  const { label, placeholder, isLoading, control, name } = props;
+  const { label, placeholder, isLoading, control, name, type } = props;
 
   return (
     <FormField
@@ -35,7 +37,7 @@ export function InputFormFieldControl<
           <FormControl>
             <Input
               disabled={isLoading}
-              type="text"
+              type={type}
               placeholder={placeholder}
               {...field}
             />

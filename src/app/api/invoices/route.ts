@@ -18,7 +18,7 @@ import {
   invoiceUpdateItemTotal,
   invoiceUpdateResume,
 } from "@/helpers/invoice-total-update";
-import { END_CONSUMER } from "@/constants/cutomer";
+import { END_CONSUMER } from "@/constants/customer";
 
 const listParamsSchema = z.object({
   type: z.string().optional(),
@@ -122,7 +122,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(invoice, { status: 200 });
   } catch (error: any) {
-    console.error(error);
     return responseError(error);
   }
 }

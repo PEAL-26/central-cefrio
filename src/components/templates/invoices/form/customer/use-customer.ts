@@ -38,6 +38,10 @@ export function useCustomer() {
     setOpen(true);
   };
 
+  const handleUnselect = () => {
+    form.setValue("customerId", undefined);
+  };
+
   return {
     customer: data,
     isLoading,
@@ -48,6 +52,7 @@ export function useCustomer() {
     setAdd,
     handleAddCustomer,
     handleSelect,
+    handleUnselect,
     disabled: type === "RE",
   };
 }

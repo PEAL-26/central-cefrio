@@ -1,5 +1,7 @@
-import { END_CONSUMER } from "../src/constants/cutomer";
+import { END_CONSUMER } from "../../src/constants/customer";
 import { PrismaClient } from "@prisma/client";
+import { customerSeed } from "./customer";
+import { usersSeed } from "./users";
 
 const url = process.env.DATABASE_URL || "";
 
@@ -8,20 +10,8 @@ const prisma = new PrismaClient({
   datasourceUrl: url,
 });
 
-export const customers = [END_CONSUMER];
-
-export async function customerSeed(prisma: PrismaClient) {
-  customers.forEach(async (row) => {
-    await prisma.customer.upsert({
-      create: row,
-      update: {},
-      where: { id: row.id },
-    });
-  });
-}
-
 async function runSeeds() {
-  await customerSeed(prisma);
+  await Promise.all([customerSeed(prisma), usersSeed(prisma)]);
 }
 
 runSeeds()

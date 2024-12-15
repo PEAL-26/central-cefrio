@@ -32,6 +32,7 @@ export function DocumentSettings() {
         <div className="flex items-center justify-between w-full  gap-4">
           <span className="font-bold">Data: </span>
           <DatePicker
+            disabled={form.watch("paymentTerms") === "ready"}
             value={form.watch("date")}
             onChange={(date) => form.setValue("date", date)}
           />
@@ -39,7 +40,10 @@ export function DocumentSettings() {
         <div className="flex items-center justify-between w-full  gap-4">
           <span className="font-bold">Vencimento: </span>
           <DatePicker
-            disabled={PAYMENT.includes(form.watch("type"))}
+            disabled={
+              PAYMENT.includes(form.watch("type")) ||
+              form.watch("paymentTerms") === "ready"
+            }
             value={form.watch("dueDate")}
             onChange={(date) => form.setValue("dueDate", date)}
           />

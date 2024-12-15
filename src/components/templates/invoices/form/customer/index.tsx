@@ -3,9 +3,10 @@ import { LoaderIcon } from "lucide-react";
 
 import { CustomerModal } from "./modal";
 import { useCustomer } from "./use-customer";
+import { Button } from "@/components/ui/button";
 
 export function CustomerForm() {
-  const { customer, isLoading } = useCustomer();
+  const { customer, isLoading, handleUnselect } = useCustomer();
 
   return (
     <div className="flex flex-col max-w-lg w-72 gap-4">
@@ -41,6 +42,17 @@ export function CustomerForm() {
               {customer?.address || "S/N"}
             </span>
           </div>
+          {customer && (
+            <div className="flex items-center justify-center mt-3">
+              <Button
+                variant="ghost"
+                className="p-0 hover:bg-transparent"
+                onClick={handleUnselect}
+              >
+                Limpar
+              </Button>
+            </div>
+          )}
         </div>
         {isLoading && (
           <div className="absolute inset-0 flex justify-center items-center">

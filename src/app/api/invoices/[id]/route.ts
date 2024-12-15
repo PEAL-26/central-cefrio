@@ -40,11 +40,6 @@ export async function GET(
       },
     });
 
-    console.log('========================================================');
-    console.log(JSON.stringify(response?.invoices));
-    console.log(JSON.stringify(response?.invoices));
-    console.log('========================================================');
-
     return NextResponse.json(response, {
       status: 200,
     });
@@ -66,7 +61,6 @@ export async function DELETE(
 
     return NextResponse.json({ message: "Success" }, { status: 200 });
   } catch (error) {
-    console.log(error);
     return responseError(error);
   }
 }

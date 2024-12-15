@@ -36,6 +36,7 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
     defaultValues: {
       date: new Date(),
       dueDate: addDate(15, "day"),
+      paymentTerms: "installment",
       currency: "AOA",
       subtotal: 0,
       totalDiscount: 0,
@@ -62,10 +63,42 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
   const queryClient = useQueryClient();
   const router = useRouter();
 
+  const verify = async (data: InvoiceSchemaType) => {
+    const totalPaid =
+      data.payments?.reduce((total, item) => total + item.amount, 0) || 0;
+    const total = data.total || 0;
+
+    if (data.type === "RE" || data.type === "FR") {
+      if (totalPaid === 0) {
+        throw new Error("Deve informar o pagamento.");
+      }
+    }
+
+    if (data.type === "FT" && data.paymentTerms === "ready") {
+      if (totalPaid === 0) {
+        throw new Error("Deve informar o pagamento.");
+      }
+
+      if (totalPaid !== total) {
+        throw new Error(
+          "Em documentos Pronto Pagamento o valor pago deve coincidir com o valor total."
+        );
+      }
+    }
+
+    if (data.paymentTerms === "installment" && !data.customerId) {
+      throw new Error(
+        "Em documentos com pagamento a prazo deve selecionar um cliente"
+      );
+    }
+  };
+
   const handleSubmit = async (data: InvoiceSchemaType) => {
     if (isLoading) return;
 
     try {
+      await verify(data);
+
       setErrors([]);
       setIsLoading(true);
       const { items, payments, documents, ...rest } = data;

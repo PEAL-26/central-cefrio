@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import { Suspense } from "react";
 
 export const metadata: Metadata = {
-  title: "Nova Factura",
+  title: "Novo Documento",
 };
 
 export default function CreateInvoicePage() {

@@ -6,7 +6,7 @@ import { getAllParams } from "../../../helpers/search-params";
 import { NextRequest, NextResponse } from "next/server";
 import { responseError } from "../../../helpers/response/route-response";
 import { paginationData, setPagination } from "../../../helpers/pagination";
-import { END_CONSUMER } from "@/constants/cutomer";
+import { END_CONSUMER } from "@/constants/customer";
 
 const listParamsSchema = z.object({
   q: z.string().optional(),

@@ -1,8 +1,8 @@
 import { z } from "zod";
 import { randomUUID } from "crypto";
-import { prisma } from "../../../libs/prisma";
+import { prisma } from "../../../../libs/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { responseError } from "../../../helpers/response/route-response";
+import { responseError } from "../../../../helpers/response/route-response";
 
 const customerSchema = z.object({
   id: z.string().uuid().optional(),

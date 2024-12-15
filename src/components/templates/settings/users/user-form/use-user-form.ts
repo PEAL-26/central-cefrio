@@ -28,7 +28,7 @@ export function useUserForm(props: UserFormProps) {
     try {
       setIsSaving(true);
 
-      await userService.create({ ...data, id: userId });
+      // await userService.create({ ...data, id: userId });
       queryClient.invalidateQueries({ queryKey: ["users"] });
       toastResponseRegisterSuccess(userId);
       onSubmit?.();
@@ -44,14 +44,14 @@ export function useUserForm(props: UserFormProps) {
       setIsLoadingData(true);
       if (userId) {
         const response = await userService.getById(userId);
-        if (response) {
-          form.setValue("id", userId);
-          form.setValue("name", response.name);
-          form.setValue("abbreviation", response.abbreviation);
-          form.setValue("account", response.account);
-          form.setValue("iban", response?.iban);
-          form.setValue("show", response?.show);
-        }
+        // if (response) {
+        //   form.setValue("id", userId);
+        //   form.setValue("name", response.name);
+        //   form.setValue("abbreviation", response.abbreviation);
+        //   form.setValue("account", response.account);
+        //   form.setValue("iban", response?.iban);
+        //   form.setValue("show", response?.show);
+        // }
       }
       setIsLoadingData(false);
     })();
