@@ -1,3 +1,3 @@
 export const COOKIES = {
-  TOKEN: "cefrio.token",
+  TOKEN: "next-auth.session-token",
 };

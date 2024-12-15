@@ -61,5 +61,5 @@ export const nextAuthOptions: NextAuthOptions = {
     warn(warning) {
       console.warn(warning);
     },
-  },
+  }
 };

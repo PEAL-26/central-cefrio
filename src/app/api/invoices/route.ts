@@ -12,6 +12,7 @@ import {
   InvoiceItemSchemaType,
   InvoicePaymentSchemaType,
   invoiceSchema,
+  InvoiceSchemaType,
 } from "./types";
 import { formatNumberWithLeadingZeros } from "@/helpers/string";
 import {
@@ -126,8 +127,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function create(input: any) {
-  const data = await prepareData(input);
+function invoiceCreate(data: any) {
   return prisma.invoice.create({
     data: {
       id: data.id,
@@ -183,6 +183,35 @@ async function create(input: any) {
       },
     },
   });
+}
+
+async function create(input: any) {
+  const data = await prepareData(input);
+  verify(data);
+
+  const document = invoiceCreate(data);
+
+  let receipt = null;
+  if (data.type === "FT" && data?.totalPaid > 0) {
+    const receiptData = await prepareData({
+      type: "RE",
+      customerId: input.customerId,
+      date: input.date,
+      dueDate: input.date,
+      reference: input.number,
+      currency: input.currency,
+      exchange: input.exchange,
+      payments: input.payments,
+      documents: [{ documentId: data.id, paid: data.totalPaid }],
+    });
+    receipt = invoiceCreate(receiptData);
+  }
+
+  const [documentResponse] = await prisma.$transaction(
+    [document, receipt].filter((d) => d !== null)
+  );
+
+  return documentResponse;
 }
 
 async function update(input: any) {
@@ -279,7 +308,60 @@ async function update(input: any) {
   });
 }
 
-async function prepareData(input: any) {
+function verify(data: any) {
+  const totalPaid =
+    data.paymentsData?.reduce(
+      (total: number, item: any) => total + item.amount,
+      0
+    ) || 0;
+  const total = data.total || 0;
+
+  if (data.type !== "RE" && !data.productsData?.length) {
+    if (totalPaid === 0) {
+      throw new Error("Insira no mínimo um(1) item no documento");
+    }
+  }
+
+  if (data.type === "RE" && !data.documentsData?.length) {
+    if (totalPaid === 0) {
+      throw new Error("Insira no mínimo um(1) item no documento");
+    }
+  }
+
+  if (data.type === "RE" || data.type === "FR") {
+    if (totalPaid === 0) {
+      throw new Error("Deve adicionar um pagamento.");
+    }
+  }
+
+  if (data.type === "FR") {
+    if (totalPaid < total) {
+      throw new Error(
+        "Em documentos Pronto Pagamento o valor pago deve maior ou igual ao valor total."
+      );
+    }
+  }
+
+  if (data.type === "FT" && data.paymentTerms === "ready") {
+    if (totalPaid === 0) {
+      throw new Error("Deve adicionar um pagamento.");
+    }
+
+    if (totalPaid < total) {
+      throw new Error(
+        "Em documentos Pronto Pagamento o valor pago deve maior ou igual ao valor total."
+      );
+    }
+  }
+
+  if (data.paymentTerms === "installment" && !data.customerId) {
+    throw new Error(
+      "Em documentos com pagamento a prazo deve selecionar um cliente"
+    );
+  }
+}
+
+async function prepareData(input: InvoiceSchemaType) {
   const {
     id = randomUUID(),
     type,
@@ -293,17 +375,16 @@ async function prepareData(input: any) {
     generalDiscount,
     currency,
     exchange,
-    items,
-    payments,
-    documents,
+    items = [],
+    payments = [],
+    documents = [],
   } = invoiceSchema.parse(input);
-  const number = input?.number ? input.number : await generateNumber(type);
 
-  const { productsData, taxesData } = await getItems(items ?? []);
-  const paymentsData = getPayments(payments ?? []);
+  const number = input?.number ? input.number : await generateNumber(type);
+  const { productsData, taxesData } = await getItems(items);
+  const paymentsData = getPayments(payments);
   const { documentsData, invoicesData, totalInvoices } = await getDocuments(
-    id,
-    documents ?? []
+    documents
   );
 
   const { type: withholdingTaxType, percentage: withholdingTaxPercentage } =
@@ -466,15 +547,13 @@ function getPayments(payments: InvoicePaymentSchemaType[]) {
   }));
 }
 
-async function getDocuments(
-  mainInvoiceId: string,
-  invoices: InvoiceDocumentSchemaType[]
-) {
-  const documentsData = invoices.map(({ id, documentId, paid }) => ({
-    id: id || randomUUID(),
-    invoiceId: documentId,
-    paid,
-  }));
+async function getDocuments(invoices: InvoiceDocumentSchemaType[]) {
+  const documentsData =
+    invoices.map(({ id, documentId, paid }) => ({
+      id: id || randomUUID(),
+      invoiceId: documentId,
+      paid,
+    })) || [];
 
   let totalInvoices = 0;
   const invoicesData = [];

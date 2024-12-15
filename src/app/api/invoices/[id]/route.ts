@@ -39,7 +39,7 @@ export async function GET(
         taxes: true,
       },
     });
-
+    
     return NextResponse.json(response, {
       status: 200,
     });

@@ -32,6 +32,7 @@ export const invoiceDocumentSchema = z.object({
 export const invoiceSchema = z.object({
   id: z.string().uuid().optional(),
   type: z.string().min(1, "Campo Obrigatório"),
+  number: z.string().optional(),
   customerId: z.string().optional(),
   date: z.coerce.date(),
   dueDate: z.coerce.date().optional(),

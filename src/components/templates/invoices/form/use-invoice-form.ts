@@ -68,20 +68,40 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
       data.payments?.reduce((total, item) => total + item.amount, 0) || 0;
     const total = data.total || 0;
 
+    if (data.type !== "RE" && !data.items?.length) {
+      if (totalPaid === 0) {
+        throw new Error("Insira no mínimo um(1) item no documento");
+      }
+    }
+
+    if (data.type === "RE" && !data.documents?.length) {
+      if (totalPaid === 0) {
+        throw new Error("Insira no mínimo um(1) item no documento");
+      }
+    }
+
     if (data.type === "RE" || data.type === "FR") {
       if (totalPaid === 0) {
-        throw new Error("Deve informar o pagamento.");
+        throw new Error("Deve adicionar um pagamento.");
+      }
+    }
+    
+    if (data.type === "FR") {
+      if (totalPaid < total) {
+        throw new Error(
+          "Em documentos Pronto Pagamento o valor pago deve maior ou igual ao valor total."
+        );
       }
     }
 
     if (data.type === "FT" && data.paymentTerms === "ready") {
       if (totalPaid === 0) {
-        throw new Error("Deve informar o pagamento.");
+        throw new Error("Deve adicionar um pagamento.");
       }
 
-      if (totalPaid !== total) {
+      if (totalPaid < total) {
         throw new Error(
-          "Em documentos Pronto Pagamento o valor pago deve coincidir com o valor total."
+          "Em documentos Pronto Pagamento o valor pago deve ser maior ou igual ao valor total."
         );
       }
     }

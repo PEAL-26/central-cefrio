@@ -10,11 +10,12 @@ import { formatDate } from "@/helpers/date";
 import { Badge } from "@/components/ui/badge";
 import { currencyFormatter } from "@/helpers/currency";
 import { InvoiceDetailsData } from "@/services/invoices";
+import { getPaymentTermsNameByCode } from "@/constants/payment-terms";
 import { getDocumentTypeNameByCode } from "@/constants/document-types";
+import { getPaymentMethodNameByCode } from "@/constants/payment-methods";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { ActionsButtons } from "./button-actions";
-import { getPaymentMethodNameByCode } from "@/constants/payment-methods";
 
 export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
   return (
@@ -41,7 +42,10 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
               <dt className="font-semibold">Data de Vencimento:</dt>
               <dd>{formatDate(invoice?.dueDate)}</dd>
               <dt className="font-semibold">Termos de Pagamento:</dt>
-              <dd>{invoice.paymentTerms || "S/N"}</dd>
+              <dd>
+                {getPaymentTermsNameByCode(invoice?.paymentTerms || "") ||
+                  "S/N"}
+              </dd>
               <dt className="font-semibold">Referência:</dt>
               <dd>{invoice.reference || "S/N"}</dd>
               <dt className="font-semibold">Moeda:</dt>
@@ -236,7 +240,9 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
                     <TableCell>{formatDate(doc.invoice.date)}</TableCell>
                     <TableCell>
                       <Badge variant={doc.paid ? "default" : "destructive"}>
-                        {doc.paid ? "Sim" : "Não"}
+                        {currencyFormatter(doc.paid, {
+                          code: invoice.currency,
+                        })}
                       </Badge>
                     </TableCell>
                   </TableRow>

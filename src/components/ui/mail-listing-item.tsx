@@ -1,6 +1,7 @@
 import { cn } from "@/libs/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import Link from "next/link";
+import { getFirstAndLastNameInitials } from "@/helpers/string";
 
 interface Props {
   avatar?: string;
@@ -35,8 +36,8 @@ export function MailListingItem(props: Props) {
     >
       <div className={cn("h-16 w-1", select && "bg-primary")} />
       <Avatar className="h-9 w-9">
-        <AvatarImage src={avatar} alt="@shadcn" />
-        <AvatarFallback>SC</AvatarFallback>
+        <AvatarImage src={avatar} alt="user" />
+        <AvatarFallback>{getFirstAndLastNameInitials(name)}</AvatarFallback>
       </Avatar>
       <div className="py-1 flex-1">
         <span className="text-sm font-bold line-clamp-1">{name}</span>
