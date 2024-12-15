@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useInvoicePrint } from "@/hooks";
+import { useInitialLoading } from "@/hooks/use-initial-loading";
 import { PrinterIcon } from "lucide-react";
 
 interface Props {
@@ -11,6 +12,11 @@ interface Props {
 export function ButtonPrint(props: Props) {
   const { documentId } = props;
   const { handlePrintInvoice } = useInvoicePrint();
+  const isReady = useInitialLoading()
+  
+  if (!isReady) {
+    return null
+  }
 
   return (
     <Button

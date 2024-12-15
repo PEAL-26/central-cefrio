@@ -8,6 +8,7 @@
     "build:prod": "npm i && npm run prisma:generate && npm run migrate:deploy && npm run build",
     "start": "next start -p 3001",
     "lint": "next lint",
+    "format": "prettier ./src --write",
     "migrate:dev": "npx prisma migrate dev",
     "migrate:dev:co": "npx prisma migrate dev --create-only",
     "migrate:deploy": "npx prisma migrate deploy",

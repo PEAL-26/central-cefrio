@@ -12,9 +12,15 @@ import { useInvoicePrint } from "@/hooks";
 import { Button } from "@/components/ui/button";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { AlertModal } from "@/components/modals/alert-modal";
+import { useInitialLoading } from "@/hooks/use-initial-loading";
 
 export function ActionsButtons({ id }: { id: string }) {
   const { isLoading, handlePrintInvoice } = useInvoicePrint();
+  const isReady = useInitialLoading()
+  
+  if (!isReady) {
+    return null
+  }
 
   return (
     <>

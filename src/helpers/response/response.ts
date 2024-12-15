@@ -30,13 +30,13 @@ export function generateResponseError(error: any) {
   return message;
 }
 
-export function toastResponseError(error: any) {
+export function toastResponseError(error: any, title="Oops! Algo deu errado.") {
   const message = generateResponseError(error);
 
   toast({
     duration: 5000,
     variant: "destructive",
-    title: "Oops! Algo deu errado.",
+    title,
     description: message,
   });
 }

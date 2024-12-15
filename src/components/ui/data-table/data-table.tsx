@@ -24,12 +24,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { cn } from "@/libs/utils";
+import { ReactLoading } from "@/libs/react-loading";
+import { IQueryPaginationResponse } from "@/hooks/use-query-pagination/types";
 
 import { DataTablePagination } from "./data-table-pagination";
 import { DataTableToolbar } from "./data-table-toolbar";
-import { IQueryPaginationResponse } from "@/hooks/use-query-pagination/types";
-import { ReactLoading } from "@/libs/react-loading";
-import { cn } from "@/libs/utils";
 
 type OnAdd = () => void;
 
