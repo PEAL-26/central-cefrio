@@ -6,11 +6,11 @@ import { invoicePrint } from '@/services/invoices';
 export function useInvoiceDownload() {
   const { loading } = useAppContext();
 
-  const handleDownloadInvoice = async (invoiceId: string) => {
+  const handleDownloadInvoice = async (invoiceId: string, fileName?: string) => {
     try {
       loading.show();
       const { pdf } = await invoicePrint(invoiceId);
-      await downloadBase64JVB(pdf);
+      await downloadBase64JVB(pdf, fileName);
     } catch (error) {
       toastResponseError(error);
     } finally {

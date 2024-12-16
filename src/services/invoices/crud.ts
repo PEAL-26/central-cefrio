@@ -83,6 +83,7 @@ export interface InvoiceDetailsData {
   totalDiscount?: number;
   totalWithholdingTax?: number;
   total?: number;
+  totalPaid?: number;
 
   createdAt?: Date;
   updatedAt?: Date;

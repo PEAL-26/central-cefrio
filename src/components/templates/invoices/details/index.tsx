@@ -15,6 +15,7 @@ import { getPaymentTermsNameByCode } from '@/constants/payment-terms';
 import { currencyFormatter } from '@/helpers/currency';
 import { formatDate } from '@/helpers/date';
 import { InvoiceDetailsData } from '@/services/invoices';
+import { cn } from '@/libs/utils';
 
 import { AddPayment } from './add-payment';
 import { ActionsButtons } from './button-actions';
@@ -25,7 +26,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
     <div className="container mx-auto py-10">
       <div className="mb-6 flex items-center gap-2">
         <h1 className="text-3xl font-bold">Detalhes do documento</h1>
-        <ActionsButtons id={invoice.id} type={invoice.type} />
+        <ActionsButtons data={invoice} />
       </div>
 
       {/* Informações gerais */}
@@ -80,96 +81,102 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
       </div>
 
       {/* Produtos */}
-      <Card className="mt-6">
-        <CardHeader>
-          <CardTitle>Produtos</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nome</TableHead>
-                <TableHead>Preço</TableHead>
-                <TableHead>Unidade</TableHead>
-                <TableHead className="text-center">Quantidade</TableHead>
-                <TableHead className="text-center">IVA</TableHead>
-                <TableHead className="text-center">Desc.</TableHead>
-                <TableHead>TOTAL</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {invoice?.products?.map((product, index) => (
-                <TableRow key={index}>
-                  <TableCell>{product.productName}</TableCell>
-                  <TableCell>
-                    {currencyFormatter(product.price, {
-                      code: invoice.currency,
-                    })}
-                  </TableCell>
-                  <TableCell>{product.unitMeasure}</TableCell>
-                  <TableCell className="text-center">{product.quantity}</TableCell>
-                  <TableCell className="text-center">{product?.iva ?? 0}%</TableCell>
-                  <TableCell className="text-center">{product?.discount ?? 0}%</TableCell>
-                  <TableCell>
-                    {' '}
-                    {currencyFormatter(product.total, {
-                      code: invoice.currency,
-                    })}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-
-      {/* Resumo Financeiro */}
-      <div className="mt-6 grid gap-6 md:grid-cols-2">
-        <Card>
+      {invoice.type !== 'RE' && (
+        <Card className="mt-6">
           <CardHeader>
-            <CardTitle>Resumo Financeiro</CardTitle>
+            <CardTitle>Produtos</CardTitle>
           </CardHeader>
           <CardContent>
-            <dl className="grid grid-cols-2 gap-2">
-              <dt className="font-semibold">Subtotal:</dt>
-              <dd>
-                {currencyFormatter(invoice?.subtotal || 0, {
-                  code: invoice.currency,
-                })}
-              </dd>
-              <dt className="font-semibold">Total IVA:</dt>
-              <dd>
-                {currencyFormatter(invoice?.totalIva || 0, {
-                  code: invoice.currency,
-                })}
-              </dd>
-              <dt className="font-semibold">Desconto Geral:</dt>
-              <dd>{invoice?.generalDiscount || 0}%</dd>
-              <dt className="font-semibold">Total Desconto:</dt>
-              <dd>
-                {currencyFormatter(invoice?.totalDiscount || 0, {
-                  code: invoice.currency,
-                })}
-              </dd>
-              <dt className="font-semibold">Tipo de Retenção:</dt>
-              <dd>{invoice?.withholdingTaxType || 'S/N'}</dd>
-              <dt className="font-semibold">Percentagem de Retenção:</dt>
-              <dd>{invoice?.withholdingTaxPercentage || 0}%</dd>
-              <dt className="font-semibold">Total Retenção:</dt>
-              <dd>
-                {currencyFormatter(invoice?.totalWithholdingTax || 0, {
-                  code: invoice.currency,
-                })}
-              </dd>
-              <dt className="font-semibold">Total:</dt>
-              <dd className="text-lg font-bold">
-                {currencyFormatter(invoice?.total || 0, {
-                  code: invoice.currency,
-                })}
-              </dd>
-            </dl>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Nome</TableHead>
+                  <TableHead>Preço</TableHead>
+                  <TableHead>Unidade</TableHead>
+                  <TableHead className="text-center">Quantidade</TableHead>
+                  <TableHead className="text-center">IVA</TableHead>
+                  <TableHead className="text-center">Desc.</TableHead>
+                  <TableHead>TOTAL</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {invoice?.products?.map((product, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{product.productName}</TableCell>
+                    <TableCell>
+                      {currencyFormatter(product.price, {
+                        code: invoice.currency,
+                      })}
+                    </TableCell>
+                    <TableCell>{product.unitMeasure}</TableCell>
+                    <TableCell className="text-center">{product.quantity}</TableCell>
+                    <TableCell className="text-center">{product?.iva ?? 0}%</TableCell>
+                    <TableCell className="text-center">{product?.discount ?? 0}%</TableCell>
+                    <TableCell>
+                      {' '}
+                      {currencyFormatter(product.total, {
+                        code: invoice.currency,
+                      })}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
+      )}
+
+      {/* Resumo Financeiro */}
+      <div
+        className={cn('mt-6 grid gap-6 md:grid-cols-2', invoice.type === 'RE' && 'md:grid-cols-1')}
+      >
+        {invoice.type !== 'RE' && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Resumo Financeiro</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <dl className="grid grid-cols-2 gap-2">
+                <dt className="font-semibold">Subtotal:</dt>
+                <dd>
+                  {currencyFormatter(invoice?.subtotal || 0, {
+                    code: invoice.currency,
+                  })}
+                </dd>
+                <dt className="font-semibold">Total IVA:</dt>
+                <dd>
+                  {currencyFormatter(invoice?.totalIva || 0, {
+                    code: invoice.currency,
+                  })}
+                </dd>
+                <dt className="font-semibold">Desconto Geral:</dt>
+                <dd>{invoice?.generalDiscount || 0}%</dd>
+                <dt className="font-semibold">Total Desconto:</dt>
+                <dd>
+                  {currencyFormatter(invoice?.totalDiscount || 0, {
+                    code: invoice.currency,
+                  })}
+                </dd>
+                <dt className="font-semibold">Tipo de Retenção:</dt>
+                <dd>{invoice?.withholdingTaxType || 'S/N'}</dd>
+                <dt className="font-semibold">Percentagem de Retenção:</dt>
+                <dd>{invoice?.withholdingTaxPercentage || 0}%</dd>
+                <dt className="font-semibold">Total Retenção:</dt>
+                <dd>
+                  {currencyFormatter(invoice?.totalWithholdingTax || 0, {
+                    code: invoice.currency,
+                  })}
+                </dd>
+                <dt className="font-semibold">Total:</dt>
+                <dd className="text-lg font-bold">
+                  {currencyFormatter(invoice?.total || 0, {
+                    code: invoice.currency,
+                  })}
+                </dd>
+              </dl>
+            </CardContent>
+          </Card>
+        )}
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
@@ -206,7 +213,9 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
       </div>
 
       {/* Documentos Relacionados */}
-      <div className="mt-6 grid gap-6 md:grid-cols-2">
+      <div
+        className={cn('mt-6 grid gap-6 md:grid-cols-2', invoice.type === 'RE' && 'md:grid-cols-1')}
+      >
         <Card>
           <CardHeader>
             <CardTitle>Documentos Relacionados</CardTitle>
@@ -245,41 +254,43 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Impostos</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Valor</TableHead>
-                  <TableHead>Montante</TableHead>
-                  <TableHead>Incidência</TableHead>
-                  <TableHead>Observação</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {invoice?.taxes?.map((tax, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{tax.value}%</TableCell>
-                    <TableCell>
-                      {currencyFormatter(tax.amount, {
-                        code: invoice.currency,
-                      })}
-                    </TableCell>
-                    <TableCell>
-                      {currencyFormatter(tax.incidence, {
-                        code: invoice.currency,
-                      })}
-                    </TableCell>
-                    <TableCell>{tax.observation}</TableCell>
+        {invoice.type !== 'RE' && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Impostos</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Valor</TableHead>
+                    <TableHead>Montante</TableHead>
+                    <TableHead>Incidência</TableHead>
+                    <TableHead>Observação</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+                </TableHeader>
+                <TableBody>
+                  {invoice?.taxes?.map((tax, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{tax.value}%</TableCell>
+                      <TableCell>
+                        {currencyFormatter(tax.amount, {
+                          code: invoice.currency,
+                        })}
+                      </TableCell>
+                      <TableCell>
+                        {currencyFormatter(tax.incidence, {
+                          code: invoice.currency,
+                        })}
+                      </TableCell>
+                      <TableCell>{tax.observation}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* Observação */}

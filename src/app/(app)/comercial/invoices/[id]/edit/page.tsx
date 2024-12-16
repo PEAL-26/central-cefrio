@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Alterar Factura',
+  title: 'Alterar Documento',
 };
 
 export default function EditInvoicePage({ params }: { params: { id: string } }) {

@@ -3,7 +3,7 @@ import { useGetSearchParams, useQueryPagination } from '@/hooks';
 import { invoiceService } from '@/services/invoices';
 import { useQueryClient } from '@tanstack/react-query';
 
-export function useList() {
+export function useListInvoice() {
   const queryClient = useQueryClient();
   const [q, size, page] = useGetSearchParams({ params: ['q', 'size', 'page'] });
 
@@ -14,13 +14,17 @@ export function useList() {
 
   const handleDelete = async (id: string) => {
     try {
+      throw new Error('fggg');
       await invoiceService.delete(id);
       queryClient.invalidateQueries({
         queryKey: ['invoices'],
       });
     } catch (error) {
       toastResponseError(error);
+      return false;
     }
+
+    return true;
   };
 
   return { response, handleDelete };

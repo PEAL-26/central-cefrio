@@ -67,7 +67,14 @@ export function DataTableRowActions<TData extends Record<string, any> = {}>({
           <DropdownMenuItem onClick={() => handlePrintInvoice(row.original?.id || '')}>
             Imprimir
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleDownloadInvoice(row.original?.id || '')}>
+          <DropdownMenuItem
+            onClick={() =>
+              handleDownloadInvoice(
+                row.original?.id || '',
+                `${row.original.number} - ${row.original.customer.name}`,
+              )
+            }
+          >
             Baixar
           </DropdownMenuItem>
           <DropdownMenuSeparator />

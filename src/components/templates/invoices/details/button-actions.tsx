@@ -15,16 +15,26 @@ import {
 import { DOCUMENT_COPY, DOCUMENT_EMIT_FT } from '@/constants/documetn-dropdown-menu';
 import { useInvoiceDownload, useInvoicePrint } from '@/hooks';
 import { useInitialLoading } from '@/hooks/use-initial-loading';
+import { useRouter } from 'next/navigation';
+import { useListInvoice } from '../list/use-list';
 
-export function ActionsButtons({ id, type }: { id: string; type: string }) {
+export function ActionsButtons({ data }: { data: Record<string, any> }) {
+  const { id, type, number, customer } = data;
+  
+  const router = useRouter();
   const isReady = useInitialLoading();
 
+  const invoice = useListInvoice();
   const { handlePrintInvoice } = useInvoicePrint();
   const { handleDownloadInvoice } = useInvoiceDownload();
 
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
 
-  const handleDelete = () => {};
+  const handleDelete = async () => {
+    if (await invoice.handleDelete(id)) {
+      router.replace('/comercial/invoices');
+    }
+  };
 
   if (!isReady) {
     return null;
@@ -53,7 +63,9 @@ export function ActionsButtons({ id, type }: { id: string; type: string }) {
             </DropdownMenuItem>
           )}
           <DropdownMenuItem onClick={() => handlePrintInvoice(id || '')}>Imprimir</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleDownloadInvoice(id || '')}>
+          <DropdownMenuItem
+            onClick={() => handleDownloadInvoice(id || '', `${number} - ${customer.name}`)}
+          >
             Baixar
           </DropdownMenuItem>
           <DropdownMenuSeparator />

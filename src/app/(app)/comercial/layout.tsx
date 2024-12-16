@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: { default: 'Documents', template: '%s | Documents' },
+  title: { default: 'Comercial', template: '%s | Comercial' },
 };
 
 export default function DocumentLayout({

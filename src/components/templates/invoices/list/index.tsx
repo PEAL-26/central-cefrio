@@ -4,10 +4,10 @@ import Link from 'next/link';
 
 import { buttonVariants } from '@/components/ui/button';
 import { columns } from './columns';
-import { useList } from './use-list';
+import { useListInvoice } from './use-list';
 
 export function ListInvoices() {
-  const { response, handleDelete } = useList();
+  const { response, handleDelete } = useListInvoice();
 
   return (
     <div className="flex h-full flex-col space-y-8">
