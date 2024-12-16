@@ -6,7 +6,7 @@
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+  previewFeatures = ["fullTextSearch", "fullTextIndex", "fullTextSearchPostgres"]
 }
 
 datasource db {
@@ -234,6 +234,7 @@ model User {
   authenticators Authenticator[]
   accounts       Account[]
   sessions       Session[]
+  emailAccounts   EmailAccount[]
 
   @@map("users")
 }
@@ -261,4 +262,14 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("authenticators")
+}
+
+model EmailAccount {
+  id       String @id @default(cuid())
+  email    String @unique
+  password String
+
+  users User[]
+
+  @@map("email_accounts")
 }

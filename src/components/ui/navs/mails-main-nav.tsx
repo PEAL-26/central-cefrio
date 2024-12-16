@@ -23,8 +23,17 @@ export function MailsMainNav(props: HTMLAttributes<HTMLElement>) {
   return (
     <nav className={cn('flex items-center space-x-4 lg:space-x-6', className)} {...rest}>
       {LINKS.map((link) => (
-        <Link key={link.href} href={link.href} className={activeLink(link.href, pathname)}>
+        <Link
+          key={link.href}
+          href={link.href}
+          className={cn(activeLink(link.href, pathname), 'relative')}
+        >
           {link.label}
+          {link.href === '/mails/inputs' && (
+            <div className="absolute -right-4 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-primary text-center text-[5pt] text-white font-bold">
+              1
+            </div>
+          )}
         </Link>
       ))}
       {/* TODO: DROPDOWN Com mais opções */}
@@ -36,7 +45,7 @@ export function MailsMainNav(props: HTMLAttributes<HTMLElement>) {
         )}
       >
         <MailIcon className="size-4" />
-        Novo email
+        Novo E-mail
       </Link>
     </nav>
   );

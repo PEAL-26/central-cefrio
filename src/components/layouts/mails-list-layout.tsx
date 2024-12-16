@@ -6,6 +6,7 @@ import { RefreshCcwIcon } from 'lucide-react';
 import { Button } from '../ui/button';
 import { MailListingItem } from '../ui/mail-listing-item';
 import { MailListingToolbox } from '../ui/mail-listing-toolbox';
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../ui/resizable';
 
 interface Props {
   type: 'inputs' | 'outputs' | 'contacts';
@@ -26,35 +27,46 @@ export function MailsListingLayout(props: Props) {
   const countStr = count > 99 ? '99+' : count.toString();
 
   return (
-    <div className="flex flex-1">
-      <div className="fixed bottom-6 left-0 top-16 flex h-screen-custom w-60 flex-col border-r border-r-gray-300 shadow">
-        {/* Header */}
-        <div>
-          <div className="flex w-full items-center justify-center gap-2 border-b border-b-gray-200 px-2 text-center">
-            <Button className="p-0 hover:bg-transparent" variant="ghost">
-              <RefreshCcwIcon className="size-4 text-gray-300" />
-            </Button>
-            <span className="text-xs font-bold">{`${title} (${countStr})`}</span>
+    <ResizablePanelGroup
+      autoSaveId="cefrio.resizable.painel"
+      direction="horizontal"
+      className="w-full"
+    >
+      <ResizablePanel defaultSize={15} maxSize={30} minSize={10}>
+        <div className="flex h-screen-custom flex-col border-r border-r-gray-300 shadow">
+          {/* Header */}
+          <div>
+            <div className="flex w-full items-center justify-center gap-2 border-b border-b-gray-200 px-2 text-center">
+              <Button className="p-0 hover:bg-transparent" variant="ghost">
+                <RefreshCcwIcon className="size-4 text-gray-300" />
+              </Button>
+              <span className="text-xs font-bold">{`${title} (${countStr})`}</span>
+            </div>
+            <MailListingToolbox />
           </div>
-          <MailListingToolbox />
+          {/* Listing */}
+          <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+            {Array.from({ length: 100 }).map((_, key) => (
+              <MailListingItem
+                key={key}
+                name={`Nome ${key}`}
+                subject="Assunto"
+                message="Mensagem"
+                select={select === String(key)}
+                read={key % 2 === 0}
+                href={`/mails/${type}/${key}`}
+                onClick={() => setSelect(String(key))}
+              />
+            ))}
+          </div>
         </div>
-        {/* Listing */}
-        <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-          {Array.from({ length: 100 }).map((_, key) => (
-            <MailListingItem
-              key={key}
-              name={`Nome ${key}`}
-              subject="Assunto"
-              message="Mensagem"
-              select={select === String(key)}
-              read={key % 2 === 0}
-              href={`/mails/${type}/${key}`}
-              onClick={() => setSelect(String(key))}
-            />
-          ))}
+      </ResizablePanel>
+      <ResizableHandle withHandle />
+      <ResizablePanel>
+        <div className="flex h-screen-custom flex-1 items-center justify-center overflow-y-auto">
+          {children}
         </div>
-      </div>
-      <div className="flex flex-1 items-center justify-center">{children}</div>
-    </div>
+      </ResizablePanel>
+    </ResizablePanelGroup>
   );
 }

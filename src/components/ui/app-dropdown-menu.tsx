@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from './dropdown-menu';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Props {
   defaultRoute?: string;
@@ -16,7 +16,7 @@ interface Props {
 
 export function AppDropdownMenu(props: Props) {
   const { defaultRoute } = props;
-  const [app, setApp] = useState(() => defaultRoute);
+  const [app, setApp] = useState(defaultRoute);
 
   const selected = {
     mails: 'Emails',
@@ -25,6 +25,11 @@ export function AppDropdownMenu(props: Props) {
   }[app === 'mails' ? 'mails' : app === 'comercial' ? 'comercial' : 'undefined'];
 
   const isLoading = app !== '' && defaultRoute !== app;
+  console.log({ app, defaultRoute });
+
+  useEffect(() => {
+    setApp(defaultRoute);
+  }, [defaultRoute]);
 
   return (
     <DropdownMenu>
