@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, PrismaPromise } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -118,7 +118,7 @@ async function create(input: any) {
 
   const document = invoiceCreate(data);
 
-  let receipt = null;
+  let receipt: PrismaPromise<any> | null = null;
   if (data.type === 'FT' && data?.totalPaid > 0) {
     const receiptData = await prepareData({
       type: 'RE',
@@ -134,9 +134,8 @@ async function create(input: any) {
     receipt = invoiceCreate(receiptData);
   }
 
-  const docs = [document, receipt].filter((d) => d !== null)
-
-  const [documentResponse] = await prisma.$transaction(docs);
+  const docs = [document, receipt].filter((d) => d !== null);
+  const [documentResponse] = await prisma.$transaction(docs as any);
 
   return documentResponse;
 }

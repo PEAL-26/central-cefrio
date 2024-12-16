@@ -1,23 +1,19 @@
 // Injected content via Sentry wizard below
-const { withSentryConfig } = require("@sentry/nextjs");
+const { withSentryConfig } = require('@sentry/nextjs');
 
-const dotenv = require("dotenv");
-const dotenvExpand = require("dotenv-expand");
-
-const myEnv = dotenv.config({ path: ".env" });
-dotenvExpand.expand(myEnv);
+require('dotenv').config();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "**",
+        protocol: 'https',
+        hostname: '**',
       },
       {
-        protocol: "http",
-        hostname: "**",
+        protocol: 'http',
+        hostname: '**',
       },
     ],
   },
@@ -25,12 +21,12 @@ const nextConfig = {
     config.module.rules.push(
       {
         test: /\.svg$/,
-        use: ["@svgr/webpack"],
+        use: ['@svgr/webpack'],
       },
       {
         test: /\.hbs$/i,
-        use: "raw-loader",
-      }
+        use: 'raw-loader',
+      },
     );
     config.plugins.push();
     return config;
@@ -40,18 +36,20 @@ const nextConfig = {
   },
 };
 
-// module.exports = withSentryConfig(nextConfig, {
-//   org: "pealsystems",
-//   project: "cefrio-invoice",
-//   silent: !process.env.CI,
-//   widenClientFileUpload: true,
-//   reactComponentAnnotation: {
-//     enabled: true,
-//   },
-//   tunnelRoute: "/monitoring",
-//   hideSourceMaps: true,
-//   disableLogger: true,
-//   automaticVercelMonitors: true,
-// });
-
-module.exports = nextConfig;
+if (process.env.SENTRY_ENABLE === 'true') {
+  module.exports = withSentryConfig(nextConfig, {
+    org: process.env.SENTRY_ORGANIZATION,
+    project: process.env.SENTRY_PROJECT,
+    silent: !process.env.CI,
+    widenClientFileUpload: true,
+    reactComponentAnnotation: {
+      enabled: true,
+    },
+    tunnelRoute: '/monitoring',
+    hideSourceMaps: true,
+    disableLogger: true,
+    automaticVercelMonitors: true,
+  });
+} else {
+  module.exports = nextConfig;
+}

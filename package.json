@@ -67,6 +67,7 @@
     "react-hook-form": "^7.51.4",
     "react-loading": "^2.0.3",
     "react-pdf-html": "^2.1.2",
+    "react-resizable-panels": "^2.1.7",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
