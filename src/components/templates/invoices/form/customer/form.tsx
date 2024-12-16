@@ -1,8 +1,8 @@
 import {
   CreateEditCustomerForm,
   useCustomerCreateEdit,
-} from "@/components/modals/customer-create-edit-dialog";
-import { Button } from "@/components/ui/button";
+} from '@/components/modals/customer-create-edit-dialog';
+import { Button } from '@/components/ui/button';
 
 interface CustomerFormProps {
   onSubmitted?(customerId: string): void;
@@ -13,7 +13,7 @@ export function CustomerForm(props: CustomerFormProps) {
   const { onBack, onSubmitted } = props;
   const { form, onSubmit, isLoading, isPending } = useCustomerCreateEdit({
     onSubmitted(customer) {
-      onSubmitted?.(customer?.id || "");
+      onSubmitted?.(customer?.id || '');
     },
   });
 
@@ -24,12 +24,12 @@ export function CustomerForm(props: CustomerFormProps) {
       formClassName="grid-cols-1 w-full p-4"
       addInvoice
     >
-      <div className="col-span-2 gap-2 flex justify-center items-center pb-4">
+      <div className="col-span-2 flex items-center justify-center gap-2 pb-4">
         <Button
           disabled={isLoading || isPending}
           variant="link"
           onClick={onBack}
-          className='hover:no-underline'
+          className="hover:no-underline"
         >
           Voltar
         </Button>

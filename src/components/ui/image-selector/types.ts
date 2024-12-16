@@ -1,11 +1,11 @@
-import { FieldName, FieldValues, UseFormReturn } from "react-hook-form";
+import { FieldName, FieldValues, UseFormReturn } from 'react-hook-form';
 
 export interface FileCustom extends File {
   preview: string;
 }
 
 export interface ImageSelectorProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "form" | "name"> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'form' | 'name'> {
   maxSize?: number;
   defaultFiles?: FileCustom[];
   name?: FieldName<FieldValues>;
@@ -15,10 +15,10 @@ export interface ImageSelectorProps
 
 export const acceptedFileTypes = {
   image: {
-    "image/png": [],
-    "image/jpeg": [],
+    'image/png': [],
+    'image/jpeg': [],
   },
   file: {
-    "application/pdf": [],
+    'application/pdf': [],
   },
 };

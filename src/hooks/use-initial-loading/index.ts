@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-export function useInitialLoading(){
-    const [isReady, setIsReady] = useState(false)
-    
-    useEffect(() => {
-        setIsReady(true)
-    }, [])
+export function useInitialLoading() {
+  const [isReady, setIsReady] = useState(false);
 
-    return isReady
+  useEffect(() => {
+    setIsReady(true);
+  }, []);
+
+  return isReady;
 }

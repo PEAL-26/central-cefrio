@@ -1,4 +1,4 @@
-import "next-auth";
+import 'next-auth';
 
 export type UserType = {
   id: string;
@@ -9,16 +9,16 @@ export type UserType = {
 };
 
 export enum USER_ROLE {
-  ADMIN = "ADMIN",
+  ADMIN = 'ADMIN',
 }
 
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session {
     user: UserType;
   }
 }
 
-declare module "next-auth/jwt" {
+declare module 'next-auth/jwt' {
   interface JWT {
     role: USER_ROLE;
   }

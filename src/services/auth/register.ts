@@ -1,4 +1,4 @@
-import { api } from "@/libs/axios";
+import { api } from '@/libs/axios';
 
 export type RegisterRequestData = {
   name?: string;

@@ -1,15 +1,15 @@
-import { z } from "zod";
-import { Prisma } from "@prisma/client";
-import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
-import { END_CONSUMER } from "@/constants/customer";
+import { END_CONSUMER } from '@/constants/customer';
 
-import { prisma } from "../../../libs/prisma";
-import { getAllParams } from "../../../helpers/search-params";
-import { responseError } from "../../../helpers/response/route-response";
-import { paginationData, setPagination } from "../../../helpers/pagination";
+import { paginationData, setPagination } from '../../../helpers/pagination';
+import { responseError } from '../../../helpers/response/route-response';
+import { getAllParams } from '../../../helpers/search-params';
+import { prisma } from '../../../libs/prisma';
 
-import { invoiceCreate, prepareData, verify } from "./utils";
+import { invoiceCreate, prepareData, verify } from './utils';
 
 const listParamsSchema = z.object({
   type: z.string().optional(),
@@ -19,12 +19,7 @@ const listParamsSchema = z.object({
 });
 
 export async function GET(req: NextRequest, res: NextResponse) {
-  const {
-    type,
-    q = "",
-    page,
-    size,
-  } = listParamsSchema.parse(getAllParams(req.url));
+  const { type, q = '', page, size } = listParamsSchema.parse(getAllParams(req.url));
   const { limit: take, offset: skip } = setPagination({ size, page });
 
   const queryParams: Prisma.InvoiceWhereInput = {
@@ -32,14 +27,14 @@ export async function GET(req: NextRequest, res: NextResponse) {
       {
         number: {
           contains: q,
-          mode: "insensitive",
+          mode: 'insensitive',
         },
       },
       {
         customer: {
           name: {
             contains: q,
-            mode: "insensitive",
+            mode: 'insensitive',
           },
         },
       },
@@ -48,7 +43,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
           some: {
             productName: {
               contains: q,
-              mode: "insensitive",
+              mode: 'insensitive',
             },
           },
         },
@@ -77,7 +72,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         totalPaid: true,
       },
       where: queryParams,
-      orderBy: [{ createdAt: "desc" }],
+      orderBy: [{ createdAt: 'desc' }],
       skip,
       take,
     }),
@@ -100,7 +95,7 @@ export async function POST(request: NextRequest) {
   try {
     const input = await request.json();
     let invoice = await prisma.invoice.findFirst({
-      where: { id: input?.id || "" },
+      where: { id: input?.id || '' },
     });
 
     if (invoice) {
@@ -124,9 +119,9 @@ async function create(input: any) {
   const document = invoiceCreate(data);
 
   let receipt = null;
-  if (data.type === "FT" && data?.totalPaid > 0) {
+  if (data.type === 'FT' && data?.totalPaid > 0) {
     const receiptData = await prepareData({
-      type: "RE",
+      type: 'RE',
       customerId: input.customerId,
       date: input.date,
       dueDate: input.date,
@@ -139,9 +134,9 @@ async function create(input: any) {
     receipt = invoiceCreate(receiptData);
   }
 
-  const [documentResponse] = await prisma.$transaction(
-    [document, receipt].filter((d) => d !== null)
-  );
+  const docs = [document, receipt].filter((d) => d !== null)
+
+  const [documentResponse] = await prisma.$transaction(docs);
 
   return documentResponse;
 }

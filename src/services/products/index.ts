@@ -1,5 +1,5 @@
-import { crud } from "@/libs/axios";
-import { ListRequestParams } from "@/types";
+import { crud } from '@/libs/axios';
+import { ListRequestParams } from '@/types';
 
 export interface ProductListResponseData {
   id: string;
@@ -35,4 +35,4 @@ export const productService = crud<
   ProductListResponseData,
   ProductParams,
   ProductData
->({ route: "products" });
+>({ route: 'products' });

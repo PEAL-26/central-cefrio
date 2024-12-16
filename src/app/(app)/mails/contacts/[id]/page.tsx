@@ -1,9 +1,6 @@
-import { Loading } from "@/components/ui/loading";
-import { getItemCached } from "@/helpers/cache";
-import { invoiceService } from "@/services/invoices";
-import { Metadata, ResolvingMetadata } from "next";
-import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import { Loading } from '@/components/ui/loading';
+import { Metadata, ResolvingMetadata } from 'next';
+import { Suspense } from 'react';
 
 interface Props {
   params: { id: string };
@@ -11,7 +8,7 @@ interface Props {
 
 export async function generateMetadata(
   { params }: Props,
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const id = params.id;
 

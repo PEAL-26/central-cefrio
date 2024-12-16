@@ -1,5 +1,5 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,10 +9,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { getFirstAndLastNameInitials } from "@/helpers/string";
-import { useSession, signOut } from "next-auth/react";
-import Link from "next/link";
+} from '@/components/ui/dropdown-menu';
+import { getFirstAndLastNameInitials } from '@/helpers/string';
+import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 interface Props {
   route: string;
@@ -28,21 +28,15 @@ export function UserNav(props: Props) {
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-9 w-9">
             <AvatarImage src={data?.user?.picture} alt="user" />
-            <AvatarFallback>
-              {getFirstAndLastNameInitials(data?.user?.name || "")}
-            </AvatarFallback>
+            <AvatarFallback>{getFirstAndLastNameInitials(data?.user?.name || '')}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">
-              {data?.user?.name}
-            </p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {data?.user?.email}
-            </p>
+            <p className="text-sm font-medium leading-none">{data?.user?.name}</p>
+            <p className="text-muted-foreground text-xs leading-none">{data?.user?.email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -55,9 +49,7 @@ export function UserNav(props: Props) {
           </DropdownMenuItem> */}
 
           <DropdownMenuItem asChild>
-            <Link href={`${route ? `/${route}` : ""}/settings`}>
-              Configurações
-            </Link>
+            <Link href={`${route ? `/${route}` : ''}/settings`}>Configurações</Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />

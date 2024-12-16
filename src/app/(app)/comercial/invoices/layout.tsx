@@ -1,4 +1,4 @@
-import { InvoiceProvider } from "@/contexts/invoice-context";
+import { InvoiceProvider } from '@/contexts/invoice-context';
 
 export default function InvoiceLayout({
   children,

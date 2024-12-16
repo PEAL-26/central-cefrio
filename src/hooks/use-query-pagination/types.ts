@@ -1,4 +1,4 @@
-import { QueryMeta } from "@tanstack/react-query";
+import { QueryMeta } from '@tanstack/react-query';
 
 export interface ListRequestParams {
   page?: string;
@@ -23,12 +23,9 @@ export interface QueryPaginationProps<D, R = ListResponseData<D>> {
   disableFetch?: boolean;
 }
 
-type FetchDirection = "forward" | "backward";
+type FetchDirection = 'forward' | 'backward';
 
-export type QueryFn<
-  TQueryKey extends QueryKey = QueryKey,
-  TPageParam = number
-> = {
+export type QueryFn<TQueryKey extends QueryKey = QueryKey, TPageParam = number> = {
   queryKey: TQueryKey;
   signal: AbortSignal;
   pageParam: TPageParam;

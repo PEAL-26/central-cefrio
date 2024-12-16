@@ -1,24 +1,19 @@
-"use client";
+'use client';
 
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  ColumnDefProps,
-  DataTableColumnHeader,
-} from "@/components/ui/data-table";
-import { CustomerListResponseData } from "@/services/customers";
+import { Checkbox } from '@/components/ui/checkbox';
+import { ColumnDefProps, DataTableColumnHeader } from '@/components/ui/data-table';
+import { CustomerListResponseData } from '@/services/customers';
 
-import { DataTableRowActions } from "./data-table-row-actions";
+import { DataTableRowActions } from './data-table-row-actions';
 
 interface ColumnProps {
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
 }
 
-export const columns = (
-  props?: ColumnProps
-): ColumnDefProps<CustomerListResponseData>[] => [
+export const columns = (props?: ColumnProps): ColumnDefProps<CustomerListResponseData>[] => [
   {
-    id: "select",
+    id: 'select',
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
@@ -39,60 +34,50 @@ export const columns = (
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Nome" />
-    ),
+    accessorKey: 'name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Nome" />,
     cell: ({ row }) => (
-      <div className="max-w-[500px] truncate font-medium">
-        {row.getValue("name")}
-      </div>
+      <div className="max-w-[500px] truncate font-medium">{row.getValue('name')}</div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "taxpayer",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Contribuinte" />
-    ),
+    accessorKey: 'taxpayer',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Contribuinte" />,
     cell: ({ row }) => {
       return (
         <div>
-          <span> {row.getValue("taxpayer")}</span>
+          <span> {row.getValue('taxpayer')}</span>
         </div>
       );
     },
   },
   {
-    accessorKey: "telephone",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Telefone" />
-    ),
+    accessorKey: 'telephone',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Telefone" />,
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
-          <span className="">{row.getValue("telephone")}</span>
+          <span className="">{row.getValue('telephone')}</span>
         </div>
       );
     },
   },
   {
-    accessorKey: "email",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
-    ),
+    accessorKey: 'email',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
     cell: ({ row }) => {
       return (
         <div className="flex items-center">
-          <span>{row.getValue("email")}</span>
+          <span>{row.getValue('email')}</span>
         </div>
       );
     },
   },
   {
-    id: "actions",
-    className: "w-[1%]",
+    id: 'actions',
+    className: 'w-[1%]',
     cell: ({ row }) => <DataTableRowActions row={row} actions={props} />,
   },
 ];

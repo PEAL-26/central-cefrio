@@ -1,7 +1,7 @@
-import { useFormContext } from "react-hook-form";
-import { InvoiceSchemaType } from "../schema";
-import { invoiceService } from "@/services/invoices";
-import { formatNumberWithLeadingZeros } from "@/helpers/string";
+import { formatNumberWithLeadingZeros } from '@/helpers/string';
+import { invoiceService } from '@/services/invoices';
+import { useFormContext } from 'react-hook-form';
+import { InvoiceSchemaType } from '../schema';
 
 export function useDocumentSettings() {
   const form = useFormContext<InvoiceSchemaType>();
@@ -13,10 +13,7 @@ export function useDocumentSettings() {
 
     const invoiceLength = response.data.length;
 
-    form.setValue(
-      "number",
-      `${documentType} ${formatNumberWithLeadingZeros(invoiceLength + 1)}`
-    );
+    form.setValue('number', `${documentType} ${formatNumberWithLeadingZeros(invoiceLength + 1)}`);
   };
 
   return { form, updateDocumentNumber };

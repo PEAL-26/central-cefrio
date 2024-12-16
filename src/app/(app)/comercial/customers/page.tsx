@@ -1,9 +1,9 @@
-import { Suspense } from "react";
-import { ListCustomers } from "@/components/templates/customers";
-import { Loading } from "@/components/ui/loading";
+import { ListCustomers } from '@/components/templates/customers';
+import { Loading } from '@/components/ui/loading';
+import { Suspense } from 'react';
 
 export const metadata = {
-  title: "Clientes",
+  title: 'Clientes',
 };
 
 export default function CustomersPage() {

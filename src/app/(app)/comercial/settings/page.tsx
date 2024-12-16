@@ -1,9 +1,9 @@
-import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation';
 
 export const metadata = {
-  title: "Configurações",
+  title: 'Configurações',
 };
 
 export default function SettingsPage() {
-  return redirect("/comercial/settings/company");
+  return redirect('/comercial/settings/company');
 }

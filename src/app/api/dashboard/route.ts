@@ -1,20 +1,7 @@
-import { prisma } from "../../../libs/prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '../../../libs/prisma';
 
-const MONTH = [
-  "JAN",
-  "FEV",
-  "MAR",
-  "ABR",
-  "MAI",
-  "JUN",
-  "JUL",
-  "AGO",
-  "SET",
-  "OUT",
-  "NOV",
-  "DEZ",
-];
+const MONTH = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
 
 const getMonthIndex = (month: string) => {
   return MONTH.findIndex((m) => m === month);
@@ -27,15 +14,15 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const [customers, products, invoices, monthly] = await Promise.all([
     prisma.customer.count(),
     prisma.product.count(),
-    prisma.invoice.count({ where: { type: "FT" } }),
+    prisma.invoice.count({ where: { type: 'FT' } }),
     prisma.invoice.findMany({
       where: {
-        OR: [{ type: "FT" }, { type: "FR" }, { type: "RE" }],
+        OR: [{ type: 'FT' }, { type: 'FR' }, { type: 'RE' }],
         createdAt: {
           gte: sixMonthsAgo,
         },
       },
-      orderBy: [{ type: "asc" }],
+      orderBy: [{ type: 'asc' }],
       include: {
         payments: true,
       },
@@ -49,16 +36,12 @@ export async function GET(req: NextRequest, res: NextResponse) {
   monthly.forEach((doc) => {
     const month = MONTH[new Date(doc.date).getMonth()];
 
-    if (doc.type === "FT") {
-      invoice[month] =
-        (invoice[month] || 0) + (doc.total ? Number(doc.total) : 0);
+    if (doc.type === 'FT') {
+      invoice[month] = (invoice[month] || 0) + (doc.total ? Number(doc.total) : 0);
     }
 
-    if (["FR", "RE"].includes(doc.type)) {
-      const totalPayments = doc.payments.reduce(
-        (total, item) => total + Number(item.amount),
-        0
-      );
+    if (['FR', 'RE'].includes(doc.type)) {
+      const totalPayments = doc.payments.reduce((total, item) => total + Number(item.amount), 0);
       payment[month] = (payment[month] || 0) + totalPayments;
     }
   });
@@ -89,20 +72,17 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
   if (invoiceData.length) {
     monthlyInvoices.push({
-      id: "Invoices",
+      id: 'Invoices',
       data: invoiceData,
     });
   }
 
   if (paymentData.length) {
     monthlyInvoices.push({
-      id: "Payments",
+      id: 'Payments',
       data: paymentData,
     });
   }
 
-  return NextResponse.json(
-    { customers, invoices, products, monthlyInvoices },
-    { status: 200 }
-  );
+  return NextResponse.json({ customers, invoices, products, monthlyInvoices }, { status: 200 });
 }

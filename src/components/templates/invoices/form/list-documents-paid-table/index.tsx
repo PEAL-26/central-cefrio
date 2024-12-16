@@ -1,15 +1,9 @@
-import {
-  TableHead,
-  TableRow,
-  TableHeader,
-  TableBody,
-  Table,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { TableItemRow } from "./table-item-row";
-import { useFieldArray, useFormContext } from "react-hook-form";
-import { InvoiceSchemaType } from "../schema";
-import { useInvoiceUpdateTotal } from "../use-invoice-update-total";
+import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import { InvoiceSchemaType } from '../schema';
+import { useInvoiceUpdateTotal } from '../use-invoice-update-total';
+import { TableItemRow } from './table-item-row';
 
 export function ListDocumentsPaidTable() {
   const { control } = useFormContext<InvoiceSchemaType>();
@@ -17,7 +11,7 @@ export function ListDocumentsPaidTable() {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "documents",
+    name: 'documents',
     rules: {
       minLength: 1,
     },
@@ -31,7 +25,7 @@ export function ListDocumentsPaidTable() {
 
   const handleAppend = () => {
     append({
-      documentId: "",
+      documentId: '',
       total: 0,
       paid: 0,
     });
@@ -39,7 +33,7 @@ export function ListDocumentsPaidTable() {
 
   return (
     <div>
-      <h2 className="text-lg font-semibold mb-4">Itens</h2>
+      <h2 className="mb-4 text-lg font-semibold">Itens</h2>
       <Table>
         <TableHeader>
           <TableRow>
@@ -51,21 +45,11 @@ export function ListDocumentsPaidTable() {
         </TableHeader>
         <TableBody>
           {fields.map((item, index) => (
-            <TableItemRow
-              index={index}
-              key={index}
-              remove={() => handleRemove(item.id)}
-            />
+            <TableItemRow index={index} key={index} remove={() => handleRemove(item.id)} />
           ))}
         </TableBody>
       </Table>
-      <Button
-        onClick={handleAppend}
-        className="mt-4"
-        size="sm"
-        variant="outline"
-        type="button"
-      >
+      <Button onClick={handleAppend} className="mt-4" size="sm" variant="outline" type="button">
         Adicionar Item
       </Button>
     </div>

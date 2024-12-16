@@ -1,18 +1,18 @@
-"use client";
-import { Loader2 } from "lucide-react";
+'use client';
+import { Loader2 } from 'lucide-react';
 
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/dialog';
 
-import { CreateEditCustomerForm } from "./form";
-import { useCustomerCreateEdit } from "./use-dialog";
-import { CustomerCreateEditDialogProps } from "./types";
+import { CreateEditCustomerForm } from './form';
+import { CustomerCreateEditDialogProps } from './types';
+import { useCustomerCreateEdit } from './use-dialog';
 
 export function CreateEditCustomerDialog(props: CustomerCreateEditDialogProps) {
   const { id, open, onClose } = props;
@@ -26,9 +26,7 @@ export function CreateEditCustomerDialog(props: CustomerCreateEditDialogProps) {
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            {id ? "Alterar cliente" : "Adicionar cliente"}
-          </DialogTitle>
+          <DialogTitle>{id ? 'Alterar cliente' : 'Adicionar cliente'}</DialogTitle>
         </DialogHeader>
         <CreateEditCustomerForm
           form={form}
@@ -38,14 +36,12 @@ export function CreateEditCustomerDialog(props: CustomerCreateEditDialogProps) {
         >
           <DialogFooter className="flex lg:items-center lg:justify-center">
             <Button
-              variant={"default"}
+              variant={'default'}
               className="gap-2 text-white"
               type="submit"
               disabled={isPending || isLoading}
             >
-              {(isPending || isLoading) && (
-                <Loader2 className="size-3 animate-spin" />
-              )}
+              {(isPending || isLoading) && <Loader2 className="size-3 animate-spin" />}
               Guardar
             </Button>
           </DialogFooter>

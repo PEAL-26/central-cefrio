@@ -1,11 +1,10 @@
-"use client";
-import Link from "next/link";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { FormProvider } from "react-hook-form";
-import { useLogin } from "./use-login";
-import { InputFormFieldControl } from "@/components/ui/form-fields";
+import { Button } from '@/components/ui/button';
+import { InputFormFieldControl } from '@/components/ui/form-fields';
+import { Loader2 } from 'lucide-react';
+import { FormProvider } from 'react-hook-form';
+import { useLogin } from './use-login';
 
 interface Props {
   csrfToken?: string;
@@ -49,7 +48,7 @@ export function LoginScreenComponent(props: Props) {
           </Link>
         </div> */}
         <Button disabled={isLoading} type="submit">
-          {isLoading && <Loader2 className="animate-spin size-4 mr-2" />}
+          {isLoading && <Loader2 className="mr-2 size-4 animate-spin" />}
           Entrar
         </Button>
       </form>

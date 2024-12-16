@@ -1,12 +1,12 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { type LoginSchema, loginSchema } from "./schema";
-import { toastResponseError, toastResponseRegisterSuccess } from "@/helpers/response/response";
-import { UNAUTHORIZED_MESSAGE } from "@/helpers/response/messages";
+import { UNAUTHORIZED_MESSAGE } from '@/helpers/response/messages';
+import { toastResponseError, toastResponseRegisterSuccess } from '@/helpers/response/response';
+import { loginSchema, type LoginSchema } from './schema';
 
 export function useLogin() {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,8 +14,8 @@ export function useLogin() {
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
@@ -25,7 +25,7 @@ export function useLogin() {
     try {
       setIsLoading(true);
 
-      const res = await signIn("credentials", {
+      const res = await signIn('credentials', {
         email: data.email,
         password: data.password,
         redirect: false,
@@ -36,8 +36,8 @@ export function useLogin() {
         return;
       }
 
-      toastResponseRegisterSuccess("Login feito com sucesso.");
-      router.replace(res.url || "/");
+      toastResponseRegisterSuccess('Login feito com sucesso.');
+      router.replace(res.url || '/');
     } catch (error) {
       toastResponseError(error);
     } finally {

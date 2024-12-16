@@ -1,37 +1,28 @@
-import { Control, FieldValues, Path } from "react-hook-form";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../form";
-import { Checkbox } from "../checkbox";
+import { Control, FieldValues, Path } from 'react-hook-form';
+import { Checkbox } from '../checkbox';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../form';
 
-interface Props<
-  TFieldValues extends FieldValues = FieldValues,
-  TContext = any
-> {
+interface Props<TFieldValues extends FieldValues = FieldValues, TContext = any> {
   label?: string;
   isLoading?: boolean;
   control?: Control<TFieldValues, TContext>;
   name: Path<TFieldValues>;
-  align?: "left" | "right";
+  align?: 'left' | 'right';
 }
 
 export function CheckboxFormFieldControl<
   TFieldValues extends FieldValues = FieldValues,
-  TContext = any
+  TContext = any,
 >(props: Props<TFieldValues, TContext>) {
-  const { label, isLoading, control, name, align = "left" } = props;
+  const { label, isLoading, control, name, align = 'left' } = props;
 
   return (
     <FormField
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="w-full gap-2 items-center flex">
-          {label && align === "right" && (
+        <FormItem className="flex w-full items-center gap-2">
+          {label && align === 'right' && (
             <FormLabel className="mt-0" style={{ marginTop: 0 }}>
               {label}
             </FormLabel>
@@ -43,7 +34,7 @@ export function CheckboxFormFieldControl<
               onCheckedChange={(checked) => field.onChange(checked)}
             />
           </FormControl>
-          {label && align === "left" && (
+          {label && align === 'left' && (
             <FormLabel className="mt-0" style={{ marginTop: 0 }}>
               {label}
             </FormLabel>

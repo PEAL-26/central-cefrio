@@ -1,36 +1,36 @@
-"use client";
-import { useState } from "react";
+'use client';
+import { useState } from 'react';
 // import { useState } from "next";
-import { RefreshCcwIcon } from "lucide-react";
+import { RefreshCcwIcon } from 'lucide-react';
 
-import { Button } from "../ui/button";
-import { MailListingToolbox } from "../ui/mail-listing-toolbox";
-import { MailListingItem } from "../ui/mail-listing-item";
+import { Button } from '../ui/button';
+import { MailListingItem } from '../ui/mail-listing-item';
+import { MailListingToolbox } from '../ui/mail-listing-toolbox';
 
 interface Props {
-  type: "inputs" | "outputs" | "contacts";
+  type: 'inputs' | 'outputs' | 'contacts';
   children: React.ReactNode;
 }
 
 export function MailsListingLayout(props: Props) {
   const { type, children } = props;
-  const [select, setSelect] = useState("");
+  const [select, setSelect] = useState('');
 
   const title = {
-    inputs: "Caixa de Entrada",
-    outputs: "Caixa de Saída",
-    contacts: "Contactos",
+    inputs: 'Caixa de Entrada',
+    outputs: 'Caixa de Saída',
+    contacts: 'Contactos',
   }[type];
 
   const count = 100;
-  const countStr = count > 99 ? "99+" : count.toString();
+  const countStr = count > 99 ? '99+' : count.toString();
 
   return (
     <div className="flex flex-1">
-      <div className="flex flex-col w-60 border-r border-r-gray-300 shadow h-screen-custom top-16 bottom-6 fixed left-0">
+      <div className="fixed bottom-6 left-0 top-16 flex h-screen-custom w-60 flex-col border-r border-r-gray-300 shadow">
         {/* Header */}
         <div>
-          <div className="text-center px-2 border-b border-b-gray-200 w-full flex items-center gap-2 justify-center">
+          <div className="flex w-full items-center justify-center gap-2 border-b border-b-gray-200 px-2 text-center">
             <Button className="p-0 hover:bg-transparent" variant="ghost">
               <RefreshCcwIcon className="size-4 text-gray-300" />
             </Button>
@@ -39,7 +39,7 @@ export function MailsListingLayout(props: Props) {
           <MailListingToolbox />
         </div>
         {/* Listing */}
-        <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+        <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
           {Array.from({ length: 100 }).map((_, key) => (
             <MailListingItem
               key={key}
@@ -54,7 +54,7 @@ export function MailsListingLayout(props: Props) {
           ))}
         </div>
       </div>
-      <div className="flex justify-center items-center flex-1">{children}</div>
+      <div className="flex flex-1 items-center justify-center">{children}</div>
     </div>
   );
 }

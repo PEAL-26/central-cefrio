@@ -1,16 +1,14 @@
-import { responseError } from "@/helpers/response/route-response";
-import { prisma } from "@/libs/prisma";
-import { createHash } from "crypto";
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import { responseError } from '@/helpers/response/route-response';
+import { prisma } from '@/libs/prisma';
+import { createHash } from 'crypto';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
 const loginSchema = z.object({
-  email: z
-    .string({ required_error: "Campo Obrigatório." })
-    .email({ message: "Email inválido." }),
+  email: z.string({ required_error: 'Campo Obrigatório.' }).email({ message: 'Email inválido.' }),
   password: z
-    .string({ required_error: "Campo Obrigatória" })
-    .min(1, { message: "Campo Obrigatória" }),
+    .string({ required_error: 'Campo Obrigatória' })
+    .min(1, { message: 'Campo Obrigatória' }),
 });
 
 export async function POST(req: NextRequest) {
@@ -30,7 +28,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (user && user.passwordHash === hashPassword(password)) {
-      return NextResponse.json(exclude(user, ["passwordHash"]), {
+      return NextResponse.json(exclude(user, ['passwordHash']), {
         status: 200,
       });
     }
@@ -40,11 +38,11 @@ export async function POST(req: NextRequest) {
         errors: [
           {
             message:
-              "Acesso não autorizado, verifique suas credenciais. Se você continuar a ter problemas, entre em contacto com o suporte ou tente mais tarde.",
+              'Acesso não autorizado, verifique suas credenciais. Se você continuar a ter problemas, entre em contacto com o suporte ou tente mais tarde.',
           },
         ],
       },
-      { status: 401 }
+      { status: 401 },
     );
   } catch (error) {
     return responseError(error);
@@ -59,5 +57,5 @@ function exclude(user: any, keys: string[]) {
 }
 
 function hashPassword(value: string) {
-  return createHash("sha256").update(value).digest("base64");
+  return createHash('sha256').update(value).digest('base64');
 }

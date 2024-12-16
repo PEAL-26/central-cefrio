@@ -1,28 +1,23 @@
-"use client";
-import Link from "next/link";
-import { DataTable } from "@/components/ui/data-table";
+'use client';
+import { DataTable } from '@/components/ui/data-table';
+import Link from 'next/link';
 
-import { columns } from "./columns";
-import { useList } from "./use-list";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from '@/components/ui/button';
+import { columns } from './columns';
+import { useList } from './use-list';
 
 export function ListInvoices() {
   const { response, handleDelete } = useList();
 
   return (
-    <div className="flex-col space-y-8 flex h-full">
+    <div className="flex h-full flex-col space-y-8">
       <div className="flex items-center justify-between space-y-2">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Documentos</h2>
-          <p className="text-muted-foreground">
-            Listagem de documentos emitidas
-          </p>
+          <p className="text-muted-foreground">Listagem de documentos emitidas</p>
         </div>
 
-        <Link
-          className={buttonVariants({ variant: "default" })}
-          href="/comercial/invoices/create"
-        >
+        <Link className={buttonVariants({ variant: 'default' })} href="/comercial/invoices/create">
           Emitir
         </Link>
       </div>

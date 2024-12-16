@@ -1,14 +1,10 @@
-import { useState } from "react";
-import { ChevronDownIcon } from "lucide-react";
+import { ChevronDownIcon } from 'lucide-react';
+import { useState } from 'react';
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/libs/utils";
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/libs/utils';
 
-import { PAYMENT_METHODS } from "@/constants/payment-methods";
+import { PAYMENT_METHODS } from '@/constants/payment-methods';
 
 interface PaymentMethodProps {
   method?: string;
@@ -25,24 +21,24 @@ export function PaymentMethod(props: PaymentMethodProps) {
     <Popover modal onOpenChange={setOpen} open={open}>
       <PopoverTrigger
         disabled={disabled}
-        className="flex line-clamp-1 gap-2 justify-between w-full"
+        className="line-clamp-1 flex w-full justify-between gap-2"
       >
         <span
           className={cn(
-            "flex line-clamp-1 whitespace-nowrap text-left w-full",
-            disabled || (!payment?.code && "text-gray-400")
+            'line-clamp-1 flex w-full whitespace-nowrap text-left',
+            disabled || (!payment?.code && 'text-gray-400'),
           )}
         >
-          {payment?.name || "Selecione o método de pagamento"}
+          {payment?.name || 'Selecione o método de pagamento'}
         </span>
         <ChevronDownIcon className="text-gray-400" />
       </PopoverTrigger>
       <PopoverContent align="end" className="w-full">
-        <div className="flex flex-col w-full">
+        <div className="flex w-full flex-col">
           {PAYMENT_METHODS.map((payment, key) => (
             <span
               key={key}
-              className="hover:bg-gray-100 p-1 pr-14 rounded cursor-pointer"
+              className="cursor-pointer rounded p-1 pr-14 hover:bg-gray-100"
               onClick={() => {
                 onSelect?.(payment.code);
                 setOpen(false);

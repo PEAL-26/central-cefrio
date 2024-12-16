@@ -1,20 +1,19 @@
-"use client";
-import { useState } from "react";
-import { FormProvider } from "react-hook-form";
+'use client';
+import { FormProvider } from 'react-hook-form';
 
+import { Button } from '@/components/ui/button';
 import {
-  DialogTitle,
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { InvoicePaymentsComponent } from "@/components/ui/payments";
-import { useAddPayment } from "./use-add-payment";
-import { ReactLoading } from "@/libs/react-loading";
-import { Loader2Icon } from "lucide-react";
-import { useInitialLoading } from "@/hooks/use-initial-loading";
+} from '@/components/ui/dialog';
+import { InvoicePaymentsComponent } from '@/components/ui/payments';
+import { useInitialLoading } from '@/hooks/use-initial-loading';
+import { ReactLoading } from '@/libs/react-loading';
+import { Loader2Icon } from 'lucide-react';
+import { useAddPayment } from './use-add-payment';
 
 interface Props {
   documentId: string;
@@ -31,20 +30,16 @@ export function AddPayment(props: Props) {
     setIsModalOpen,
     handleChangeStateModal: handleClose,
   } = useAddPayment(documentId);
-  const isReady = useInitialLoading()
-  
+  const isReady = useInitialLoading();
+
   if (!isReady) {
-    return null
+    return null;
   }
-  
+
   return (
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogTrigger>
-        <Button
-          variant="default"
-          className=""
-          onClick={() => setIsModalOpen(true)}
-        >
+        <Button variant="default" className="" onClick={() => setIsModalOpen(true)}>
           Adicionar
         </Button>
       </DialogTrigger>
@@ -54,13 +49,8 @@ export function AddPayment(props: Props) {
         </DialogHeader>
         <FormProvider {...form}>
           {isLoadingData && (
-            <div className="flex justify-center items-center h-80">
-              <ReactLoading
-                type="spinningBubbles"
-                color={"#1B3D7A"}
-                height={60}
-                width={60}
-              />
+            <div className="flex h-80 items-center justify-center">
+              <ReactLoading type="spinningBubbles" color={'#1B3D7A'} height={60} width={60} />
             </div>
           )}
           {!isLoadingData && (
@@ -73,7 +63,7 @@ export function AddPayment(props: Props) {
                 paymentsClassName="max-h-[400px] overflow-y-auto px-6 pb-6"
               />
 
-              <div className="flex justify-end gap-2 items-center px-6 pb-4">
+              <div className="flex items-center justify-end gap-2 px-6 pb-4">
                 <Button
                   disabled={isLoading}
                   onClick={handleSubmit}
@@ -85,7 +75,7 @@ export function AddPayment(props: Props) {
                 <Button
                   disabled={isLoading}
                   className="bg-red-500 hover:bg-red-700"
-                  onClick={()=>handleClose(false)}
+                  onClick={() => handleClose(false)}
                 >
                   Cancelar
                 </Button>

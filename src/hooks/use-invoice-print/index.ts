@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import { printJS } from "@/libs/print-js";
-import { invoicePrint } from "@/services/invoices";
-import { toastResponseError } from "@/helpers/response/response";
-import { useAppContext } from "@/contexts";
+import { useAppContext } from '@/contexts';
+import { toastResponseError } from '@/helpers/response/response';
+import { printJS } from '@/libs/print-js';
+import { invoicePrint } from '@/services/invoices';
 
 export function useInvoicePrint() {
   const { loading } = useAppContext();
@@ -39,7 +39,7 @@ export function useInvoicePrint() {
 
       printJS?.({
         printable: response.pdf,
-        type: "pdf",
+        type: 'pdf',
         base64: true,
         showModal: isShowModalPrint,
         onLoadingStart,

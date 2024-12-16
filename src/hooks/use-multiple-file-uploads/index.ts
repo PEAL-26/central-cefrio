@@ -1,5 +1,5 @@
-import { uploads } from "@/services/uploads";
-import { useEffect, useState } from "react";
+import { uploads } from '@/services/uploads';
+import { useEffect, useState } from 'react';
 
 type FormDataCustom = FormData | null;
 
@@ -26,7 +26,7 @@ export function useMultipleFileUploads(props?: { path?: string }) {
           setProgress((prevProgress) => {
             return [...prevProgress, { progress }];
           }),
-        { path: props?.path }
+        { path: props?.path },
       );
 
       result.push(response);

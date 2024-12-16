@@ -1,43 +1,33 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FieldErrors, SubmitErrorHandler, useForm } from "react-hook-form";
-import {
-  INVOICE_SCHEMA_PROPERTY,
-  invoiceSchema,
-  InvoiceSchemaType,
-} from "./schema";
-import {
-  generateResponseError,
-  toastResponseError,
-  toastResponseRegisterSuccess,
-} from "@/helpers/response/response";
-import { useEffect, useState } from "react";
-import { invoiceService } from "@/services/invoices";
-import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { getDocumentTypeNameByCode } from "@/constants/document-types";
-import { addDate, formatDate } from "@/helpers/date";
+import { getDocumentTypeNameByCode } from '@/constants/document-types';
+import { addDate, formatDate } from '@/helpers/date';
+import { generateResponseError, toastResponseRegisterSuccess } from '@/helpers/response/response';
+import { invoiceService } from '@/services/invoices';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { FieldErrors, useForm } from 'react-hook-form';
+import { INVOICE_SCHEMA_PROPERTY, InvoiceSchemaType, invoiceSchema } from './schema';
 
 interface InvoiceFormProps {
   id?: string;
 }
 
 export function useInvoiceForm(props?: InvoiceFormProps) {
-  const { id = "" } = props || {};
+  const { id = '' } = props || {};
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<{ property: string; message: string }[]>(
-    []
-  );
+  const [errors, setErrors] = useState<{ property: string; message: string }[]>([]);
   const [isLoadingPage, setIsLoadingPage] = useState(false);
   const [isNotFound, setIsNotFound] = useState(false);
 
   const form = useForm<InvoiceSchemaType>({
     resolver: zodResolver(invoiceSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       date: new Date(),
-      dueDate: addDate(15, "day"),
-      paymentTerms: "installment",
-      currency: "AOA",
+      dueDate: addDate(15, 'day'),
+      paymentTerms: 'installment',
+      currency: 'AOA',
       subtotal: 0,
       totalDiscount: 0,
       totalIva: 0,
@@ -45,9 +35,9 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
       total: 0,
       items: [
         {
-          name: "",
-          itemId: "",
-          unitMeasure: "UN",
+          name: '',
+          itemId: '',
+          unitMeasure: 'UN',
           discount: 0,
           discountAmount: 0,
           iva: 0,
@@ -64,52 +54,49 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
   const router = useRouter();
 
   const verify = async (data: InvoiceSchemaType) => {
-    const totalPaid =
-      data.payments?.reduce((total, item) => total + item.amount, 0) || 0;
+    const totalPaid = data.payments?.reduce((total, item) => total + item.amount, 0) || 0;
     const total = data.total || 0;
 
-    if (data.type !== "RE" && !data.items?.length) {
+    if (data.type !== 'RE' && !data.items?.length) {
       if (totalPaid === 0) {
-        throw new Error("Insira no mínimo um(1) item no documento");
+        throw new Error('Insira no mínimo um(1) item no documento');
       }
     }
 
-    if (data.type === "RE" && !data.documents?.length) {
+    if (data.type === 'RE' && !data.documents?.length) {
       if (totalPaid === 0) {
-        throw new Error("Insira no mínimo um(1) item no documento");
+        throw new Error('Insira no mínimo um(1) item no documento');
       }
     }
 
-    if (data.type === "RE" || data.type === "FR") {
+    if (data.type === 'RE' || data.type === 'FR') {
       if (totalPaid === 0) {
-        throw new Error("Deve adicionar um pagamento.");
+        throw new Error('Deve adicionar um pagamento.');
       }
     }
-    
-    if (data.type === "FR") {
+
+    if (data.type === 'FR') {
       if (totalPaid < total) {
         throw new Error(
-          "Em documentos Pronto Pagamento o valor pago deve maior ou igual ao valor total."
+          'Em documentos Pronto Pagamento o valor pago deve maior ou igual ao valor total.',
         );
       }
     }
 
-    if (data.type === "FT" && data.paymentTerms === "ready") {
+    if (data.type === 'FT' && data.paymentTerms === 'ready') {
       if (totalPaid === 0) {
-        throw new Error("Deve adicionar um pagamento.");
+        throw new Error('Deve adicionar um pagamento.');
       }
 
       if (totalPaid < total) {
         throw new Error(
-          "Em documentos Pronto Pagamento o valor pago deve ser maior ou igual ao valor total."
+          'Em documentos Pronto Pagamento o valor pago deve ser maior ou igual ao valor total.',
         );
       }
     }
 
-    if (data.paymentTerms === "installment" && !data.customerId) {
-      throw new Error(
-        "Em documentos com pagamento a prazo deve selecionar um cliente"
-      );
+    if (data.paymentTerms === 'installment' && !data.customerId) {
+      throw new Error('Em documentos com pagamento a prazo deve selecionar um cliente');
     }
   };
 
@@ -160,11 +147,11 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
         })),
       });
 
-      queryClient.invalidateQueries({ queryKey: ["invoices"] });
+      queryClient.invalidateQueries({ queryKey: ['invoices'] });
       toastResponseRegisterSuccess(data?.id);
       router.replace(`/comercial/invoices/${response.id}`);
     } catch (error) {
-      setErrors([{ property: "", message: generateResponseError(error) }]);
+      setErrors([{ property: '', message: generateResponseError(error) }]);
     } finally {
       setIsLoading(false);
     }
@@ -177,23 +164,18 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
       if (Array.isArray(error)) {
         for (const errorProperties of error) {
           for (const [errorProperty, errorPropertyError] of Object.entries(
-            errorProperties as any
+            errorProperties as any,
           ) as any) {
             return {
               property:
-                INVOICE_SCHEMA_PROPERTY[
-                  errorProperty as keyof typeof INVOICE_SCHEMA_PROPERTY
-                ],
+                INVOICE_SCHEMA_PROPERTY[errorProperty as keyof typeof INVOICE_SCHEMA_PROPERTY],
               message: errorPropertyError?.message,
             };
           }
         }
       }
       return {
-        property:
-          INVOICE_SCHEMA_PROPERTY[
-            property as keyof typeof INVOICE_SCHEMA_PROPERTY
-          ],
+        property: INVOICE_SCHEMA_PROPERTY[property as keyof typeof INVOICE_SCHEMA_PROPERTY],
         message: error.message,
       };
     });
@@ -212,33 +194,30 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
     }
 
     if (invoice) {
-      form.setValue("id", invoice.id);
-      form.setValue("number", invoice.number);
-      form.setValue("type", invoice.type);
-      form.setValue("customerId", invoice.customer?.id);
-      form.setValue("date", invoice.date);
-      form.setValue("dueDate", invoice.dueDate);
-      form.setValue("currency", invoice.currency);
-      form.setValue("exchange", invoice.exchange);
-      form.setValue("paymentTerms", invoice.paymentTerms);
-      form.setValue("observation", invoice.observation);
-      form.setValue("reference", invoice.reference);
-      form.setValue("totalWithholdingTax", invoice.totalWithholdingTax);
-      form.setValue("withholdingTax.type", invoice.withholdingTaxType);
+      form.setValue('id', invoice.id);
+      form.setValue('number', invoice.number);
+      form.setValue('type', invoice.type);
+      form.setValue('customerId', invoice.customer?.id);
+      form.setValue('date', invoice.date);
+      form.setValue('dueDate', invoice.dueDate);
+      form.setValue('currency', invoice.currency);
+      form.setValue('exchange', invoice.exchange);
+      form.setValue('paymentTerms', invoice.paymentTerms);
+      form.setValue('observation', invoice.observation);
+      form.setValue('reference', invoice.reference);
+      form.setValue('totalWithholdingTax', invoice.totalWithholdingTax);
+      form.setValue('withholdingTax.type', invoice.withholdingTaxType);
+      form.setValue('withholdingTax.percentage', invoice.withholdingTaxPercentage);
+      form.setValue('generalDiscount', invoice.generalDiscount);
+      form.setValue('subtotal', invoice.subtotal);
+      form.setValue('totalIva', invoice.totalIva);
+      form.setValue('totalDiscount', invoice.totalDiscount);
+      form.setValue('total', invoice.total);
       form.setValue(
-        "withholdingTax.percentage",
-        invoice.withholdingTaxPercentage
-      );
-      form.setValue("generalDiscount", invoice.generalDiscount);
-      form.setValue("subtotal", invoice.subtotal);
-      form.setValue("totalIva", invoice.totalIva);
-      form.setValue("totalDiscount", invoice.totalDiscount);
-      form.setValue("total", invoice.total);
-      form.setValue(
-        "items",
+        'items',
         invoice?.products?.map((prod) => ({
-          itemId: prod.id || "",
-          productId: prod.product.id || "",
+          itemId: prod.id || '',
+          productId: prod.product.id || '',
           name: prod.product.name,
           unitMeasure: prod.product.unitMeasure,
           quantity: prod.quantity,
@@ -248,20 +227,20 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
           iva: prod.iva,
           ivaAmount: prod.ivaAmount,
           total: prod.total,
-        }))
+        })),
       );
       form.setValue(
-        "payments",
+        'payments',
         invoice.payments?.map((payment) => ({
-          paymentId: payment.id || "",
+          paymentId: payment.id || '',
           date: payment.date,
           method: payment.method,
           amount: payment.amount,
           observation: payment.observation,
-        }))
+        })),
       );
       form.setValue(
-        "documents",
+        'documents',
         invoice.documents?.map((doc) => ({
           itemId: doc.id,
           customerId: doc.document.customer.id,
@@ -271,17 +250,17 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
           documentId: doc.document.id,
           total: doc.document.total || 0,
           paid: doc.paid || 0,
-        })) || []
+        })) || [],
       );
       form.setValue(
-        "taxes",
+        'taxes',
         invoice.taxes?.map((tax) => ({
           taxId: tax.id,
           value: tax.value,
           amount: tax.amount,
           incidence: tax.incidence,
           observation: tax.observation,
-        }))
+        })),
       );
     }
   };

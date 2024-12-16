@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { ItemSearchProps } from "./types";
-import { useInvoiceUpdateTotal } from "../../use-invoice-update-total";
-import { ProductListResponseData } from "@/services/products";
+import { ProductListResponseData } from '@/services/products';
+import { useState } from 'react';
+import { useInvoiceUpdateTotal } from '../../use-invoice-update-total';
+import { ItemSearchProps } from './types';
 
 export function useInputSearch(props: ItemSearchProps) {
   const { form, index } = props;
@@ -11,7 +11,7 @@ export function useInputSearch(props: ItemSearchProps) {
   const [add, setAdd] = useState(false);
 
   const handleSelect = (data: ProductListResponseData) => {
-    const items = form.getValues("items");
+    const items = form.getValues('items');
     const itemFound = items.find(({ productId }: any) => productId === data.id);
 
     if (itemFound) {
@@ -22,7 +22,7 @@ export function useInputSearch(props: ItemSearchProps) {
     form.setValue(`items.${index}.productId`, data.id);
     form.setValue(`items.${index}.name`, data.name);
     form.setValue(`items.${index}.price`, data.price ?? 0);
-    form.setValue(`items.${index}.unitMeasure`, data.unitMeasure || "un");
+    form.setValue(`items.${index}.unitMeasure`, data.unitMeasure || 'un');
     form.setValue(`items.${index}.iva`, data.iva ?? 0);
 
     updateTotal(index);

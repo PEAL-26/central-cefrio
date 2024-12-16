@@ -1,11 +1,11 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useEffect, useState } from "react";
-import { ResumeTax } from "./tax";
-import { WithholdingTax } from "./withholding-tax";
-import { useInvoiceUpdateTotal } from "../use-invoice-update-total";
-import { formatCurrency } from "@/helpers/currency";
-import { DOCUMENTS_WITH_PAYMENT } from "@/constants/document-types";
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { DOCUMENTS_WITH_PAYMENT } from '@/constants/document-types';
+import { formatCurrency } from '@/helpers/currency';
+import { useEffect, useState } from 'react';
+import { useInvoiceUpdateTotal } from '../use-invoice-update-total';
+import { ResumeTax } from './tax';
+import { WithholdingTax } from './withholding-tax';
 
 export function Resume() {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,31 +17,28 @@ export function Resume() {
 
   if (isLoading) return null;
 
-  const type = form.watch("type");
-  const balance = form.watch("balance");
+  const type = form.watch('type');
+  const balance = form.watch('balance');
 
   const balanceColor = {
-    positive: "#16a34a",
-    negative: "#dc2626",
-    neutro: "#000",
-  }[balance > 0 ? "positive" : balance === 0 ? "neutro" : "negative"];
+    positive: '#16a34a',
+    negative: '#dc2626',
+    neutro: '#000',
+  }[balance > 0 ? 'positive' : balance === 0 ? 'neutro' : 'negative'];
 
-  if (type === "RE") {
+  if (type === 'RE') {
     return (
-      <div className="flex-1 flex flex-col gap-2 items-end w-full ">
+      <div className="flex w-full flex-1 flex-col items-end gap-2">
         <div className="flex items-center gap-2">
-          <Label
-            htmlFor="total"
-            className="font-bold uppercase whitespace-nowrap"
-          >
+          <Label htmlFor="total" className="whitespace-nowrap font-bold uppercase">
             Total a pagar
           </Label>
           <Input
             readOnly
             id="total"
             type="text"
-            className="text-right bg-primary text-white font-bold w-52"
-            value={formatCurrency(form.watch("total"))}
+            className="w-52 bg-primary text-right font-bold text-white"
+            value={formatCurrency(form.watch('total'))}
           />
         </div>
         <div className="flex items-center gap-2">
@@ -52,8 +49,8 @@ export function Resume() {
             readOnly
             id="totalPaid"
             type="text"
-            className="text-right w-52"
-            value={formatCurrency(form.watch("totalPaid"))}
+            className="w-52 text-right"
+            value={formatCurrency(form.watch('totalPaid'))}
           />
         </div>
         <div className="flex items-center gap-2">
@@ -62,7 +59,7 @@ export function Resume() {
             readOnly
             id="balance"
             type="text"
-            className="text-right w-52"
+            className="w-52 text-right"
             style={{ color: balanceColor }}
             value={formatCurrency(balance)}
           />
@@ -72,15 +69,15 @@ export function Resume() {
   }
 
   return (
-    <div className="flex-1 flex flex-col gap-2 items-end w-full">
+    <div className="flex w-full flex-1 flex-col items-end gap-2">
       <div className="flex items-center gap-2">
         <Label htmlFor="subtotal">Subtotal</Label>
         <Input
           readOnly
           id="subtotal"
           type="text"
-          className="text-right w-52"
-          value={formatCurrency(form.watch("subtotal"))}
+          className="w-52 text-right"
+          value={formatCurrency(form.watch('subtotal'))}
         />
       </div>
       <ResumeTax />
@@ -92,8 +89,8 @@ export function Resume() {
           readOnly
           id="discountTotal"
           type="text"
-          className="text-right w-52"
-          value={formatCurrency(form.watch("totalDiscount"))}
+          className="w-52 text-right"
+          value={formatCurrency(form.watch('totalDiscount'))}
         />
       </div>
       <WithholdingTax />
@@ -105,12 +102,12 @@ export function Resume() {
           readOnly
           id="total"
           type="text"
-          className="text-right bg-primary text-white font-bold w-52"
-          value={formatCurrency(form.watch("total"))}
+          className="w-52 bg-primary text-right font-bold text-white"
+          value={formatCurrency(form.watch('total'))}
         />
       </div>
-      {type !== "RE" && DOCUMENTS_WITH_PAYMENT.includes(type) && (
-        <div className="flex flex-col gap-2 border-dashed border-t border-t-gray-400 pt-2 items-end mt-2">
+      {type !== 'RE' && DOCUMENTS_WITH_PAYMENT.includes(type) && (
+        <div className="mt-2 flex flex-col items-end gap-2 border-t border-dashed border-t-gray-400 pt-2">
           <div className="flex items-center gap-2">
             <Label htmlFor="totalPaid" className="whitespace-nowrap">
               Total pago
@@ -119,8 +116,8 @@ export function Resume() {
               readOnly
               id="totalPaid"
               type="text"
-              className="text-right w-52"
-              value={formatCurrency(form.watch("totalPaid"))}
+              className="w-52 text-right"
+              value={formatCurrency(form.watch('totalPaid'))}
             />
           </div>
           <div className="flex items-center gap-2">
@@ -129,7 +126,7 @@ export function Resume() {
               readOnly
               id="balance"
               type="text"
-              className="text-right w-52"
+              className="w-52 text-right"
               style={{ color: balanceColor }}
               value={formatCurrency(balance)}
             />

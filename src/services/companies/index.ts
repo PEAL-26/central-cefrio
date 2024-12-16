@@ -1,5 +1,5 @@
-import { crud } from "@/libs/axios";
-import { ListRequestParams } from "@/types";
+import { crud } from '@/libs/axios';
+import { ListRequestParams } from '@/types';
 
 export interface CompanyListResponseData {
   id?: string;
@@ -32,7 +32,7 @@ export const companyService = crud<
   CompanyRequestData,
   CompanyListResponseData,
   CompanyParams
->({ route: "companies" });
+>({ route: 'companies' });
 
 export async function getCompanyFirst() {
   const response = await companyService.list();

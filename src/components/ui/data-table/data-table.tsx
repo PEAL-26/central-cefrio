@@ -1,6 +1,5 @@
-"use client";
+'use client';
 
-import { Suspense, useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -14,7 +13,8 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
+import { Suspense, useState } from 'react';
 
 import {
   Table,
@@ -23,20 +23,19 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { cn } from "@/libs/utils";
-import { ReactLoading } from "@/libs/react-loading";
-import { IQueryPaginationResponse } from "@/hooks/use-query-pagination/types";
+} from '@/components/ui/table';
+import { IQueryPaginationResponse } from '@/hooks/use-query-pagination/types';
+import { ReactLoading } from '@/libs/react-loading';
+import { cn } from '@/libs/utils';
 
-import { DataTablePagination } from "./data-table-pagination";
-import { DataTableToolbar } from "./data-table-toolbar";
+import { DataTablePagination } from './data-table-pagination';
+import { DataTableToolbar } from './data-table-toolbar';
 
 type OnAdd = () => void;
 
-export type ColumnDefProps<TData = any, TValue = any> = ColumnDef<
-  TData,
-  TValue
-> & { className?: string };
+export type ColumnDefProps<TData = any, TValue = any> = ColumnDef<TData, TValue> & {
+  className?: string;
+};
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDefProps<TData, TValue>[];
@@ -77,7 +76,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-4 h-full">
+    <div className="h-full space-y-4">
       <Suspense>
         <DataTableToolbar table={table} onAdd={onAdd} />
       </Suspense>
@@ -90,16 +89,11 @@ export function DataTable<TData, TValue>({
                   return (
                     <TableHead
                       key={header.id}
-                      className={cn(
-                        columns.find((c) => c.id === header.id)?.className
-                      )}
+                      className={cn(columns.find((c) => c.id === header.id)?.className)}
                     >
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -109,17 +103,9 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {isLoading && (
               <TableRow className="hover:bg-transparent">
-                <TableCell
-                  colSpan={columns.length}
-                  className="hover:bg-transparent"
-                >
-                  <div className="flex justify-center items-center h-80">
-                    <ReactLoading
-                      type="spinningBubbles"
-                      color={"#1B3D7A"}
-                      height={60}
-                      width={60}
-                    />
+                <TableCell colSpan={columns.length} className="hover:bg-transparent">
+                  <div className="flex h-80 items-center justify-center">
+                    <ReactLoading type="spinningBubbles" color={'#1B3D7A'} height={60} width={60} />
                   </div>
                 </TableCell>
               </TableRow>
@@ -128,16 +114,10 @@ export function DataTable<TData, TValue>({
               <>
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      data-state={row.getIsSelected() && "selected"}
-                    >
+                    <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                       {row.getVisibleCells().map((cell) => (
                         <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </TableCell>
                       ))}
                     </TableRow>
@@ -146,7 +126,7 @@ export function DataTable<TData, TValue>({
                   <TableRow>
                     <TableCell
                       colSpan={columns.length}
-                      className="text-center h-80 hover:bg-transparent"
+                      className="h-80 text-center hover:bg-transparent"
                     >
                       Sem resultados.
                     </TableCell>

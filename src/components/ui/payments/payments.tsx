@@ -1,22 +1,17 @@
-"use client";
+'use client';
 
-import { Control, FieldValues, useFieldArray } from "react-hook-form";
-import { PlusIcon, TrashIcon } from "lucide-react";
+import { PlusIcon, TrashIcon } from 'lucide-react';
+import { useFieldArray } from 'react-hook-form';
 
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { DatePicker } from "@/components/ui/date-picker";
-import { toastResponseError } from "@/helpers/response/response";
+import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/date-picker';
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { toastResponseError } from '@/helpers/response/response';
 
-import { PaymentMethod } from "./method";
-import { cn } from "@/libs/utils";
+import { cn } from '@/libs/utils';
+import { PaymentMethod } from './method';
 
 interface Props {
   onUpdate?(): void;
@@ -40,43 +35,42 @@ export function InvoicePaymentsComponent(props: Props) {
   } = props;
   const { fields, append, remove, update } = useFieldArray({
     control,
-    name: "payments",
+    name: 'payments',
   });
 
-  const handleSelectMethod = (index: number, payment:any,  method: string) => {
-    const paymentFound = fields?.find(
-      (payment: any) => payment.method === method
-    );
+  const handleSelectMethod = (index: number, payment: any, method: string) => {
+    const paymentFound = fields?.find((payment: any) => payment.method === method);
 
     if (paymentFound) {
-      toastResponseError("Já existe essa forma de pagamento na lista.");
+      toastResponseError('Já existe essa forma de pagamento na lista.');
       return;
     }
 
-    update(index, {...payment, method });
+    update(index, { ...payment, method });
   };
 
   const handleAdd = () => {
-    append({ method: "", amount: fields.length===0 ? defaultAmount || 0 : 0, paymentId: "", date: new Date() })
-  }
+    append({
+      method: '',
+      amount: fields.length === 0 ? defaultAmount || 0 : 0,
+      paymentId: '',
+      date: new Date(),
+    });
+  };
 
-  console.log({ fields })
-  
+  console.log({ fields });
+
   return (
-    <div className={cn("flex flex-col gap-4 w-80", className)}>
-      <div className={cn("flex items-center justify-between w-full", headerClassName)}>
+    <div className={cn('flex w-80 flex-col gap-4', className)}>
+      <div className={cn('flex w-full items-center justify-between', headerClassName)}>
         <h2 className="text-lg font-semibold">Pagamentos</h2>
-        <Button
-          variant={"ghost"}
-          onClick={handleAdd}
-          className="gap-4 p-0 h-8 w-8 rounded-full"
-        >
+        <Button variant={'ghost'} onClick={handleAdd} className="h-8 w-8 gap-4 rounded-full p-0">
           <PlusIcon />
         </Button>
       </div>
-      <div className={cn("gap-4 flex flex-col w-full", paymentsClassName)}>
+      <div className={cn('flex w-full flex-col gap-4', paymentsClassName)}>
         {fields.map((payment: any, index) => (
-          <div key={index} className="flex flex-col gap-1 w-full">
+          <div key={index} className="flex w-full flex-col gap-1">
             <div className="flex items-center gap-2">
               <PaymentMethod
                 disabled={disabled}
@@ -85,14 +79,14 @@ export function InvoicePaymentsComponent(props: Props) {
               />
               <Button
                 type="button"
-                variant={"ghost"}
-                className="group hover:bg-transparent p-0 w-6 h-6 hover:text-red-500"
+                variant={'ghost'}
+                className="group h-6 w-6 p-0 hover:bg-transparent hover:text-red-500"
                 onClick={() => remove(index)}
               >
                 <TrashIcon />
               </Button>
             </div>
-            <div className="flex items-center gap-3 w-full">
+            <div className="flex w-full items-center gap-3">
               <FormField
                 defaultValue={payment?.amount}
                 control={control}
@@ -117,25 +111,25 @@ export function InvoicePaymentsComponent(props: Props) {
             </div>
             <FormField
               control={control}
-                defaultValue={payment?.date}
+              defaultValue={payment?.date}
               name={`payments.${index}.date`}
               render={({ field }) => (
                 <FormItem className="w-full">
-                    <FormControl>
-                <DatePicker
-                  disabled={!payment?.method || disabled}
-                  className="w-full"
-                  value={field.value}
+                  <FormControl>
+                    <DatePicker
+                      disabled={!payment?.method || disabled}
+                      className="w-full"
+                      value={field.value}
                       onChange={field.onChange}
-                />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
               )}
             />
             <FormField
               control={control}
-                defaultValue={payment?.observation}
+              defaultValue={payment?.observation}
               name={`payments.${index}.observation`}
               render={({ field }) => (
                 <FormItem className="w-full flex-1">

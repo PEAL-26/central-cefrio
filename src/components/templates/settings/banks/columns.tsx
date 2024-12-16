@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef } from '@tanstack/react-table';
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "@/components/ui/data-table";
-import { BankListResponseData } from "@/services/banks";
-import { DataTableRowActions } from "./data-table-row-actions";
+import { Checkbox } from '@/components/ui/checkbox';
+import { DataTableColumnHeader } from '@/components/ui/data-table';
+import { BankListResponseData } from '@/services/banks';
+import { DataTableRowActions } from './data-table-row-actions';
 
 type Column = ColumnDef<BankListResponseData> & { className?: string };
 
@@ -16,7 +16,7 @@ interface ColumnProps {
 
 export const columns = (props?: ColumnProps): Column[] => [
   {
-    id: "select",
+    id: 'select',
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
@@ -37,27 +37,23 @@ export const columns = (props?: ColumnProps): Column[] => [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Banco" />
-    ),
+    accessorKey: 'name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Banco" />,
     cell: ({ row }) => (
-      <div className="whitespace-nowrap">{`${row.getValue("name")} (${
-        row.original?.abbreviation || ""
+      <div className="whitespace-nowrap">{`${row.getValue('name')} (${
+        row.original?.abbreviation || ''
       })`}</div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "account",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Conta" />
-    ),
+    accessorKey: 'account',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Conta" />,
     cell: ({ row }) => {
       return (
-        <div className="whitespace-nowrap flex items-center">
-          {row.getValue("account") || "S/N"}
+        <div className="flex items-center whitespace-nowrap">
+          {row.getValue('account') || 'S/N'}
         </div>
       );
     },
@@ -65,23 +61,19 @@ export const columns = (props?: ColumnProps): Column[] => [
     enableHiding: false,
   },
   {
-    accessorKey: "iban",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="IBAN" />
-    ),
+    accessorKey: 'iban',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="IBAN" />,
     cell: ({ row }) => {
       return (
-        <div className="whitespace-nowrap flex items-center">
-          {row.getValue("iban") || "S/N"}
-        </div>
+        <div className="flex items-center whitespace-nowrap">{row.getValue('iban') || 'S/N'}</div>
       );
     },
     enableSorting: false,
     enableHiding: false,
   },
   {
-    id: "actions",
-    className: "w-[1%]",
+    id: 'actions',
+    className: 'w-[1%]',
     cell: ({ row }) => <DataTableRowActions row={row} actions={props} />,
   },
 ];

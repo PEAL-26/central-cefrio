@@ -1,7 +1,7 @@
-"use client";
-import { createContext, useContext, useState } from "react";
-import { AppContextData, AppProviderProps } from "./types";
-import { ReactLoading } from "@/libs/react-loading";
+'use client';
+import { ReactLoading } from '@/libs/react-loading';
+import { createContext, useContext, useState } from 'react';
+import { AppContextData, AppProviderProps } from './types';
 
 const AppContext = createContext<AppContextData>({} as AppContextData);
 
@@ -19,13 +19,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       <>
         {children}
         {isLoading && (
-          <div className="fixed z-[99999999999999999999] inset-0 bg-black/50 h-screen flex justify-center items-center ">
-            <ReactLoading
-              type="spinningBubbles"
-              color={"#FFF"}
-              height={90}
-              width={90}
-            />
+          <div className="fixed inset-0 z-[99999999999999999999] flex h-screen items-center justify-center bg-black/50">
+            <ReactLoading type="spinningBubbles" color={'#FFF'} height={90} width={90} />
           </div>
         )}
       </>

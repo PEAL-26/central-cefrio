@@ -1,15 +1,12 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 
-import { UserFormProps } from "./types";
-import { userSchema, UserSchemaType } from "./schema";
-import { useState, useEffect } from "react";
-import {
-  toastResponseError,
-  toastResponseRegisterSuccess,
-} from "@/helpers/response/response";
-import { userService } from "@/services/users";
-import { useQueryClient } from "@tanstack/react-query";
+import { toastResponseError, toastResponseRegisterSuccess } from '@/helpers/response/response';
+import { userService } from '@/services/users';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { userSchema, UserSchemaType } from './schema';
+import { UserFormProps } from './types';
 
 export function useUserForm(props: UserFormProps) {
   const { userId, onSubmit } = props;
@@ -18,7 +15,7 @@ export function useUserForm(props: UserFormProps) {
 
   const form = useForm<UserSchemaType>({
     resolver: zodResolver(userSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const queryClient = useQueryClient();
@@ -29,7 +26,7 @@ export function useUserForm(props: UserFormProps) {
       setIsSaving(true);
 
       // await userService.create({ ...data, id: userId });
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ['users'] });
       toastResponseRegisterSuccess(userId);
       onSubmit?.();
     } catch (error) {

@@ -1,6 +1,6 @@
-import { toast } from "@/components/ui/use-toast";
-import { AxiosError, AxiosResponse } from "axios";
-import { INTERNAL_SERVER_ERROR_MESSAGE } from "./messages";
+import { toast } from '@/components/ui/use-toast';
+import { AxiosError, AxiosResponse } from 'axios';
+import { INTERNAL_SERVER_ERROR_MESSAGE } from './messages';
 
 export function getResponse<T = any, D = any>(response: AxiosResponse<T, D>) {
   if (response.status >= 200 && response.status < 300) {
@@ -9,7 +9,7 @@ export function getResponse<T = any, D = any>(response: AxiosResponse<T, D>) {
 }
 
 export function generateResponseError(error: any) {
-  if (typeof error === "string") return error;
+  if (typeof error === 'string') return error;
 
   let message = INTERNAL_SERVER_ERROR_MESSAGE;
 
@@ -22,7 +22,7 @@ export function generateResponseError(error: any) {
     if (data?.errors) {
       message = data.errors
         .map((_error: any) => _error.message)
-        .join(", ")
+        .join(', ')
         .toString();
     }
   }
@@ -30,12 +30,12 @@ export function generateResponseError(error: any) {
   return message;
 }
 
-export function toastResponseError(error: any, title="Oops! Algo deu errado.") {
+export function toastResponseError(error: any, title = 'Oops! Algo deu errado.') {
   const message = generateResponseError(error);
 
   toast({
     duration: 5000,
-    variant: "destructive",
+    variant: 'destructive',
     title,
     description: message,
   });
@@ -44,8 +44,8 @@ export function toastResponseError(error: any, title="Oops! Algo deu errado.") {
 export function toastResponseRegisterSuccess(id: string | null | undefined) {
   toast({
     duration: 5000,
-    variant: "success",
-    title: "Sucesso",
-    description: `Registro ${id ? "alterado" : "feito"} com sucesso`,
+    variant: 'success',
+    title: 'Sucesso',
+    description: `Registro ${id ? 'alterado' : 'feito'} com sucesso`,
   });
 }

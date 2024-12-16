@@ -1,20 +1,15 @@
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  DoubleArrowLeftIcon,
-  DoubleArrowRightIcon,
-} from "@radix-ui/react-icons";
-import { Table } from "@tanstack/react-table";
+import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import { Table } from '@tanstack/react-table';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useGetSearchParams } from "@/hooks";
+} from '@/components/ui/select';
+import { useGetSearchParams } from '@/hooks';
 
 interface Navigation {
   currentPage?: number;
@@ -31,10 +26,7 @@ interface DataTablePaginationProps<TData> {
   navigation?: Navigation;
 }
 
-export function DataTablePagination<TData>({
-  table,
-  navigation,
-}: DataTablePaginationProps<TData>) {
+export function DataTablePagination<TData>({ table, navigation }: DataTablePaginationProps<TData>) {
   const {
     currentPage = 0,
     totalPages = 0,
@@ -45,24 +37,22 @@ export function DataTablePagination<TData>({
     setSizePerPage,
   } = navigation || {};
 
-  const [size] = useGetSearchParams({ params: ["size"] });
+  const [size] = useGetSearchParams({ params: ['size'] });
 
   return (
     <div className="flex items-center justify-between px-2">
-      <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
+      <div className="text-muted-foreground flex-1 text-sm">
+        {table.getFilteredSelectedRowModel().rows.length} of{' '}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
           <Select
-            value={size || "10"}
+            value={size || '10'}
             onValueChange={(value) => {
               table.setPageSize(Number(value));
-              setSizePerPage?.(
-                Number(value) === 10 ? undefined : Number(value)
-              );
+              setSizePerPage?.(Number(value) === 10 ? undefined : Number(value));
             }}
           >
             <SelectTrigger className="h-8 w-[70px]">

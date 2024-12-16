@@ -1,15 +1,12 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 
-import { BankFormProps } from "./types";
-import { bankSchema, BankSchemaType } from "./schema";
-import { useState, useEffect } from "react";
-import {
-  toastResponseError,
-  toastResponseRegisterSuccess,
-} from "@/helpers/response/response";
-import { bankService } from "@/services/banks";
-import { useQueryClient } from "@tanstack/react-query";
+import { toastResponseError, toastResponseRegisterSuccess } from '@/helpers/response/response';
+import { bankService } from '@/services/banks';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { bankSchema, BankSchemaType } from './schema';
+import { BankFormProps } from './types';
 
 export function useBankForm(props: BankFormProps) {
   const { bankId, onSubmit } = props;
@@ -18,7 +15,7 @@ export function useBankForm(props: BankFormProps) {
 
   const form = useForm<BankSchemaType>({
     resolver: zodResolver(bankSchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const queryClient = useQueryClient();
@@ -29,7 +26,7 @@ export function useBankForm(props: BankFormProps) {
       setIsSaving(true);
 
       await bankService.create({ ...data, id: bankId });
-      queryClient.invalidateQueries({ queryKey: ["banks"] });
+      queryClient.invalidateQueries({ queryKey: ['banks'] });
       toastResponseRegisterSuccess(bankId);
       onSubmit?.();
     } catch (error) {
@@ -45,12 +42,12 @@ export function useBankForm(props: BankFormProps) {
       if (bankId) {
         const response = await bankService.getById(bankId);
         if (response) {
-          form.setValue("id", bankId);
-          form.setValue("name", response.name);
-          form.setValue("abbreviation", response.abbreviation);
-          form.setValue("account", response.account);
-          form.setValue("iban", response?.iban);
-          form.setValue("show", response?.show);
+          form.setValue('id', bankId);
+          form.setValue('name', response.name);
+          form.setValue('abbreviation', response.abbreviation);
+          form.setValue('account', response.account);
+          form.setValue('iban', response?.iban);
+          form.setValue('show', response?.show);
         }
       }
       setIsLoadingData(false);

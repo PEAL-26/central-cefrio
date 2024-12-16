@@ -1,13 +1,13 @@
-import { SettingsLayout } from "@/components/layouts";
+import { SettingsLayout } from '@/components/layouts';
 
 export const metadata = {
-  title: { default: "Configurações", template: "%s | Configurações" },
+  title: { default: 'Configurações', template: '%s | Configurações' },
 };
 
 const sidebarNavItems = [
   {
-    title: "Usuários",
-    href: "/settings/users",
+    title: 'Usuários',
+    href: '/settings/users',
   },
 ];
 

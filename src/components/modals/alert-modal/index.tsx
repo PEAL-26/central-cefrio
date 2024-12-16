@@ -7,18 +7,18 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { DeleteModalProps } from "./types";
+} from '@/components/ui/alert-dialog';
+import { DeleteModalProps } from './types';
 
 export function AlertModal(props: DeleteModalProps) {
   const {
     open,
     onOpenChange,
     onOk,
-    title = "Você tem certeza absoluta?",
-    descriptions = "Essa ação não pode ser desfeita. Isso excluirá permanentemente os dados da base de  dados.",
-    cancelText = "Cancelar",
-    okText = "Remover",
+    title = 'Você tem certeza absoluta?',
+    descriptions = 'Essa ação não pode ser desfeita. Isso excluirá permanentemente os dados da base de  dados.',
+    cancelText = 'Cancelar',
+    okText = 'Remover',
   } = props;
 
   return (

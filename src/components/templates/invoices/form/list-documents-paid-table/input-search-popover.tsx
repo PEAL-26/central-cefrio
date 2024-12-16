@@ -1,22 +1,13 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { useState } from "react";
-import { TableItemsSearch } from "./table-items-search";
-import { InvoiceListResponseData } from "@/services/invoices";
-import { getDocumentTypeNameByCode } from "@/constants/document-types";
-import { formatDate } from "@/helpers/date";
-import { toastResponseError } from "@/helpers/response/response";
-import { useInvoiceUpdateTotal } from "../use-invoice-update-total";
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { getDocumentTypeNameByCode } from '@/constants/document-types';
+import { formatDate } from '@/helpers/date';
+import { toastResponseError } from '@/helpers/response/response';
+import { InvoiceListResponseData } from '@/services/invoices';
+import { useState } from 'react';
+import { useInvoiceUpdateTotal } from '../use-invoice-update-total';
+import { TableItemsSearch } from './table-items-search';
 
 interface ItemSearchProps {
   form: any;
@@ -29,7 +20,7 @@ export function InputSearchPopover(props: ItemSearchProps) {
   const { updatePayments } = useInvoiceUpdateTotal();
 
   const handleSelect = (data: InvoiceListResponseData) => {
-    const items = form.getValues("documents");
+    const items = form.getValues('documents');
     if (items.find(({ documentId }: any) => documentId === data.id)) {
       setOpen(false);
       return;
@@ -38,7 +29,7 @@ export function InputSearchPopover(props: ItemSearchProps) {
     if (items.length > 1) {
       if (!items.some((i: any) => i.customerId === data.customer.id)) {
         toastResponseError(
-          "Ao emitir recibo de várias facturas, não pode adicionar facturas de outro cliente."
+          'Ao emitir recibo de várias facturas, não pode adicionar facturas de outro cliente.',
         );
 
         return;
@@ -46,14 +37,14 @@ export function InputSearchPopover(props: ItemSearchProps) {
     }
 
     if (items.length === 1) {
-      form.setValue("customerId", data.customer.id);
+      form.setValue('customerId', data.customer.id);
     }
 
     form.setValue(
       `documents.${index}.description`,
       `${getDocumentTypeNameByCode(data.type)} ${data.number} (${formatDate(
-        data.date
-      )}) - ${data.customer.name}`
+        data.date,
+      )}) - ${data.customer.name}`,
     );
     form.setValue(`documents.${index}.customerId`, data.customer.id);
     form.setValue(`documents.${index}.documentId`, data.id);
@@ -75,23 +66,16 @@ export function InputSearchPopover(props: ItemSearchProps) {
           <FormItem>
             <FormControl>
               <PopoverTrigger className="w-full">
-                <Input
-                  placeholder="Product or Service"
-                  className="w-full"
-                  {...field}
-                />
+                <Input placeholder="Product or Service" className="w-full" {...field} />
               </PopoverTrigger>
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
-      <PopoverContent
-        align="start"
-        className="w-80 h-96 bg-white overflow-hidden p-0"
-      >
-        <div className="flex-1 h-full w-full relative">
-          <div className="flex w-full h-full overflow-y-auto absolute">
+      <PopoverContent align="start" className="h-96 w-80 overflow-hidden bg-white p-0">
+        <div className="relative h-full w-full flex-1">
+          <div className="absolute flex h-full w-full overflow-y-auto">
             <TableItemsSearch open={open} onSelect={handleSelect} />
           </div>
         </div>

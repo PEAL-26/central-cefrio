@@ -1,13 +1,13 @@
-import { z } from "zod";
-import { randomUUID } from "crypto";
-import { NextRequest, NextResponse } from "next/server";
-import { Prisma } from "@prisma/client";
+import { Prisma } from '@prisma/client';
+import { randomUUID } from 'crypto';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
-import { prisma } from "../../../libs/prisma";
-import { getAllParams } from "../../../helpers/search-params";
-import { responseError } from "../../../helpers/response/route-response";
-import { paginationData, setPagination } from "../../../helpers/pagination";
-import { generateUrlFromName } from "@/helpers/file";
+import { generateUrlFromName } from '@/helpers/file';
+import { paginationData, setPagination } from '../../../helpers/pagination';
+import { responseError } from '../../../helpers/response/route-response';
+import { getAllParams } from '../../../helpers/search-params';
+import { prisma } from '../../../libs/prisma';
 
 const listParamsSchema = z.object({
   q: z.string().optional(),
@@ -16,7 +16,7 @@ const listParamsSchema = z.object({
 });
 
 export async function GET(req: NextRequest, res: NextResponse) {
-  const { q = "", page, size } = listParamsSchema.parse(getAllParams(req.url));
+  const { q = '', page, size } = listParamsSchema.parse(getAllParams(req.url));
   const { limit: take, offset: skip } = setPagination({ size, page });
 
   const queryParams: Prisma.CompanyWhereInput = {
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       {
         name: {
           contains: q,
-          mode: "insensitive",
+          mode: 'insensitive',
         },
       },
     ],
@@ -69,13 +69,13 @@ const companySchema = z.object({
   id: z.string().uuid().optional(),
   name: z
     .string({
-      required_error: "Campo obrigatório.",
+      required_error: 'Campo obrigatório.',
     })
     .min(2, {
-      message: "O nome deve ter pelo menos 2 caracteres",
+      message: 'O nome deve ter pelo menos 2 caracteres',
     })
     .max(255, {
-      message: "O nome não deve ter mais de 255 caracteres",
+      message: 'O nome não deve ter mais de 255 caracteres',
     }),
   telephone: z.string().optional(),
   email: z.string().optional(),
@@ -133,7 +133,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    return NextResponse.json({ message: "success" }, { status: 200 });
+    return NextResponse.json({ message: 'success' }, { status: 200 });
   } catch (error: any) {
     return responseError(error);
   }

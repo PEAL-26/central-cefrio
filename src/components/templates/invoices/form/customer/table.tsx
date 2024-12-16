@@ -1,12 +1,9 @@
-import { useState, useEffect } from "react";
-import {
-  Loader2Icon,
-  LoaderIcon,
-  PlusCircle,
-  RefreshCwIcon,
-} from "lucide-react";
+import { LoaderIcon, PlusCircle, RefreshCwIcon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Pagination } from '@/components/ui/pagination';
 import {
   Table,
   TableBody,
@@ -14,14 +11,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { useDebounceValue, useQueryPagination } from "@/hooks";
-import {
-  CustomerListResponseData,
-  customerService,
-} from "@/services/customers";
-import { Button } from "@/components/ui/button";
-import { Pagination } from "@/components/ui/pagination";
+} from '@/components/ui/table';
+import { useDebounceValue, useQueryPagination } from '@/hooks';
+import { CustomerListResponseData, customerService } from '@/services/customers';
 
 interface CustomerTablePros {
   open: boolean;
@@ -38,12 +30,11 @@ export function CustomerTable(props: CustomerTablePros) {
 
   const filtersDebounced = useDebounceValue(filters);
 
-  const { data, isLoading, isError, refetch, ...pagination } =
-    useQueryPagination({
-      fn: async () => customerService.list(filtersDebounced),
-      queryKey: ["customers", { ...filtersDebounced }],
-      disableFetch: !open,
-    });
+  const { data, isLoading, isError, refetch, ...pagination } = useQueryPagination({
+    fn: async () => customerService.list(filtersDebounced),
+    queryKey: ['customers', { ...filtersDebounced }],
+    disableFetch: !open,
+  });
 
   useEffect(() => {
     setFilters({});
@@ -58,11 +49,11 @@ export function CustomerTable(props: CustomerTablePros) {
           onChange={(e) =>
             setFilters({
               ...filters,
-              q: e.target.value || "",
+              q: e.target.value || '',
             })
           }
         />
-        <Button variant="ghost" className="p-0 h-10 w-10" onClick={onAdd}>
+        <Button variant="ghost" className="h-10 w-10 p-0" onClick={onAdd}>
           <PlusCircle />
         </Button>
       </div>
@@ -70,13 +61,9 @@ export function CustomerTable(props: CustomerTablePros) {
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
-            <TableHead className="hover:bg-transparent flex items-center justify-between">
+            <TableHead className="flex items-center justify-between hover:bg-transparent">
               <span>Cliente</span>
-              <Button
-                variant="ghost"
-                className="p-0 hover:bg-transparent"
-                onClick={refetch}
-              >
+              <Button variant="ghost" className="p-0 hover:bg-transparent" onClick={refetch}>
                 <RefreshCwIcon className="size-4" />
               </Button>
             </TableHead>
@@ -84,19 +71,19 @@ export function CustomerTable(props: CustomerTablePros) {
         </TableHeader>
         <TableBody>
           {isLoading && !isError && (
-            <TableRow className="hover:bg-transparent h-full">
+            <TableRow className="h-full hover:bg-transparent">
               <TableCell className="h-full">
-                <div className="flex justify-center items-center">
+                <div className="flex items-center justify-center">
                   <LoaderIcon className="animate-spin" />
                 </div>
               </TableCell>
             </TableRow>
           )}
           {!isLoading && isError && (
-            <div className="flex justify-center items-center">
-              <TableRow className="hover:bg-transparent h-full">
+            <div className="flex items-center justify-center">
+              <TableRow className="h-full hover:bg-transparent">
                 <TableCell>
-                  <div className="flex justify-center items-center">
+                  <div className="flex items-center justify-center">
                     <LoaderIcon className="animate-spin" />
                   </div>
                 </TableCell>
@@ -104,8 +91,8 @@ export function CustomerTable(props: CustomerTablePros) {
             </div>
           )}
           {!isLoading && !isError && data.length === 0 && (
-            <div className="flex justify-center items-center">
-              <TableRow className="hover:bg-transparent h-full">
+            <div className="flex items-center justify-center">
+              <TableRow className="h-full hover:bg-transparent">
                 <TableCell>Nenhum item</TableCell>
                 <Button className="gap-2" variant="ghost" onClick={onAdd}>
                   <PlusCircle /> Adicionar
@@ -116,18 +103,14 @@ export function CustomerTable(props: CustomerTablePros) {
           {!isLoading &&
             !isError &&
             data.map((item, key) => (
-              <TableRow
-                key={key}
-                className="hover:cursor-pointer"
-                onClick={() => onSelect?.(item)}
-              >
+              <TableRow key={key} className="hover:cursor-pointer" onClick={() => onSelect?.(item)}>
                 <TableCell>{item.name}</TableCell>
               </TableRow>
             ))}
         </TableBody>
       </Table>
 
-      <div className="absolute bottom-0 left-0 right-0 py-1 bg-gray-100">
+      <div className="absolute bottom-0 left-0 right-0 bg-gray-100 py-1">
         <Pagination
           show={{
             totalItems: true,

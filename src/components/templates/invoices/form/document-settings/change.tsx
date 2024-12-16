@@ -1,15 +1,10 @@
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { ChevronDownIcon } from "lucide-react";
-import { useDocumentSettings } from "./use-document-settings";
-import { cn } from "@/libs/utils";
-import { useState } from "react";
-import { CURRENCIES } from "@/constants/currencies";
-import { FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { FormControl, FormField, FormItem } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/libs/utils';
+import { ChevronDownIcon } from 'lucide-react';
+import { useState } from 'react';
+import { useDocumentSettings } from './use-document-settings';
 
 export function Change() {
   const { form } = useDocumentSettings();
@@ -17,13 +12,9 @@ export function Change() {
 
   return (
     <Popover modal onOpenChange={setOpen} open={open}>
-      <PopoverTrigger className="flex items-center line-clamp-1 gap-2">
-        <span
-          className={cn(
-            "flex gap-2 items-center line-clamp-1 whitespace-nowrap w-full"
-          )}
-        >
-          {form?.watch("exchange") || "0.00"}
+      <PopoverTrigger className="line-clamp-1 flex items-center gap-2">
+        <span className={cn('line-clamp-1 flex w-full items-center gap-2 whitespace-nowrap')}>
+          {form?.watch('exchange') || '0.00'}
         </span>
         <ChevronDownIcon className="text-gray-400" />
       </PopoverTrigger>

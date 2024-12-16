@@ -1,14 +1,5 @@
-"use client";
-import { Loader2 } from "lucide-react";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -16,14 +7,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
-import { BaseSyntheticEvent, ReactNode } from "react";
-import { UseFormReturn } from "react-hook-form";
-import { ProductSchemaType } from "./product";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/libs/utils";
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/libs/utils';
+import { BaseSyntheticEvent, ReactNode } from 'react';
+import { UseFormReturn } from 'react-hook-form';
+import { ProductSchemaType } from './product';
 
 interface CreateEditProductFormProps {
   children: ReactNode;
@@ -48,11 +39,8 @@ export function CreateEditProductForm(props: CreateEditProductFormProps) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={onSubmit}
-        className={cn("grid w-full gap-4 sm:rounded-lg", formClassName)}
-      >
-        <div className={cn("grid grid-cols-3 gap-6 ", addInvoice && "w-full")}>
+      <form onSubmit={onSubmit} className={cn('grid w-full gap-4 sm:rounded-lg', formClassName)}>
+        <div className={cn('grid grid-cols-3 gap-6', addInvoice && 'w-full')}>
           <div className="col-span-3">
             <FormField
               control={form.control}
@@ -73,7 +61,7 @@ export function CreateEditProductForm(props: CreateEditProductFormProps) {
               )}
             />
           </div>
-          <div className={cn(addInvoice && "col-span-3 w-full")}>
+          <div className={cn(addInvoice && 'col-span-3 w-full')}>
             <FormField
               control={form.control}
               name="unitMeasure"
@@ -93,7 +81,7 @@ export function CreateEditProductForm(props: CreateEditProductFormProps) {
               )}
             />
           </div>
-          <div className={cn(addInvoice && "col-span-3 w-full")}>
+          <div className={cn(addInvoice && 'col-span-3 w-full')}>
             <FormField
               control={form.control}
               name="price"
@@ -113,7 +101,7 @@ export function CreateEditProductForm(props: CreateEditProductFormProps) {
               )}
             />
           </div>
-          <div className={cn(addInvoice && "col-span-3 w-full")}>
+          <div className={cn(addInvoice && 'col-span-3 w-full')}>
             <FormField
               control={form.control}
               name="iva"
@@ -141,11 +129,7 @@ export function CreateEditProductForm(props: CreateEditProductFormProps) {
                 <FormItem className="w-full flex-1">
                   <FormLabel>Motivo de Isenção</FormLabel>
                   <FormControl>
-                    <Textarea
-                      disabled={isLoading}
-                      placeholder="Motivo de isenção"
-                      {...field}
-                    />
+                    <Textarea disabled={isLoading} placeholder="Motivo de isenção" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -1,12 +1,10 @@
-import { numericString } from "@/helpers/zod";
-import { z } from "zod";
+import { numericString } from '@/helpers/zod';
+import { z } from 'zod';
 
 export const invoiceItemSchema = z.object({
   itemId: z.string().optional(),
-  productId: z
-    .string({ message: "Campo Obrigatório." })
-    .min(1, "Campo Obrigatório"),
-  name: z.string().min(1, "Campo Obrigatório"),
+  productId: z.string({ message: 'Campo Obrigatório.' }).min(1, 'Campo Obrigatório'),
+  name: z.string().min(1, 'Campo Obrigatório'),
   unitMeasure: z.string().optional(),
   quantity: numericString(z.number()),
   price: numericString(z.number().optional()),
@@ -20,11 +18,9 @@ export const invoiceItemSchema = z.object({
 
 export const invoicePaymentSchema = z.object({
   paymentId: z.string().optional(),
-  date: z.date({ message: "Campo Obrigatório" }),
-  method: z
-    .string({ message: "Campo Obrigatório" })
-    .min(1, "Campo Obrigatório"),
-  amount: numericString(z.number().gt(0, "Campo Obrigatório")),
+  date: z.date({ message: 'Campo Obrigatório' }),
+  method: z.string({ message: 'Campo Obrigatório' }).min(1, 'Campo Obrigatório'),
+  amount: numericString(z.number().gt(0, 'Campo Obrigatório')),
   observation: z.string().optional(),
 });
 
@@ -32,11 +28,9 @@ export const invoiceDocumentSchema = z.object({
   itemId: z.string().optional(),
   description: z.string().optional(),
   customerId: z.string().optional(),
-  documentId: z.string({ message: "Campo obrigatório." }),
-  total: z.number().gt(0, "O total do documento deve ser maior que zero(0)"),
-  paid: numericString(
-    z.number().gt(0, "O valor pago deve ser maior que zero(0)")
-  ),
+  documentId: z.string({ message: 'Campo obrigatório.' }),
+  total: z.number().gt(0, 'O total do documento deve ser maior que zero(0)'),
+  paid: numericString(z.number().gt(0, 'O valor pago deve ser maior que zero(0)')),
 });
 
 export const invoiceTaxSchema = z.object({
@@ -50,9 +44,7 @@ export const invoiceTaxSchema = z.object({
 export const invoiceSchema = z.object({
   id: z.string().uuid().optional(),
   number: z.string().optional(),
-  type: z
-    .string({ required_error: "Campo Obrigatório" })
-    .min(1, "Campo Obrigatório"),
+  type: z.string({ required_error: 'Campo Obrigatório' }).min(1, 'Campo Obrigatório'),
   customerId: z.string().optional(),
   date: z.date(),
   dueDate: z.date().optional(),
@@ -64,7 +56,7 @@ export const invoiceSchema = z.object({
   totalWithholdingTax: numericString(z.number().default(0)),
   withholdingTax: z
     .object({
-      type: z.enum(["PARTICULAR", "COMPANY"]).optional(),
+      type: z.enum(['PARTICULAR', 'COMPANY']).optional(),
       percentage: numericString(z.number().optional()),
     })
     .optional(),
@@ -88,33 +80,33 @@ export type InvoiceDocumentSchemaType = z.infer<typeof invoiceDocumentSchema>;
 export type InvoiceTaxeSchemaType = z.infer<typeof invoiceTaxSchema>;
 
 export const INVOICE_SCHEMA_PROPERTY = {
-  id: "Id",
-  number: "Número",
-  type: "Tipo",
-  customerId: "Cliente",
-  date: "Data",
-  dueDate: "Vencimento",
-  currency: "Moeda",
-  change: "Câmbio",
-  paymentTerms: "Condições de pagamento",
-  observation: "Observação",
-  reasonExemption: "Motivo de isenção",
-  totalWithholdingTax: "Total Retenção na fonte",
-  subtotal: "Subtotal",
-  totalIva: "Total IVA",
-  totalDiscount: "Total Desconto",
-  total: "Total",
-  itemId: "Descrição Item",
-  productId: "Descrição Item",
-  name: "Descrição Item",
-  unitMeasure: "Unidade",
-  quantity: "Quantidade",
-  price: "Preço",
-  discount: "Desconto",
-  iva: "IVA",
-  ivaAmount: "Montante IVA",
-  discountAmount: "Montante desconto",
-  paymentId: "Pagamento ID",
-  method: "Método",
-  amount: "Montante",
+  id: 'Id',
+  number: 'Número',
+  type: 'Tipo',
+  customerId: 'Cliente',
+  date: 'Data',
+  dueDate: 'Vencimento',
+  currency: 'Moeda',
+  change: 'Câmbio',
+  paymentTerms: 'Condições de pagamento',
+  observation: 'Observação',
+  reasonExemption: 'Motivo de isenção',
+  totalWithholdingTax: 'Total Retenção na fonte',
+  subtotal: 'Subtotal',
+  totalIva: 'Total IVA',
+  totalDiscount: 'Total Desconto',
+  total: 'Total',
+  itemId: 'Descrição Item',
+  productId: 'Descrição Item',
+  name: 'Descrição Item',
+  unitMeasure: 'Unidade',
+  quantity: 'Quantidade',
+  price: 'Preço',
+  discount: 'Desconto',
+  iva: 'IVA',
+  ivaAmount: 'Montante IVA',
+  discountAmount: 'Montante desconto',
+  paymentId: 'Pagamento ID',
+  method: 'Método',
+  amount: 'Montante',
 };

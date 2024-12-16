@@ -1,12 +1,12 @@
-import { z } from "zod";
-import { randomUUID } from "crypto";
-import { prisma } from "../../../libs/prisma";
-import { Prisma } from "@prisma/client";
-import { getAllParams } from "../../../helpers/search-params";
-import { NextRequest, NextResponse } from "next/server";
-import { responseError } from "../../../helpers/response/route-response";
-import { paginationData, setPagination } from "../../../helpers/pagination";
-import { END_CONSUMER } from "@/constants/customer";
+import { END_CONSUMER } from '@/constants/customer';
+import { Prisma } from '@prisma/client';
+import { randomUUID } from 'crypto';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { paginationData, setPagination } from '../../../helpers/pagination';
+import { responseError } from '../../../helpers/response/route-response';
+import { getAllParams } from '../../../helpers/search-params';
+import { prisma } from '../../../libs/prisma';
 
 const listParamsSchema = z.object({
   q: z.string().optional(),
@@ -15,7 +15,7 @@ const listParamsSchema = z.object({
 });
 
 export async function GET(req: NextRequest, res: NextResponse) {
-  const { q = "", page, size } = listParamsSchema.parse(getAllParams(req.url));
+  const { q = '', page, size } = listParamsSchema.parse(getAllParams(req.url));
   const { limit: take, offset: skip } = setPagination({ size, page });
 
   const queryParams: Prisma.CustomerWhereInput = {
@@ -23,19 +23,19 @@ export async function GET(req: NextRequest, res: NextResponse) {
       {
         name: {
           contains: q,
-          mode: "insensitive",
+          mode: 'insensitive',
         },
       },
       {
         telephone: {
           contains: q,
-          mode: "insensitive",
+          mode: 'insensitive',
         },
       },
       {
         email: {
           contains: q,
-          mode: "insensitive",
+          mode: 'insensitive',
         },
       },
     ],
@@ -74,7 +74,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
 const customerSchema = z.object({
   id: z.string().uuid().optional(),
-  name: z.string({ required_error: "Campo Obrigatório." }),
+  name: z.string({ required_error: 'Campo Obrigatório.' }),
   address: z.string().optional(),
   location: z.string().optional(),
   email: z.string().optional(),

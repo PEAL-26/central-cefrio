@@ -1,1 +1,1 @@
-export * from "./client-cookies";
+export * from './client-cookies';

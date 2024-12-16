@@ -1,65 +1,63 @@
-import { randomUUID } from "crypto";
+import { randomUUID } from 'crypto';
+
+import { END_CONSUMER } from '@/constants/customer';
+import { invoiceUpdateItemTotal, invoiceUpdateResume } from '@/helpers/invoice-total-update';
+import { formatNumberWithLeadingZeros } from '@/helpers/string';
+import { prisma } from '@/libs/prisma';
 
 import {
-    invoiceUpdateItemTotal,
-    invoiceUpdateResume,
-} from "@/helpers/invoice-total-update";
-import { prisma } from "@/libs/prisma";
-import { END_CONSUMER } from "@/constants/customer";
-import { formatNumberWithLeadingZeros } from "@/helpers/string";
-
-import { InvoiceDocumentSchemaType, InvoiceItemSchemaType, InvoicePaymentSchemaType, invoiceSchema, InvoiceSchemaType } from "./types";
+  InvoiceDocumentSchemaType,
+  InvoiceItemSchemaType,
+  InvoicePaymentSchemaType,
+  invoiceSchema,
+  InvoiceSchemaType,
+} from './types';
 
 export function verify(data: any) {
   const totalPaid =
-    data.paymentsData?.reduce(
-      (total: number, item: any) => total + item.amount,
-      0
-    ) || 0;
+    data.paymentsData?.reduce((total: number, item: any) => total + item.amount, 0) || 0;
   const total = data.total || 0;
 
-  if (data.type !== "RE" && !data.productsData?.length) {
+  if (data.type !== 'RE' && !data.productsData?.length) {
     if (totalPaid === 0) {
-      throw new Error("Insira no mínimo um(1) item no documento");
+      throw new Error('Insira no mínimo um(1) item no documento');
     }
   }
 
-  if (data.type === "RE" && !data.documentsData?.length) {
+  if (data.type === 'RE' && !data.documentsData?.length) {
     if (totalPaid === 0) {
-      throw new Error("Insira no mínimo um(1) item no documento");
+      throw new Error('Insira no mínimo um(1) item no documento');
     }
   }
 
-  if (data.type === "RE" || data.type === "FR") {
+  if (data.type === 'RE' || data.type === 'FR') {
     if (totalPaid === 0) {
-      throw new Error("Deve adicionar um pagamento.");
+      throw new Error('Deve adicionar um pagamento.');
     }
   }
 
-  if (data.type === "FR") {
+  if (data.type === 'FR') {
     if (totalPaid < total) {
       throw new Error(
-        "Em documentos Pronto Pagamento o valor pago deve maior ou igual ao valor total."
+        'Em documentos Pronto Pagamento o valor pago deve maior ou igual ao valor total.',
       );
     }
   }
 
-  if (data.type === "FT" && data.paymentTerms === "ready") {
+  if (data.type === 'FT' && data.paymentTerms === 'ready') {
     if (totalPaid === 0) {
-      throw new Error("Deve adicionar um pagamento.");
+      throw new Error('Deve adicionar um pagamento.');
     }
 
     if (totalPaid < total) {
       throw new Error(
-        "Em documentos Pronto Pagamento o valor pago deve maior ou igual ao valor total."
+        'Em documentos Pronto Pagamento o valor pago deve maior ou igual ao valor total.',
       );
     }
   }
 
-  if (data.paymentTerms === "installment" && !data.customerId) {
-    throw new Error(
-      "Em documentos com pagamento a prazo deve selecionar um cliente"
-    );
+  if (data.paymentTerms === 'installment' && !data.customerId) {
+    throw new Error('Em documentos com pagamento a prazo deve selecionar um cliente');
   }
 }
 
@@ -85,29 +83,22 @@ export async function prepareData(input: InvoiceSchemaType) {
   const number = input?.number ? input.number : await generateNumber(type);
   const { productsData, taxesData } = await getItems(items);
   const paymentsData = getPayments(payments);
-  const { documentsData, invoicesData, totalInvoices } = await getDocuments(
-    documents
-  );
+  const { documentsData, invoicesData, totalInvoices } = await getDocuments(documents);
 
-  const { type: withholdingTaxType, percentage: withholdingTaxPercentage } =
-    withholdingTax || {};
+  const { type: withholdingTaxType, percentage: withholdingTaxPercentage } = withholdingTax || {};
 
-  const { subtotal, total, totalIva, totalDiscount, totalWithholdingTax } =
-    invoiceUpdateResume({
-      items: productsData,
-      customerId,
-      withholdingTaxPercentage,
-    });
+  const { subtotal, total, totalIva, totalDiscount, totalWithholdingTax } = invoiceUpdateResume({
+    items: productsData,
+    customerId,
+    withholdingTaxPercentage,
+  });
 
-  const totalPaid = paymentsData.reduce(
-    (total, item) => total + item.amount,
-    0
-  );
+  const totalPaid = paymentsData.reduce((total, item) => total + item.amount, 0);
 
   let balance = 0;
   if (paymentsData.length) {
     balance = totalPaid - total;
-    if (type === "RE") {
+    if (type === 'RE') {
       balance = totalPaid - totalInvoices;
     }
   }
@@ -172,18 +163,13 @@ export async function getItems(items: InvoiceItemSchemaType[]) {
   let productsData = [];
   let taxesData = [];
   let order = 0;
-  for (const {
-    id,
-    productId,
-    name,
-    discount,
-    iva,
-    price,
-    quantity,
-    reasonExemption,
-  } of items) {
-    const { discountAmount, ivaAmount, priceDiscount, priceIva, total } =
-      invoiceUpdateItemTotal({ discount, iva, price, quantity });
+  for (const { id, productId, name, discount, iva, price, quantity, reasonExemption } of items) {
+    const { discountAmount, ivaAmount, priceDiscount, priceIva, total } = invoiceUpdateItemTotal({
+      discount,
+      iva,
+      price,
+      quantity,
+    });
 
     const product = await prisma.product.findFirst({
       where: { id: productId },
@@ -213,11 +199,7 @@ export async function getItems(items: InvoiceItemSchemaType[]) {
       value: iva,
       amount: ivaAmount,
       incidence: priceIva * quantity,
-      observation: reasonExemption
-        ? reasonExemption
-        : iva === 0
-        ? product.reasonExemption
-        : "",
+      observation: reasonExemption ? reasonExemption : iva === 0 ? product.reasonExemption : '',
     };
 
     let taxFound = taxesData.find((p) => p.value === iva);

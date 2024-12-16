@@ -1,21 +1,21 @@
-import { SettingsLayout } from "@/components/layouts";
+import { SettingsLayout } from '@/components/layouts';
 
 export const metadata = {
-  title: { default: "Configurações", template: "%s | Configurações" },
+  title: { default: 'Configurações', template: '%s | Configurações' },
 };
 
 const sidebarNavItems = [
   {
-    title: "Empresa",
-    href: "/comercial/settings/company",
+    title: 'Empresa',
+    href: '/comercial/settings/company',
   },
   {
-    title: "Bancos",
-    href: "/comercial/settings/banks",
+    title: 'Bancos',
+    href: '/comercial/settings/banks',
   },
   {
-    title: "Usuários",
-    href: "/comercial/settings/users",
+    title: 'Usuários',
+    href: '/comercial/settings/users',
   },
 ];
 

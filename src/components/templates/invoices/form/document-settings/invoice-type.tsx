@@ -1,20 +1,16 @@
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { ChevronDownIcon } from "lucide-react";
-import { useDocumentSettings } from "./use-document-settings";
-import {
-  DOCUMENT_TYPES,
   DOCUMENTS_INCLUDE,
   DOCUMENTS_NOT_INCLUDE,
   DOCUMENTS_WITH_PAYMENT,
+  DOCUMENT_TYPES,
   PAYMENT,
-} from "@/constants/document-types";
-import { cn } from "@/libs/utils";
-import { useState } from "react";
-import { useInvoiceUpdateTotal } from "../use-invoice-update-total";
+} from '@/constants/document-types';
+import { cn } from '@/libs/utils';
+import { ChevronDownIcon } from 'lucide-react';
+import { useState } from 'react';
+import { useInvoiceUpdateTotal } from '../use-invoice-update-total';
+import { useDocumentSettings } from './use-document-settings';
 
 export function InvoiceType() {
   const [open, setOpen] = useState(false);
@@ -22,30 +18,28 @@ export function InvoiceType() {
   const { form, updateDocumentNumber } = useDocumentSettings();
   const { updateResume } = useInvoiceUpdateTotal();
 
-  const type = DOCUMENT_TYPES.find(
-    (doc) => doc.code === form.getValues("type")
-  );
+  const type = DOCUMENT_TYPES.find((doc) => doc.code === form.getValues('type'));
 
   const handleSelect = (typeCode: string) => {
-    form.setValue("type", typeCode);
+    form.setValue('type', typeCode);
     updateDocumentNumber(typeCode);
     setOpen(false);
 
     if (!DOCUMENTS_WITH_PAYMENT.includes(typeCode)) {
-      form.setValue("payments", []);
+      form.setValue('payments', []);
     }
 
     if (!DOCUMENTS_INCLUDE.includes(typeCode)) {
-      form.setValue("documents", []);
+      form.setValue('documents', []);
     }
 
     if (DOCUMENTS_INCLUDE.includes(typeCode)) {
-      form.setValue("items", []);
+      form.setValue('items', []);
     }
 
     if (PAYMENT.includes(typeCode)) {
-      form.setValue("dueDate", undefined);
-      form.setValue("paymentTerms", undefined);
+      form.setValue('dueDate', undefined);
+      form.setValue('paymentTerms', undefined);
     }
 
     updateResume();
@@ -53,30 +47,30 @@ export function InvoiceType() {
 
   return (
     <Popover modal onOpenChange={setOpen} open={open}>
-      <PopoverTrigger className="flex gap-2 items-center line-clamp-1">
+      <PopoverTrigger className="line-clamp-1 flex items-center gap-2">
         <span
           className={cn(
-            "flex-1 flex gap-2 items-center line-clamp-1 whitespace-nowrap",
-            !type?.name && "text-gray-400"
+            'line-clamp-1 flex flex-1 items-center gap-2 whitespace-nowrap',
+            !type?.name && 'text-gray-400',
           )}
         >
-          {type?.name || "Selecione o tipo de doc."}
+          {type?.name || 'Selecione o tipo de doc.'}
         </span>
         <ChevronDownIcon className="text-gray-400" />
       </PopoverTrigger>
       <PopoverContent align="end" className="w-fit">
         <div className="flex flex-col">
-          {DOCUMENT_TYPES.filter(
-            (filter) => !DOCUMENTS_NOT_INCLUDE.includes(filter.code)
-          ).map((doc, key) => (
-            <span
-              key={key}
-              className="hover:bg-gray-100 p-1 pr-14 rounded cursor-pointer"
-              onClick={() => handleSelect(doc.code)}
-            >
-              {doc.name}
-            </span>
-          ))}
+          {DOCUMENT_TYPES.filter((filter) => !DOCUMENTS_NOT_INCLUDE.includes(filter.code)).map(
+            (doc, key) => (
+              <span
+                key={key}
+                className="cursor-pointer rounded p-1 pr-14 hover:bg-gray-100"
+                onClick={() => handleSelect(doc.code)}
+              >
+                {doc.name}
+              </span>
+            ),
+          )}
         </div>
       </PopoverContent>
     </Popover>

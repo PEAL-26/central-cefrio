@@ -1,5 +1,6 @@
-"use client";
+'use client';
 
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -7,20 +8,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { ReactLoading } from "@/libs/react-loading";
-import { Textarea } from "@/components/ui/textarea";
-import { ImageSelector } from "@/components/ui/image-selector";
+} from '@/components/ui/form';
+import { ImageSelector } from '@/components/ui/image-selector';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
-import { useSettings } from "./use-settings";
-import { Loading } from "@/components/ui/loading";
-import { Loader2Icon } from "lucide-react";
+import { Loading } from '@/components/ui/loading';
+import { Loader2Icon } from 'lucide-react';
+import { useSettings } from './use-settings';
 
 export function SettingsCompany() {
-  const { form, isLoading, isLoadingData, onSubmit, uploadProgress } =
-    useSettings();
+  const { form, isLoading, isLoadingData, onSubmit, uploadProgress } = useSettings();
 
   if (isLoadingData) {
     return <Loading />;
@@ -31,15 +29,15 @@ export function SettingsCompany() {
       <form onSubmit={onSubmit} className="mt-8 space-y-6">
         <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
           <div className="col-span-2">
-            <div className="relative w-[170px] h-[170px]">
+            <div className="relative h-[170px] w-[170px]">
               <ImageSelector
-                url={form.getValues("logo.url")}
+                url={form.getValues('logo.url')}
                 disabled={isLoading}
                 name="logo.file"
                 form={form}
               />
-              {isLoading && form.getValues("logo.file") && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white">
+              {isLoading && form.getValues('logo.file') && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50 text-white">
                   <span className="font-bold">{`${uploadProgress}%`}</span>
                 </div>
               )}
@@ -62,12 +60,7 @@ export function SettingsCompany() {
                 <FormItem className="w-full flex-1">
                   <FormLabel>Company Name</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={isLoading}
-                      type="text"
-                      placeholder="Acme Inc."
-                      {...field}
-                    />
+                    <Input disabled={isLoading} type="text" placeholder="Acme Inc." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -162,12 +155,7 @@ export function SettingsCompany() {
                 <FormItem className="w-full flex-1">
                   <FormLabel>Contribuinte</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={isLoading}
-                      type="text"
-                      placeholder="xxxxxxxxxxxx"
-                      {...field}
-                    />
+                    <Input disabled={isLoading} type="text" placeholder="xxxxxxxxxxxx" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -197,9 +185,7 @@ export function SettingsCompany() {
         </div>
         <div className="flex justify-end">
           <Button disabled={isLoading} type="submit">
-            {isLoading && (
-              <Loader2Icon className="text-white animate-spin size-4 mr-2" />
-            )}
+            {isLoading && <Loader2Icon className="mr-2 size-4 animate-spin text-white" />}
             Salvar
           </Button>
         </div>

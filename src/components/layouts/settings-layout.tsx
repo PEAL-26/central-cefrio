@@ -1,4 +1,4 @@
-import { SidebarNav } from "@/components/ui/sidebar-nav";
+import { SidebarNav } from '@/components/ui/sidebar-nav';
 
 export function SettingsLayout({
   children,
@@ -8,11 +8,11 @@ export function SettingsLayout({
   items: { title: string; href: string }[];
 }>) {
   return (
-    <div className="flex-1 flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0 h-full">
+    <div className="flex h-full flex-1 flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
       <aside className="-mx-4 lg:w-1/5">
         <SidebarNav items={items} />
       </aside>
-      <div className="flex-1 flex flex-col lg:max-w-2xl">{children}</div>
+      <div className="flex flex-1 flex-col lg:max-w-2xl">{children}</div>
     </div>
   );
 }

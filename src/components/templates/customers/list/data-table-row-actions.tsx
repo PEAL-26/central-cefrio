@@ -1,19 +1,18 @@
-"use client";
+'use client';
 
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { Row } from "@tanstack/react-table";
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { Row } from '@tanstack/react-table';
 
-import { Button } from "@/components/ui/button";
+import { AlertModal } from '@/components/modals/alert-modal';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { AlertModal } from "@/components/modals/alert-modal";
-import { useState } from "react";
+} from '@/components/ui/dropdown-menu';
+import { useState } from 'react';
 
 interface Actions {
   onEdit?: (id: string) => void;
@@ -34,10 +33,7 @@ export function DataTableRowActions<TData extends { id: string }>({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-          >
+          <Button variant="ghost" className="data-[state=open]:bg-muted flex h-8 w-8 p-0">
             <DotsHorizontalIcon className="h-4 w-4" />
             <span className="sr-only">Open menu</span>
           </Button>
@@ -47,15 +43,13 @@ export function DataTableRowActions<TData extends { id: string }>({
             Alterar
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => setIsOpenDeleteModal(true)}>
-            Delete
-          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setIsOpenDeleteModal(true)}>Delete</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <AlertModal
         open={isOpenDeleteModal}
         onOpenChange={setIsOpenDeleteModal}
-        onOk={() => actions?.onDelete?.(row.original?.id || "")}
+        onOk={() => actions?.onDelete?.(row.original?.id || '')}
       />
     </>
   );

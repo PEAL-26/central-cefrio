@@ -1,15 +1,12 @@
-"use client";
-import { FormProvider } from "react-hook-form";
+'use client';
+import { FormProvider } from 'react-hook-form';
 
-import { Button } from "@/components/ui/button";
-import {
-  CheckboxFormFieldControl,
-  InputFormFieldControl,
-} from "@/components/ui/form-fields";
-import { Loading } from "@/components/ui/loading";
+import { Button } from '@/components/ui/button';
+import { CheckboxFormFieldControl, InputFormFieldControl } from '@/components/ui/form-fields';
+import { Loading } from '@/components/ui/loading';
 
-import { useUserForm } from "./use-user-form";
-import { UserFormProps } from "./types";
+import { UserFormProps } from './types';
+import { useUserForm } from './use-user-form';
 
 export function UserForm(props: UserFormProps) {
   const { userId, onCancel } = props;
@@ -64,9 +61,7 @@ export function UserForm(props: UserFormProps) {
           <Button type="button" variant="outline" onClick={onCancel}>
             Cancelar
           </Button>
-          <Button type="submit">
-            {userId ? "Salvar Alterações" : "Adicionar"}
-          </Button>
+          <Button type="submit">{userId ? 'Salvar Alterações' : 'Adicionar'}</Button>
         </div>
       </form>
     </FormProvider>

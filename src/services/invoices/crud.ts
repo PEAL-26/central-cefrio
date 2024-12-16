@@ -1,7 +1,7 @@
-import { crud } from "@/libs/axios";
-import { ListRequestParams } from "@/types";
-import { CustomerRequestData } from "../customers";
-import { ProductRequestData } from "../products";
+import { crud } from '@/libs/axios';
+import { ListRequestParams } from '@/types';
+import { CustomerRequestData } from '../customers';
+import { ProductRequestData } from '../products';
 
 export interface InvoiceListResponseData {
   id: string;
@@ -58,8 +58,8 @@ interface Document {
 }
 
 enum WithholdingTaxTypeEnum {
-  PARTICULAR = "PARTICULAR",
-  COMPANY = "COMPANY",
+  PARTICULAR = 'PARTICULAR',
+  COMPANY = 'COMPANY',
 }
 
 export interface InvoiceDetailsData {
@@ -137,4 +137,4 @@ export const invoiceService = crud<
   InvoiceListResponseData,
   InvoiceParams,
   InvoiceDetailsData
->({ route: "invoices" });
+>({ route: 'invoices' });

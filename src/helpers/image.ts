@@ -1,5 +1,5 @@
-import * as path from "node:path";
-import * as fs from "node:fs";
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
 export function convertImageToBase64(image: string) {
   // Caminho relativo para o arquivo de imagem
@@ -7,9 +7,9 @@ export function convertImageToBase64(image: string) {
 
   // Leia a imagem como buffer e converta para base64
   const imageBuffer = fs.readFileSync(imagePath);
-  const base64Image = imageBuffer.toString("base64");
+  const base64Image = imageBuffer.toString('base64');
 
-  const imageSplitted = image.split(".");
+  const imageSplitted = image.split('.');
   const ext = imageSplitted[imageSplitted.length - 1];
 
   // Crie a URI com o prefixo adequado

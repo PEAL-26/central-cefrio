@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
-import { InvoiceListResponseData } from "@/services/invoices";
-import { ProductListResponseData } from "@/services/products";
-import { IQueryPaginationResponse } from "@/hooks/use-query-pagination/types";
+import { IQueryPaginationResponse } from '@/hooks/use-query-pagination/types';
+import { InvoiceListResponseData } from '@/services/invoices';
+import { ProductListResponseData } from '@/services/products';
 
 export type DocumentFilterTypes = {
   page?: string;

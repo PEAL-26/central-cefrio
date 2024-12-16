@@ -1,19 +1,19 @@
-import { toastResponseError } from "@/helpers/response/response";
-import { useGetSearchParams, useQueryPagination } from "@/hooks";
-import { productService } from "@/services/products";
-import { useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { toastResponseError } from '@/helpers/response/response';
+import { useGetSearchParams, useQueryPagination } from '@/hooks';
+import { productService } from '@/services/products';
+import { useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 
 export function useList() {
   const queryClient = useQueryClient();
-  const [q, size, page] = useGetSearchParams({ params: ["q", "size", "page"] });
+  const [q, size, page] = useGetSearchParams({ params: ['q', 'size', 'page'] });
 
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [id, setId] = useState<string | undefined>(undefined);
 
   const response = useQueryPagination({
     fn: async () => await productService.list({ page, q, size }),
-    queryKey: ["products", q, size, page],
+    queryKey: ['products', q, size, page],
   });
 
   const handleOpenDialog = (id?: string) => {
@@ -25,7 +25,7 @@ export function useList() {
     try {
       await productService.delete(id);
       queryClient.invalidateQueries({
-        queryKey: ["products"],
+        queryKey: ['products'],
       });
     } catch (error) {
       toastResponseError(error);

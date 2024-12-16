@@ -1,23 +1,23 @@
-import "./globals.css";
+import './globals.css';
 
-import type { Metadata } from "next";
-import NextTopLoader from "nextjs-toploader";
-import { getServerSession } from "next-auth";
-import { PrimeReactProvider } from "primereact/api";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
-import Tailwind from "primereact/passthrough/tailwind";
+import type { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
+import NextTopLoader from 'nextjs-toploader';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
+import { PrimeReactProvider } from 'primereact/api';
+import Tailwind from 'primereact/passthrough/tailwind';
 
-import { cn } from "@/libs/utils";
-import { AppProvider } from "@/contexts";
-import { colors } from "@/styles/colors";
-import { Toaster } from "@/components/ui/toaster";
-import { nextAuthOptions } from "@/libs/next-auth";
-import { NextAuthSessionProvider, QueryClientProvider } from "@/providers";
+import { Toaster } from '@/components/ui/toaster';
+import { AppProvider } from '@/contexts';
+import { nextAuthOptions } from '@/libs/next-auth';
+import { cn } from '@/libs/utils';
+import { NextAuthSessionProvider, QueryClientProvider } from '@/providers';
+import { colors } from '@/styles/colors';
 
-import { inter } from "./fonts";
+import { inter } from './fonts';
 
 export const metadata: Metadata = {
-  title: { default: "Cefrio", template: "%s | Cefrio" },
+  title: { default: 'Cefrio', template: '%s | Cefrio' },
 };
 
 export default async function RootLayout({
@@ -28,7 +28,7 @@ export default async function RootLayout({
   const session = await getServerSession(nextAuthOptions);
   return (
     <html lang="pt">
-      <body className={cn(inter.className, "overflow-hidden")}>
+      <body className={cn(inter.className, 'overflow-hidden')}>
         <NextTopLoader
           color={colors.primary.DEFAULT}
           initialPosition={0.08}

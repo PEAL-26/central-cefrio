@@ -1,10 +1,10 @@
-import { numericString } from "@/helpers/zod";
-import { z } from "zod";
+import { numericString } from '@/helpers/zod';
+import { z } from 'zod';
 
 export const invoiceItemSchema = z.object({
   id: z.string().optional(),
-  productId: z.string().min(1, "Campo Obrigatório"),
-  name: z.string().min(1, "Campo Obrigatório"),
+  productId: z.string().min(1, 'Campo Obrigatório'),
+  name: z.string().min(1, 'Campo Obrigatório'),
   unitMeasure: z.string().optional(),
   quantity: numericString(z.number()),
   price: numericString(z.number().optional()),
@@ -15,23 +15,21 @@ export const invoiceItemSchema = z.object({
 
 export const invoicePaymentSchema = z.object({
   id: z.string().optional(),
-  method: z.string().min(1, "Campo Obrigatório"),
-  date: z.coerce.date({ message: "Campo Obrigatório" }),
+  method: z.string().min(1, 'Campo Obrigatório'),
+  date: z.coerce.date({ message: 'Campo Obrigatório' }),
   observation: z.string().optional(),
-  amount: numericString(
-    z.number().gt(0, "O valor deve ser maior que zero (0)")
-  ),
+  amount: numericString(z.number().gt(0, 'O valor deve ser maior que zero (0)')),
 });
 
 export const invoiceDocumentSchema = z.object({
   id: z.string().optional(),
   documentId: z.string(),
-  paid: numericString(z.number().gt(0, "O valor deve ser maior que zero (0)")),
+  paid: numericString(z.number().gt(0, 'O valor deve ser maior que zero (0)')),
 });
 
 export const invoiceSchema = z.object({
   id: z.string().uuid().optional(),
-  type: z.string().min(1, "Campo Obrigatório"),
+  type: z.string().min(1, 'Campo Obrigatório'),
   number: z.string().optional(),
   customerId: z.string().optional(),
   date: z.coerce.date(),
@@ -44,7 +42,7 @@ export const invoiceSchema = z.object({
   generalDiscount: numericString(z.number().optional()),
   withholdingTax: z
     .object({
-      type: z.enum(["PARTICULAR", "COMPANY"]).optional(),
+      type: z.enum(['PARTICULAR', 'COMPANY']).optional(),
       percentage: numericString(z.number().optional()),
     })
     .optional(),

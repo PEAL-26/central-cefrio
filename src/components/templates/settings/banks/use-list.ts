@@ -1,26 +1,26 @@
-import { useState } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 
-import { bankService } from "@/services/banks";
-import { toastResponseError } from "@/helpers/response/response";
-import { useGetSearchParams, useQueryPagination } from "@/hooks";
+import { toastResponseError } from '@/helpers/response/response';
+import { useGetSearchParams, useQueryPagination } from '@/hooks';
+import { bankService } from '@/services/banks';
 
 export function useList() {
   const queryClient = useQueryClient();
-  const [q, size, page] = useGetSearchParams({ params: ["q", "size", "page"] });
+  const [q, size, page] = useGetSearchParams({ params: ['q', 'size', 'page'] });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bankId, setBankId] = useState<string | undefined>(undefined);
 
   const response = useQueryPagination({
     fn: () => bankService.list({ page, q, size }),
-    queryKey: ["banks", q, size, page],
+    queryKey: ['banks', q, size, page],
   });
 
   const handleDelete = async (id: string) => {
     try {
       await bankService.delete(id);
       queryClient.invalidateQueries({
-        queryKey: ["banks", q, size, page],
+        queryKey: ['banks', q, size, page],
       });
     } catch (error) {
       toastResponseError(error);

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef } from '@tanstack/react-table';
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { DataTableColumnHeader } from "@/components/ui/data-table";
-import { UserListResponseData } from "@/services/users";
-import { DataTableRowActions } from "./data-table-row-actions";
+import { Checkbox } from '@/components/ui/checkbox';
+import { DataTableColumnHeader } from '@/components/ui/data-table';
+import { UserListResponseData } from '@/services/users';
+import { DataTableRowActions } from './data-table-row-actions';
 
 type Column = ColumnDef<UserListResponseData> & { className?: string };
 
@@ -16,7 +16,7 @@ interface ColumnProps {
 
 export const columns = (props?: ColumnProps): Column[] => [
   {
-    id: "select",
+    id: 'select',
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
@@ -37,30 +37,24 @@ export const columns = (props?: ColumnProps): Column[] => [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Nome" />
-    ),
-    cell: ({ row }) => (
-      <div className="whitespace-nowrap">{row.getValue("name")}</div>
-    ),
+    accessorKey: 'name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Nome" />,
+    cell: ({ row }) => <div className="whitespace-nowrap">{row.getValue('name')}</div>,
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "email",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email" />
-    ),
+    accessorKey: 'email',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
     cell: ({ row }) => {
-      return <div className="whitespace-nowrap">{row.getValue("email")}</div>;
+      return <div className="whitespace-nowrap">{row.getValue('email')}</div>;
     },
     enableSorting: false,
     enableHiding: false,
   },
   {
-    id: "actions",
-    className: "w-[1%]",
+    id: 'actions',
+    className: 'w-[1%]',
     cell: ({ row }) => <DataTableRowActions row={row} actions={props} />,
   },
 ];

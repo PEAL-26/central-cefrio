@@ -1,15 +1,12 @@
-"use client";
-import { FormProvider } from "react-hook-form";
+'use client';
+import { FormProvider } from 'react-hook-form';
 
-import { Button } from "@/components/ui/button";
-import {
-  CheckboxFormFieldControl,
-  InputFormFieldControl,
-} from "@/components/ui/form-fields";
-import { Loading } from "@/components/ui/loading";
+import { Button } from '@/components/ui/button';
+import { CheckboxFormFieldControl, InputFormFieldControl } from '@/components/ui/form-fields';
+import { Loading } from '@/components/ui/loading';
 
-import { useBankForm } from "./use-bank-form";
-import { BankFormProps } from "./types";
+import { BankFormProps } from './types';
+import { useBankForm } from './use-bank-form';
 
 export function BankForm(props: BankFormProps) {
   const { bankId, onCancel } = props;
@@ -64,9 +61,7 @@ export function BankForm(props: BankFormProps) {
           <Button type="button" variant="outline" onClick={onCancel}>
             Cancelar
           </Button>
-          <Button type="submit">
-            {bankId ? "Salvar Alterações" : "Adicionar"}
-          </Button>
+          <Button type="submit">{bankId ? 'Salvar Alterações' : 'Adicionar'}</Button>
         </div>
       </form>
     </FormProvider>

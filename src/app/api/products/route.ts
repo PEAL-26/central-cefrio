@@ -1,11 +1,11 @@
-import { z } from "zod";
-import { randomUUID } from "crypto";
-import { prisma } from "../../../libs/prisma";
-import { Prisma } from "@prisma/client";
-import { getAllParams } from "../../../helpers/search-params";
-import { NextRequest, NextResponse } from "next/server";
-import { responseError } from "../../../helpers/response/route-response";
-import { paginationData, setPagination } from "../../../helpers/pagination";
+import { Prisma } from '@prisma/client';
+import { randomUUID } from 'crypto';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { paginationData, setPagination } from '../../../helpers/pagination';
+import { responseError } from '../../../helpers/response/route-response';
+import { getAllParams } from '../../../helpers/search-params';
+import { prisma } from '../../../libs/prisma';
 
 const listParamsSchema = z.object({
   q: z.string().optional(),
@@ -14,7 +14,7 @@ const listParamsSchema = z.object({
 });
 
 export async function GET(req: NextRequest, res: NextResponse) {
-  const { q = "", page, size } = listParamsSchema.parse(getAllParams(req.url));
+  const { q = '', page, size } = listParamsSchema.parse(getAllParams(req.url));
   const { limit: take, offset: skip } = setPagination({ size, page });
 
   const queryParams: Prisma.ProductWhereInput = {
@@ -22,7 +22,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       {
         name: {
           contains: q,
-          mode: "insensitive",
+          mode: 'insensitive',
         },
       },
     ],
@@ -58,7 +58,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
 
 const productSchema = z.object({
   id: z.string().uuid().optional(),
-  name: z.string({ required_error: "Campo Obrigatório." }),
+  name: z.string({ required_error: 'Campo Obrigatório.' }),
   unitMeasure: z.string().optional(),
   price: z.coerce.string().optional(),
   iva: z.coerce.string().optional(),
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
           iva,
           reasonExemption: reasonExemption
             ? reasonExemption
-            : "Transmissão de bens e serviços não sujeita",
+            : 'Transmissão de bens e serviços não sujeita',
         },
         where: { id },
       });

@@ -1,12 +1,9 @@
-import {
-  AutoComplete as AutoCompletePrimitive,
-  AutoCompleteProps,
-} from "primereact/autocomplete";
+import { AutoComplete as AutoCompletePrimitive, AutoCompleteProps } from 'primereact/autocomplete';
 
-import "./theme.css";
+import './theme.css';
 
 export function AutoComplete(props: AutoCompleteProps) {
   return <AutoCompletePrimitive {...props} />;
 }
 
-export * from "primereact/autocomplete";
+export * from 'primereact/autocomplete';

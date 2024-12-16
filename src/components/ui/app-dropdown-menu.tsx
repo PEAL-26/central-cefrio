@@ -1,18 +1,14 @@
-import Link from "next/link";
-import { Button } from "./button";
+import { ChevronsUpDownIcon, LoaderIcon } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from './button';
 import {
   DropdownMenu,
-  DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "./dropdown-menu";
-import {
-  ChevronsDownUpIcon,
-  ChevronsUpDownIcon,
-  LoaderIcon,
-} from "lucide-react";
+  DropdownMenuTrigger,
+} from './dropdown-menu';
 
-import { useState } from "react";
+import { useState } from 'react';
 
 interface Props {
   defaultRoute?: string;
@@ -23,39 +19,35 @@ export function AppDropdownMenu(props: Props) {
   const [app, setApp] = useState(() => defaultRoute);
 
   const selected = {
-    mails: "Emails",
-    comercial: "Comercial",
-    undefined: "Selecione app",
-  }[
-    app === "mails" ? "mails" : app === "comercial" ? "comercial" : "undefined"
-  ];
+    mails: 'Emails',
+    comercial: 'Comercial',
+    undefined: 'Selecione app',
+  }[app === 'mails' ? 'mails' : app === 'comercial' ? 'comercial' : 'undefined'];
 
-  const isLoading = app !== "" && defaultRoute !== app;
+  const isLoading = app !== '' && defaultRoute !== app;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="flex h-8 data-[state=open]:bg-muted items-center justify-between gap-3 w-44"
+          className="data-[state=open]:bg-muted flex h-8 w-44 items-center justify-between gap-3"
         >
           <div className="flex items-center gap-1">
             {selected}
-            {isLoading && (
-              <LoaderIcon className="animate-spin size-4 text-gray-300" />
-            )}
+            {isLoading && <LoaderIcon className="size-4 animate-spin text-gray-300" />}
           </div>
           <ChevronsUpDownIcon className="size-4 text-gray-300" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[160px]">
         <DropdownMenuItem asChild>
-          <Link href="/comercial" onClick={() => setApp("comercial")}>
+          <Link href="/comercial" onClick={() => setApp('comercial')}>
             Comercial
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/mails" onClick={() => setApp("mails")}>
+          <Link href="/mails" onClick={() => setApp('mails')}>
             Emails
           </Link>
         </DropdownMenuItem>

@@ -1,7 +1,5 @@
-import { redirect } from "next/navigation";
-
 export const metadata = {
-  title: "Configurações",
+  title: 'Configurações',
 };
 
 export default function SettingsPage() {

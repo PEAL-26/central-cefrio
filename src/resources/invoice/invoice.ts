@@ -1,17 +1,10 @@
-import * as fs from "node:fs";
+import { splitArray } from '@/helpers/array';
+import { Handlebars } from '@/libs/handlebars';
+import { InvoiceData, InvoiceDataItem } from './types';
 
-import { InvoiceData, InvoiceDataItem } from "./types";
-import { splitArray } from "@/helpers/array";
-import { generateImageDataURLFromURL } from "@/helpers/url";
-import { Handlebars } from "@/libs/handlebars";
+import templateSource from './invoice.min.hbs';
 
-import templateSource from "./invoice.min.hbs";
-
-async function generateItems(
-  items: InvoiceDataItem[],
-  itemsPerPage = 22,
-  restItemsPerPage = 32
-) {
+async function generateItems(items: InvoiceDataItem[], itemsPerPage = 22, restItemsPerPage = 32) {
   const totalItems = items.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   const splitted = splitArray(items, itemsPerPage, restItemsPerPage);
@@ -42,11 +35,11 @@ export async function invoiceTemplate(data: InvoiceData) {
 
   const { total_pages, pages } = await generateItems(items, 22);
   // const logoUrl = await generateImageDataURLFromURL(logo_url);
-// console.log({ logoUrl, logo_url });
+  // console.log({ logoUrl, logo_url });
   const context = {
     total_pages,
     pages,
-    logo_url,//: logoUrl,
+    logo_url, //: logoUrl,
     company: {
       name: company?.name || false,
       slogan: company?.slogan || false,
@@ -68,8 +61,8 @@ export async function invoiceTemplate(data: InvoiceData) {
     document: {
       number: document.number,
       currency: {
-        name: document?.currency?.name || "Akz",
-        rate: document?.currency?.rate || "0,00 Kz",
+        name: document?.currency?.name || 'Akz',
+        rate: document?.currency?.rate || '0,00 Kz',
       },
       date_issue: document.date_issue,
       due_date: document?.due_date || false,
@@ -79,10 +72,10 @@ export async function invoiceTemplate(data: InvoiceData) {
     },
     tax_summary:
       tax_summary?.map((tax) => ({
-        value: tax?.value || "0,00 Kz",
-        incidence: tax?.incidence || "0,00 Kz",
-        total: tax?.total || "0,00 Kz",
-        reason_exemption: tax?.reason_exemption || "",
+        value: tax?.value || '0,00 Kz',
+        incidence: tax?.incidence || '0,00 Kz',
+        total: tax?.total || '0,00 Kz',
+        reason_exemption: tax?.reason_exemption || '',
       })) || [],
     total: {
       items: total.items,

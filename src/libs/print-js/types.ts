@@ -1,4 +1,4 @@
-export type PrintTypes = "pdf" | "html" | "image" | "json" | "raw-html";
+export type PrintTypes = 'pdf' | 'html' | 'image' | 'json' | 'raw-html';
 
 export interface Configuration {
   printable: any;

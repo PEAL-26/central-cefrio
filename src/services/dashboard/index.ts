@@ -1,4 +1,4 @@
-import { api, ApiRequestConfig } from "@/libs/axios";
+import { api, ApiRequestConfig } from '@/libs/axios';
 
 type MonthlyInvoices = {
   id: string;

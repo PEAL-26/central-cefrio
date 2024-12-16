@@ -1,15 +1,11 @@
-import { companyService, getCompanyFirst } from "@/services/companies";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { companySchema, CompanySchemaType } from "./schema";
-import {
-  toastResponseError,
-  toastResponseRegisterSuccess,
-} from "@/helpers/response/response";
-import { createFormData } from "@/helpers/form-data";
-import { useMultipleFileUploads } from "@/hooks/use-multiple-file-uploads";
-import { useVercelBlobUpload } from "@/hooks/use-vercel-blob-upload";
+import { toastResponseError, toastResponseRegisterSuccess } from '@/helpers/response/response';
+import { useMultipleFileUploads } from '@/hooks/use-multiple-file-uploads';
+import { useVercelBlobUpload } from '@/hooks/use-vercel-blob-upload';
+import { companyService, getCompanyFirst } from '@/services/companies';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { CompanySchemaType, companySchema } from './schema';
 
 export function useSettings() {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +16,7 @@ export function useSettings() {
 
   const form = useForm<CompanySchemaType>({
     resolver: zodResolver(companySchema),
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const handleSubmit = async (data: CompanySchemaType) => {
@@ -33,9 +29,9 @@ export function useSettings() {
       // if (data.logo?.file) {
       //   // const imageFormData = createFormData(data.logo?.file);
       //   const blob = await vercel.upload(data.logo.file)
-        
+
       //   console.log(blob);
-    
+
       //   // const [imageFileName] = await uploads([imageFormData]);
       //   // logo =
       //   //   imageFileName && imageFileName?.length > 0
@@ -61,15 +57,15 @@ export function useSettings() {
     const company = await getCompanyFirst();
 
     if (company) {
-      form.setValue("id", company.id);
-      form.setValue("name", company.name);
-      form.setValue("telephone", company?.telephone || undefined);
-      form.setValue("address", company?.address || undefined);
-      form.setValue("email", company?.email || undefined);
-      form.setValue("site", company?.site || undefined);
-      form.setValue("taxpayer", company?.taxpayer || undefined);
-      form.setValue("location", company?.location || undefined);
-      form.setValue("logo.url", company?.logo || undefined);
+      form.setValue('id', company.id);
+      form.setValue('name', company.name);
+      form.setValue('telephone', company?.telephone || undefined);
+      form.setValue('address', company?.address || undefined);
+      form.setValue('email', company?.email || undefined);
+      form.setValue('site', company?.site || undefined);
+      form.setValue('taxpayer', company?.taxpayer || undefined);
+      form.setValue('location', company?.location || undefined);
+      form.setValue('logo.url', company?.logo || undefined);
     }
   };
 

@@ -1,4 +1,4 @@
-"use client";
-import ReactLoading from "react-loading";
+'use client';
+import ReactLoading from 'react-loading';
 
 export { ReactLoading };

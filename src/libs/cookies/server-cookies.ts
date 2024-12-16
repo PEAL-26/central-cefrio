@@ -1,11 +1,11 @@
-import type { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
+import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 
 export const setServerCookie = (key: string, value: string, options?: any) => {
   const response = NextResponse.next({});
   response.cookies.set(key, value, {
-    path: "/",
+    path: '/',
     ...options,
   });
   return response;

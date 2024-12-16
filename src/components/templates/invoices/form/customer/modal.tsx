@@ -1,31 +1,19 @@
-"use client";
-import { BoltIcon, SearchIcon } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+'use client';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { SearchIcon } from 'lucide-react';
 
-import { CustomerForm } from "./form";
-import { CustomerTable } from "./table";
-import { useCustomer } from "./use-customer";
-import { useEffect, useState } from "react";
-import { cn } from "@/libs/utils";
+import { cn } from '@/libs/utils';
+import { useEffect, useState } from 'react';
+import { CustomerForm } from './form';
+import { CustomerTable } from './table';
+import { useCustomer } from './use-customer';
 
 interface CustomerModalProps {}
 
 export function CustomerModal(props: CustomerModalProps) {
   const {} = props;
-  const {
-    add,
-    open,
-    setAdd,
-    handleClose,
-    handleOpen,
-    handleAddCustomer,
-    handleSelect,
-    disabled,
-  } = useCustomer();
+  const { add, open, setAdd, handleClose, handleOpen, handleAddCustomer, handleSelect, disabled } =
+    useCustomer();
 
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -37,25 +25,19 @@ export function CustomerModal(props: CustomerModalProps) {
   return (
     <Popover modal open={open} onOpenChange={handleClose}>
       <PopoverTrigger onClick={handleOpen} disabled={disabled}>
-        <SearchIcon className={cn(disabled && "text-gray-400")} />
+        <SearchIcon className={cn(disabled && 'text-gray-400')} />
       </PopoverTrigger>
-      <PopoverContent
-        align="end"
-        className="w-80 h-96 bg-white overflow-hidden p-0"
-      >
-        <div className="flex-1 h-full w-full relative">
+      <PopoverContent align="end" className="h-96 w-80 overflow-hidden bg-white p-0">
+        <div className="relative h-full w-full flex-1">
           <div
             data-add={add}
-            className="flex w-full h-full overflow-y-auto absolute transition-all translate-x-0 data-[add='true']:translate-x-0 data-[add='false']:-translate-x-full"
+            className="absolute flex h-full w-full translate-x-0 overflow-y-auto transition-all data-[add='false']:-translate-x-full data-[add='true']:translate-x-0"
           >
-            <CustomerForm
-              onSubmitted={handleSelect}
-              onBack={() => setAdd(false)}
-            />
+            <CustomerForm onSubmitted={handleSelect} onBack={() => setAdd(false)} />
           </div>
           <div
             data-add={add}
-            className="flex w-full h-full overflow-y-auto absolute transition-all translate-x-0 data-[add='false']:translate-x-0 data-[add='true']:translate-x-full"
+            className="absolute flex h-full w-full translate-x-0 overflow-y-auto transition-all data-[add='false']:translate-x-0 data-[add='true']:translate-x-full"
           >
             <CustomerTable
               open={open}

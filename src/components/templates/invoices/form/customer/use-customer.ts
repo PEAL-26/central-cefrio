@@ -1,21 +1,21 @@
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useFormContext } from "react-hook-form";
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useFormContext } from 'react-hook-form';
 
-import { InvoiceSchemaType } from "../schema";
-import { customerService } from "@/services/customers";
+import { customerService } from '@/services/customers';
+import { InvoiceSchemaType } from '../schema';
 
 export function useCustomer() {
   const [open, setOpen] = useState(false);
   const [add, setAdd] = useState(false);
 
   const form = useFormContext<InvoiceSchemaType>();
-  const customerId = form.watch("customerId");
-  const type = form.watch("type");
+  const customerId = form.watch('customerId');
+  const type = form.watch('type');
 
   const { data, isLoading } = useQuery({
     queryFn: () => (customerId ? customerService.getById(customerId) : null),
-    queryKey: ["customer", customerId],
+    queryKey: ['customer', customerId],
   });
 
   const handleAddCustomer = () => {
@@ -23,7 +23,7 @@ export function useCustomer() {
   };
 
   const handleSelect = (customerId: string) => {
-    form.setValue("customerId", customerId);
+    form.setValue('customerId', customerId);
     handleClose();
   };
 
@@ -39,7 +39,7 @@ export function useCustomer() {
   };
 
   const handleUnselect = () => {
-    form.setValue("customerId", undefined);
+    form.setValue('customerId', undefined);
   };
 
   return {
@@ -53,6 +53,6 @@ export function useCustomer() {
     handleAddCustomer,
     handleSelect,
     handleUnselect,
-    disabled: type === "RE",
+    disabled: type === 'RE',
   };
 }

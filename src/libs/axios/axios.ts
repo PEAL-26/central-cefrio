@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
-import { apiUrl } from "@/configs";
-import { COOKIES } from "@/constants/cookies";
-import { getCookie } from "../cookies";
+import { apiUrl } from '@/configs';
+import { COOKIES } from '@/constants/cookies';
+import { getCookie } from '../cookies';
 
 const axiosInstance = axios.create({
   baseURL: apiUrl,
@@ -12,9 +12,9 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((req) => {
   let token = undefined;
-  if (typeof window === "undefined") {
-    const { cookies } = require("next/headers");
-    token = cookies().get(COOKIES.TOKEN)?.value || "";
+  if (typeof window === 'undefined') {
+    const { cookies } = require('next/headers');
+    token = cookies().get(COOKIES.TOKEN)?.value || '';
   } else {
     token = getCookie(COOKIES.TOKEN);
   }
@@ -26,5 +26,5 @@ axiosInstance.interceptors.request.use((req) => {
   return req;
 });
 
-export * from "axios";
+export * from 'axios';
 export { axiosInstance as axios };

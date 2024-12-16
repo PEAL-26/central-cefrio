@@ -1,6 +1,6 @@
-import { Circle, Search, Settings2Icon } from "lucide-react";
-import { Button } from "./button";
-import { Input } from "./input";
+import { Circle, Search, Settings2Icon } from 'lucide-react';
+import { Button } from './button';
+import { Input } from './input';
 
 type Filter = {};
 
@@ -13,23 +13,23 @@ interface Props {
 export function MailListingToolbox(props: Props) {
   const {} = props;
   return (
-    <div className="border-b w-full flex items-center justify-between py-1 px-2">
-      <Button variant="ghost" className="p-0 h-5 w-5 hover:bg-transparent">
-        <Circle className="text-gray-300 size-3" />
+    <div className="flex w-full items-center justify-between border-b px-2 py-1">
+      <Button variant="ghost" className="h-5 w-5 p-0 hover:bg-transparent">
+        <Circle className="size-3 text-gray-300" />
       </Button>
-      <div className="flex items-center gap-1 justify-center w-fit">
-        <Search className="text-gray-300 size-4" />
-              <Input
-                  type='search'
-          className="p-0 h-4 w-24 border-none text-xs rounded-none"
+      <div className="flex w-fit items-center justify-center gap-1">
+        <Search className="size-4 text-gray-300" />
+        <Input
+          type="search"
+          className="h-4 w-24 rounded-none border-none p-0 text-xs"
           placeholder="Pesquisar"
         />
       </div>
       <Button
         variant="ghost"
-        className="p-0 h-5 flex items-center text-xs text-gray-500 hover:bg-transparent hover:text-gray-700 w-fit gap-1"
+        className="flex h-5 w-fit items-center gap-1 p-0 text-xs text-gray-500 hover:bg-transparent hover:text-gray-700"
       >
-        <Settings2Icon className="text-gray-300 size-4" />
+        <Settings2Icon className="size-4 text-gray-300" />
         Filtro
       </Button>
     </div>

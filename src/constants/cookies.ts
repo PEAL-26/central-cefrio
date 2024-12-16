@@ -1,3 +1,3 @@
 export const COOKIES = {
-  TOKEN: "next-auth.session-token",
+  TOKEN: 'next-auth.session-token',
 };

@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import Image from "next/image";
-import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-import { ReactLoading } from "@/libs/react-loading";
+import { ReactLoading } from '@/libs/react-loading';
 
-import { UserNav } from "../ui/user-nav";
-import { AppDropdownMenu } from "../ui/app-dropdown-menu";
-import { ComercialMainNav, MailsMainNav } from "../ui/navs";
+import { AppDropdownMenu } from '../ui/app-dropdown-menu';
+import { ComercialMainNav, MailsMainNav } from '../ui/navs';
+import { UserNav } from '../ui/user-nav';
 
-type AppType = "mails" | "comercial" | undefined;
+type AppType = 'mails' | 'comercial' | undefined;
 
 export function AppLayout({
   children,
@@ -19,7 +19,7 @@ export function AppLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-  const route = pathname.split("/")[1];
+  const route = pathname.split('/')[1];
 
   const [isLoadingPage, setIsLoadingPage] = useState(true);
 
@@ -29,20 +29,15 @@ export function AppLayout({
 
   if (isLoadingPage) {
     return (
-      <div className="flex-1 flex justify-center items-center h-screen">
-        <ReactLoading
-          type="spinningBubbles"
-          color={"#1B3D7A"}
-          height={90}
-          width={90}
-        />
+      <div className="flex h-screen flex-1 items-center justify-center">
+        <ReactLoading type="spinningBubbles" color={'#1B3D7A'} height={90} width={90} />
       </div>
     );
   }
 
   return (
     <>
-      <div className="border-b fixed inset-x-0 top-0 z-40 bg-white">
+      <div className="fixed inset-x-0 top-0 z-40 border-b bg-white">
         <div className="flex h-16 items-center px-4">
           <Link href={`/${route}`} className="relative mr-4">
             <Image
@@ -54,18 +49,18 @@ export function AppLayout({
             />
           </Link>
           <AppDropdownMenu defaultRoute={route} />
-          {route === "mails" && <MailsMainNav className="mx-6" />}
-          {route === "comercial" && <ComercialMainNav className="mx-6" />}
+          {route === 'mails' && <MailsMainNav className="mx-6" />}
+          {route === 'comercial' && <ComercialMainNav className="mx-6" />}
           <div className="ml-auto flex items-center space-x-4">
             <UserNav route={route} />
           </div>
         </div>
       </div>
 
-      <main className="overflow-y-auto h-screen-custom mt-16 mb-6 flex-1  flex flex-col">
+      <main className="mb-6 mt-16 flex h-screen-custom flex-1 flex-col overflow-y-auto">
         {children}
       </main>
-      <footer className="fixed inset-x-0 bg-primary-900 text-white bottom-0 z-50 py-1 px-6 flex items-center justify-center">
+      <footer className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-center bg-primary-900 px-6 py-1 text-white">
         <p className="text-xs">
           {`© ${new Date().getFullYear()} `}
           <Link

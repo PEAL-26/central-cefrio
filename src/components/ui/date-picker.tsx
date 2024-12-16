@@ -1,13 +1,9 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { ChevronDownIcon } from "lucide-react";
-import { cn } from "@/libs/utils";
-import { DateDayPicker } from "@/components/ui/date-day-picker";
+import { DateDayPicker } from '@/components/ui/date-day-picker';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { cn } from '@/libs/utils';
+import { ChevronDownIcon } from 'lucide-react';
 
 interface DatePickerProps {
   value?: Date;
@@ -32,12 +28,12 @@ export function DatePicker(props: DatePickerProps) {
       <PopoverTrigger disabled={disabled}>
         <span
           className={cn(
-            "flex gap-2 items-center justify-between",
+            'flex items-center justify-between gap-2',
             className,
-            disabled && "text-gray-400"
+            disabled && 'text-gray-400',
           )}
         >
-          {value ? value.toLocaleDateString() : "Selecione a data"}
+          {value ? value.toLocaleDateString() : 'Selecione a data'}
           <ChevronDownIcon className="text-gray-400" />
         </span>
       </PopoverTrigger>

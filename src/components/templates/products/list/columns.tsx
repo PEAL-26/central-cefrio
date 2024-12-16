@@ -1,26 +1,21 @@
-"use client";
+'use client';
 
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  ColumnDefProps,
-  DataTableColumnHeader,
-} from "@/components/ui/data-table";
-import { ProductListResponseData } from "@/services/products";
+import { Checkbox } from '@/components/ui/checkbox';
+import { ColumnDefProps, DataTableColumnHeader } from '@/components/ui/data-table';
+import { ProductListResponseData } from '@/services/products';
 
-import { DataTableRowActions } from "./data-table-row-actions";
-import { currencyFormatter } from "@/helpers/currency";
+import { currencyFormatter } from '@/helpers/currency';
+import { DataTableRowActions } from './data-table-row-actions';
 
 interface ColumnProps {
   onEdit?: (id: string) => void;
   onDelete?: (id: string) => void;
 }
 
-export const columns = (
-  props?: ColumnProps
-): ColumnDefProps<ProductListResponseData>[] => [
+export const columns = (props?: ColumnProps): ColumnDefProps<ProductListResponseData>[] => [
   {
-    id: "select",
-    className: "w-[1%]",
+    id: 'select',
+    className: 'w-[1%]',
     header: ({ table }) => (
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
@@ -41,29 +36,23 @@ export const columns = (
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Nome" />
-    ),
+    accessorKey: 'name',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Nome" />,
     cell: ({ row }) => {
       return (
         <div className="flex space-x-2">
-          <span className="max-w-[500px] truncate font-medium">
-            {row.getValue("name")}
-          </span>
+          <span className="max-w-[500px] truncate font-medium">{row.getValue('name')}</span>
         </div>
       );
     },
   },
   {
-    accessorKey: "unitMeasure",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Unidade" />
-    ),
+    accessorKey: 'unitMeasure',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Unidade" />,
     cell: ({ row }) => {
       return (
         <div className="flex items-center">
-          <span>{row.getValue("unitMeasure")}</span>
+          <span>{row.getValue('unitMeasure')}</span>
         </div>
       );
     },
@@ -72,16 +61,14 @@ export const columns = (
     },
   },
   {
-    id: "price",
-    className: "w-[1%]",
-    accessorKey: "price",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Preço" />
-    ),
+    id: 'price',
+    className: 'w-[1%]',
+    accessorKey: 'price',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Preço" />,
     cell: ({ row }) => {
       return (
         <div className="flex items-center">
-          <span>{currencyFormatter(row.getValue("price"))}</span>
+          <span>{currencyFormatter(row.getValue('price'))}</span>
         </div>
       );
     },
@@ -90,16 +77,14 @@ export const columns = (
     },
   },
   {
-    id: "iva",
-    className: "w-[1%]",
-    accessorKey: "iva",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="IVA" />
-    ),
+    id: 'iva',
+    className: 'w-[1%]',
+    accessorKey: 'iva',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="IVA" />,
     cell: ({ row }) => {
       return (
         <div className="flex items-center">
-          <span>{currencyFormatter(row.getValue("iva"))}</span>
+          <span>{currencyFormatter(row.getValue('iva'))}</span>
         </div>
       );
     },
@@ -108,8 +93,8 @@ export const columns = (
     },
   },
   {
-    id: "actions",
-    className: "w-[1%]",
+    id: 'actions',
+    className: 'w-[1%]',
     cell: ({ row }) => <DataTableRowActions row={row} actions={props} />,
   },
 ];

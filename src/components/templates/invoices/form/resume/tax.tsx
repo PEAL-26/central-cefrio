@@ -1,32 +1,23 @@
-import { EditIcon } from "lucide-react";
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { formatCurrency } from '@/helpers/currency';
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { formatCurrency } from "@/helpers/currency";
-import { FormField, FormItem, FormControl } from "@/components/ui/form";
-
-import { useInvoiceUpdateTotal } from "../use-invoice-update-total";
+import { useInvoiceUpdateTotal } from '../use-invoice-update-total';
 
 export function ResumeTax() {
   const { form } = useInvoiceUpdateTotal();
 
   return (
-    <div className="flex items-start gap-2 relative ">
+    <div className="relative flex items-start gap-2">
       <Label className="pt-4" htmlFor="ivaTotal">
         Total IVA
       </Label>
-      <div className="flex flex-col w-[204px] gap-1 items-end">
+      <div className="flex w-[204px] flex-col items-end gap-1">
         <Input
           readOnly
           id="ivaTotal"
           className="text-right"
-          value={formatCurrency(form.watch("totalIva"))}
+          value={formatCurrency(form.watch('totalIva'))}
         />
         {/* <span className="text-[8pt] text-right px-1 flex items-start gap-2">
           {form.watch("reasonExemption") || "Motivo de isenção de imposto"}

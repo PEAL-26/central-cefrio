@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { EyeIcon, Printer } from "lucide-react";
+import Link from 'next/link';
 
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -8,23 +8,22 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { formatDate } from "@/helpers/date";
-import { currencyFormatter } from "@/helpers/currency";
-import { InvoiceDetailsData } from "@/services/invoices";
-import { getPaymentTermsNameByCode } from "@/constants/payment-terms";
-import { getDocumentTypeNameByCode } from "@/constants/document-types";
-import { getPaymentMethodNameByCode } from "@/constants/payment-methods";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+} from '@/components/ui/table';
+import { getDocumentTypeNameByCode } from '@/constants/document-types';
+import { getPaymentMethodNameByCode } from '@/constants/payment-methods';
+import { getPaymentTermsNameByCode } from '@/constants/payment-terms';
+import { currencyFormatter } from '@/helpers/currency';
+import { formatDate } from '@/helpers/date';
+import { InvoiceDetailsData } from '@/services/invoices';
 
-import { ActionsButtons } from "./button-actions";
-import { AddPayment } from "./add-payment";
-import { ButtonPrint } from "./button-print";
+import { AddPayment } from './add-payment';
+import { ActionsButtons } from './button-actions';
+import { ButtonPrint } from './button-print';
 
 export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
   return (
     <div className="container mx-auto py-10">
-      <div className="flex items-center gap-2 mb-6">
+      <div className="mb-6 flex items-center gap-2">
         <h1 className="text-3xl font-bold">Detalhes do documento</h1>
         <ActionsButtons id={invoice.id} />
       </div>
@@ -46,16 +45,13 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
               <dt className="font-semibold">Data de Vencimento:</dt>
               <dd>{formatDate(invoice?.dueDate)}</dd>
               <dt className="font-semibold">Termos de Pagamento:</dt>
-              <dd>
-                {getPaymentTermsNameByCode(invoice?.paymentTerms || "") ||
-                  "S/N"}
-              </dd>
+              <dd>{getPaymentTermsNameByCode(invoice?.paymentTerms || '') || 'S/N'}</dd>
               <dt className="font-semibold">Referência:</dt>
-              <dd>{invoice.reference || "S/N"}</dd>
+              <dd>{invoice.reference || 'S/N'}</dd>
               <dt className="font-semibold">Moeda:</dt>
-              <dd>{invoice.currency || "S/N"}</dd>
+              <dd>{invoice.currency || 'S/N'}</dd>
               <dt className="font-semibold">Taxa de Câmbio:</dt>
-              <dd>{invoice.exchange || "S/N"}</dd>
+              <dd>{invoice.exchange || 'S/N'}</dd>
             </dl>
           </CardContent>
         </Card>
@@ -69,15 +65,15 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
               <dt className="font-semibold">Nome:</dt>
               <dd>{invoice.customer.name}</dd>
               <dt className="font-semibold">Contribuinte:</dt>
-              <dd>{invoice.customer?.taxpayer || "S/N"}</dd>
+              <dd>{invoice.customer?.taxpayer || 'S/N'}</dd>
               <dt className="font-semibold">Telefone:</dt>
-              <dd>{invoice.customer?.telephone || "S/N"}</dd>
+              <dd>{invoice.customer?.telephone || 'S/N'}</dd>
               <dt className="font-semibold">Email:</dt>
-              <dd>{invoice.customer?.email || "S/N"}</dd>
+              <dd>{invoice.customer?.email || 'S/N'}</dd>
               <dt className="font-semibold">Endereço:</dt>
-              <dd>{invoice.customer?.address || "S/N"}</dd>
+              <dd>{invoice.customer?.address || 'S/N'}</dd>
               <dt className="font-semibold">Localização:</dt>
-              <dd>{invoice.customer?.location || "S/N"}</dd>
+              <dd>{invoice.customer?.location || 'S/N'}</dd>
             </dl>
           </CardContent>
         </Card>
@@ -111,17 +107,11 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
                     })}
                   </TableCell>
                   <TableCell>{product.unitMeasure}</TableCell>
-                  <TableCell className="text-center">
-                    {product.quantity}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {product?.iva ?? 0}%
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {product?.discount ?? 0}%
-                  </TableCell>
+                  <TableCell className="text-center">{product.quantity}</TableCell>
+                  <TableCell className="text-center">{product?.iva ?? 0}%</TableCell>
+                  <TableCell className="text-center">{product?.discount ?? 0}%</TableCell>
                   <TableCell>
-                    {" "}
+                    {' '}
                     {currencyFormatter(product.total, {
                       code: invoice.currency,
                     })}
@@ -134,7 +124,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
       </Card>
 
       {/* Resumo Financeiro */}
-      <div className="grid gap-6 md:grid-cols-2 mt-6">
+      <div className="mt-6 grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Resumo Financeiro</CardTitle>
@@ -162,7 +152,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
                 })}
               </dd>
               <dt className="font-semibold">Tipo de Retenção:</dt>
-              <dd>{invoice?.withholdingTaxType || "S/N"}</dd>
+              <dd>{invoice?.withholdingTaxType || 'S/N'}</dd>
               <dt className="font-semibold">Percentagem de Retenção:</dt>
               <dd>{invoice?.withholdingTaxPercentage || 0}%</dd>
               <dt className="font-semibold">Total Retenção:</dt>
@@ -182,9 +172,9 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
         </Card>
 
         <Card>
-          <CardHeader className="flex-row flex justify-between items-center">
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Pagamentos</CardTitle>
-            {invoice.type === "FT" && <AddPayment documentId={invoice.id} />}
+            {invoice.type === 'FT' && <AddPayment documentId={invoice.id} />}
           </CardHeader>
           <CardContent>
             <Table>
@@ -200,17 +190,13 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
                 {invoice?.payments?.map((payment, index) => (
                   <TableRow key={index}>
                     <TableCell>{formatDate(payment.date)}</TableCell>
-                    <TableCell>
-                      {getPaymentMethodNameByCode(payment.method)}
-                    </TableCell>
+                    <TableCell>{getPaymentMethodNameByCode(payment.method)}</TableCell>
                     <TableCell>
                       {currencyFormatter(payment.amount, {
                         code: invoice.currency,
                       })}
                     </TableCell>
-                    <TableCell className="line-clamp-1">
-                      {payment.observation}
-                    </TableCell>
+                    <TableCell className="line-clamp-1">{payment.observation}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -220,7 +206,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
       </div>
 
       {/* Documentos Relacionados */}
-      <div className="grid gap-6 md:grid-cols-2 mt-6">
+      <div className="mt-6 grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Documentos Relacionados</CardTitle>
@@ -240,9 +226,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
                   <TableRow key={index}>
                     <TableCell className="text-primary">
                       <Link href={`/comercial/invoices/${doc.invoice.id}`}>
-                        {`${getDocumentTypeNameByCode(doc.invoice.type)} ${
-                          doc.invoice.number
-                        }`}
+                        {`${getDocumentTypeNameByCode(doc.invoice.type)} ${doc.invoice.number}`}
                       </Link>
                     </TableCell>
                     <TableCell>{formatDate(doc.invoice.date)}</TableCell>

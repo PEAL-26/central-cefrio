@@ -1,19 +1,8 @@
-import {
-  InfiniteData,
-  keepPreviousData,
-  useInfiniteQuery,
-} from "@tanstack/react-query";
-import { useSetSearchParams } from "../use-search-params";
-import {
-  IQueryPaginationResponse,
-  ListResponseData,
-  QueryFn,
-  QueryPaginationProps,
-} from "./types";
+import { InfiniteData, keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
+import { useSetSearchParams } from '../use-search-params';
+import { IQueryPaginationResponse, ListResponseData, QueryFn, QueryPaginationProps } from './types';
 
-export function useQueryPagination<T>(
-  props: QueryPaginationProps<T>
-): IQueryPaginationResponse<T> {
+export function useQueryPagination<T>(props: QueryPaginationProps<T>): IQueryPaginationResponse<T> {
   const { queryKey, fn, disableFetch = false, ...rest } = props;
   const { setParams } = useSetSearchParams();
 
@@ -28,9 +17,7 @@ export function useQueryPagination<T>(
     return keys;
   };
 
-  const select = (
-    data?: InfiniteData<ListResponseData<T> | undefined, number>
-  ) => {
+  const select = (data?: InfiniteData<ListResponseData<T> | undefined, number>) => {
     if (!data) return undefined;
 
     return {
@@ -68,30 +55,29 @@ export function useQueryPagination<T>(
   const nextPage = async () => {
     if (isFetching) return;
     if (hasNextPage) {
-      setParams({ name: "page", value: String(response?.next) });
+      setParams({ name: 'page', value: String(response?.next) });
     }
   };
 
   const prevPage = async () => {
     if (isFetching) return;
     if (hasPreviousPage) {
-      setParams({ name: "page", value: String(response?.prev) });
+      setParams({ name: 'page', value: String(response?.prev) });
     }
   };
 
   const setSizePerPage = (size?: number) => {
     if (isFetching) return;
     setParams([
-      { name: "page", value: size ? "1" : undefined },
-      { name: "size", value: size ? String(size) : undefined },
+      { name: 'page', value: size ? '1' : undefined },
+      { name: 'size', value: size ? String(size) : undefined },
     ]);
   };
 
   return {
     data: response?.data || [],
     isLoading,
-    isLoadingAll:
-      isLoading || isFetching || isFetchingNextPage || isFetchingPreviousPage,
+    isLoadingAll: isLoading || isFetching || isFetchingNextPage || isFetchingPreviousPage,
     isError,
     totalItems: response?.totalItems,
     currentPage: response?.currentPage,

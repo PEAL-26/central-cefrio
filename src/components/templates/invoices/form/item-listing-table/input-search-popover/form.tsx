@@ -1,9 +1,9 @@
 import {
   CreateEditProductForm,
   useCreateEditProduct,
-} from "@/components/modals/product-create-edit-dialog";
-import { Button } from "@/components/ui/button";
-import { ProductListResponseData } from "@/services/products";
+} from '@/components/modals/product-create-edit-dialog';
+import { Button } from '@/components/ui/button';
+import { ProductListResponseData } from '@/services/products';
 
 interface Props {
   onSubmitted?(product: ProductListResponseData): void;
@@ -15,7 +15,7 @@ export function ProductForm(props: Props) {
   const { form, onSubmit, isLoading, isPending } = useCreateEditProduct({
     onSubmitted: (product) => {
       onSubmitted?.({
-        id: product.id || "",
+        id: product.id || '',
         name: product.name,
         iva: product.iva,
         price: product.price,
@@ -31,7 +31,7 @@ export function ProductForm(props: Props) {
       formClassName="flex flex-col w-full p-4"
       addInvoice
     >
-      <div className="gap-2 flex justify-center items-center pb-4">
+      <div className="flex items-center justify-center gap-2 pb-4">
         <Button
           disabled={isLoading || isPending}
           variant="link"

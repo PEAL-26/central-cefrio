@@ -1,20 +1,14 @@
-import {
-  TableHead,
-  TableRow,
-  TableHeader,
-  TableBody,
-  Table,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { TableItemRow } from "./table-item-row";
-import { useFieldArray, useFormContext } from "react-hook-form";
-import { InvoiceSchemaType } from "../schema";
+import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useFieldArray, useFormContext } from 'react-hook-form';
+import { InvoiceSchemaType } from '../schema';
+import { TableItemRow } from './table-item-row';
 
 export function ItemListingTable() {
   const { control } = useFormContext<InvoiceSchemaType>();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "items",
+    name: 'items',
     rules: {
       minLength: 1,
     },
@@ -27,9 +21,9 @@ export function ItemListingTable() {
 
   const handleAppend = () => {
     append({
-      productId: "",
-      name: "",
-      unitMeasure: "un",
+      productId: '',
+      name: '',
+      unitMeasure: 'un',
       quantity: 1,
       price: 0,
       discount: 0,
@@ -42,7 +36,7 @@ export function ItemListingTable() {
 
   return (
     <div>
-      <h2 className="text-lg font-semibold mb-4">Itens</h2>
+      <h2 className="mb-4 text-lg font-semibold">Itens</h2>
       <Table>
         <TableHeader>
           <TableRow>
@@ -58,21 +52,11 @@ export function ItemListingTable() {
         </TableHeader>
         <TableBody>
           {fields.map((item, index) => (
-            <TableItemRow
-              index={index}
-              key={index}
-              remove={() => handleRemove(item.id)}
-            />
+            <TableItemRow index={index} key={index} remove={() => handleRemove(item.id)} />
           ))}
         </TableBody>
       </Table>
-      <Button
-        onClick={handleAppend}
-        className="mt-4"
-        size="sm"
-        variant="outline"
-        type="button"
-      >
+      <Button onClick={handleAppend} className="mt-4" size="sm" variant="outline" type="button">
         Adicionar Item
       </Button>
     </div>

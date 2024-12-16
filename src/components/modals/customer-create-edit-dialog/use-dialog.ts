@@ -1,21 +1,16 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
-import {
-  toastResponseError,
-  toastResponseRegisterSuccess,
-} from "@/helpers/response/response";
-import { useQueryGetDataCached } from "@/hooks";
+import { toastResponseError, toastResponseRegisterSuccess } from '@/helpers/response/response';
+import { useQueryGetDataCached } from '@/hooks';
 
-import { customerSchema, CustomerSchemaType } from "./customer";
-import { UseCustomerCreateEditDialogProps } from "./types";
-import { customerService } from "@/services/customers";
+import { customerService } from '@/services/customers';
+import { customerSchema, CustomerSchemaType } from './customer';
+import { UseCustomerCreateEditDialogProps } from './types';
 
-export function useCustomerCreateEdit(
-  props?: UseCustomerCreateEditDialogProps
-) {
+export function useCustomerCreateEdit(props?: UseCustomerCreateEditDialogProps) {
   const { id, open, onClose, onSubmitted } = props || {};
   const queryClient = useQueryClient();
   const { getDataCached } = useQueryGetDataCached();
@@ -23,11 +18,11 @@ export function useCustomerCreateEdit(
   const [isLoading, setIsLoading] = useState(false);
 
   const { mutateAsync, isPending } = useMutation({
-    mutationKey: ["customer"],
+    mutationKey: ['customer'],
     mutationFn: customerService.create,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["customers"],
+        queryKey: ['customers'],
       });
       if (open) {
         toastResponseRegisterSuccess(id);
@@ -41,15 +36,15 @@ export function useCustomerCreateEdit(
 
   const form = useForm<CustomerSchemaType>({
     resolver: zodResolver(customerSchema),
-    mode: "onChange",
+    mode: 'onChange',
     defaultValues: {
       id,
-      address: "",
-      email: "",
-      location: "",
-      name: "",
-      taxpayer: "",
-      telephone: "",
+      address: '',
+      email: '',
+      location: '',
+      name: '',
+      taxpayer: '',
+      telephone: '',
     },
   });
 
@@ -63,20 +58,20 @@ export function useCustomerCreateEdit(
     if (!open) {
       form.reset({
         id: undefined,
-        name: "",
+        name: '',
       });
     }
     if (id && open) {
       setIsLoading(true);
-      const response = getDataCached(id, ["customers"]);
+      const response = getDataCached(id, ['customers']);
       if (response) {
-        form.setValue("id", response.id);
-        form.setValue("name", response.name);
-        form.setValue("address", response?.address || "");
-        form.setValue("location", response?.location || "");
-        form.setValue("taxpayer", response?.taxpayer || "");
-        form.setValue("telephone", response?.telephone || "");
-        form.setValue("email", response?.email || "");
+        form.setValue('id', response.id);
+        form.setValue('name', response.name);
+        form.setValue('address', response?.address || '');
+        form.setValue('location', response?.location || '');
+        form.setValue('taxpayer', response?.taxpayer || '');
+        form.setValue('telephone', response?.telephone || '');
+        form.setValue('email', response?.email || '');
       }
       setIsLoading(false);
     }

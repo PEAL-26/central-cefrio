@@ -5,14 +5,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
-import { Textarea } from "@/components/ui/textarea";
-import { BaseSyntheticEvent, ReactNode } from "react";
-import { UseFormReturn } from "react-hook-form";
-import { CustomerSchemaType } from "./customer";
-import { cn } from "@/libs/utils";
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/libs/utils';
+import { BaseSyntheticEvent, ReactNode } from 'react';
+import { UseFormReturn } from 'react-hook-form';
+import { CustomerSchemaType } from './customer';
 
 interface CreateEditCustomerFormProps {
   children: ReactNode;
@@ -24,22 +24,12 @@ interface CreateEditCustomerFormProps {
 }
 
 export function CreateEditCustomerForm(props: CreateEditCustomerFormProps) {
-  const {
-    children,
-    form,
-    isLoading,
-    onSubmit,
-    formClassName,
-    addInvoice = false,
-  } = props;
+  const { children, form, isLoading, onSubmit, formClassName, addInvoice = false } = props;
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={onSubmit}
-        className={cn("grid w-full gap-4", formClassName)}
-      >
-        <div className={cn("grid grid-cols-2 gap-6 ", addInvoice && "w-full")}>
+      <form onSubmit={onSubmit} className={cn('grid w-full gap-4', formClassName)}>
+        <div className={cn('grid grid-cols-2 gap-6', addInvoice && 'w-full')}>
           <div className="col-span-2">
             <FormField
               control={form.control}
@@ -48,12 +38,7 @@ export function CreateEditCustomerForm(props: CreateEditCustomerFormProps) {
                 <FormItem className="w-full flex-1">
                   <FormLabel>Nome</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={isLoading}
-                      type="text"
-                      placeholder="John Doe"
-                      {...field}
-                    />
+                    <Input disabled={isLoading} type="text" placeholder="John Doe" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -68,19 +53,14 @@ export function CreateEditCustomerForm(props: CreateEditCustomerFormProps) {
                 <FormItem className="w-full flex-1">
                   <FormLabel>Contribuinte</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={isLoading}
-                      type="text"
-                      placeholder="0000000000"
-                      {...field}
-                    />
+                    <Input disabled={isLoading} type="text" placeholder="0000000000" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <div className={cn(addInvoice && "col-span-2")}>
+          <div className={cn(addInvoice && 'col-span-2')}>
             <FormField
               control={form.control}
               name="telephone"
@@ -88,19 +68,14 @@ export function CreateEditCustomerForm(props: CreateEditCustomerFormProps) {
                 <FormItem className="w-full flex-1">
                   <FormLabel>Telefone</FormLabel>
                   <FormControl>
-                    <Input
-                      disabled={isLoading}
-                      type="text"
-                      placeholder="900 000 000"
-                      {...field}
-                    />
+                    <Input disabled={isLoading} type="text" placeholder="900 000 000" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <div className={cn(addInvoice && "col-span-2")}>
+          <div className={cn(addInvoice && 'col-span-2')}>
             <FormField
               control={form.control}
               name="email"

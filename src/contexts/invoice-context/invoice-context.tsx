@@ -1,35 +1,29 @@
-"use client";
-import { createContext, useContext, useState } from "react";
+'use client';
+import { useQueryPagination } from '@/hooks';
+import { invoiceService } from '@/services/invoices';
+import { productService } from '@/services/products';
+import { createContext, useContext, useState } from 'react';
 import {
   DocumentFilterTypes,
   InvoiceContextData,
   InvoiceProviderProps,
   ProductFilterTypes,
-} from "./types";
-import { useQueryPagination } from "@/hooks";
-import { invoiceService } from "@/services/invoices";
-import { productService } from "@/services/products";
+} from './types';
 
-const InvoiceContext = createContext<InvoiceContextData>(
-  {} as InvoiceContextData
-);
+const InvoiceContext = createContext<InvoiceContextData>({} as InvoiceContextData);
 
-export const InvoiceProvider: React.FC<InvoiceProviderProps> = ({
-  children,
-}) => {
-  const [documentFilters, setDocumentFilters] = useState<DocumentFilterTypes>(
-    {}
-  );
+export const InvoiceProvider: React.FC<InvoiceProviderProps> = ({ children }) => {
+  const [documentFilters, setDocumentFilters] = useState<DocumentFilterTypes>({});
   const [productFilters, setProductFilters] = useState<ProductFilterTypes>({});
 
   const documentsQuery = useQueryPagination({
     fn: () => invoiceService.list(documentFilters),
-    queryKey: ["invoices", { ...documentFilters }],
+    queryKey: ['invoices', { ...documentFilters }],
   });
 
   const productsQuery = useQueryPagination({
     fn: () => productService.list(productFilters),
-    queryKey: ["products", { ...productFilters }],
+    queryKey: ['products', { ...productFilters }],
   });
 
   const filterDocuments = (filters: DocumentFilterTypes) => {

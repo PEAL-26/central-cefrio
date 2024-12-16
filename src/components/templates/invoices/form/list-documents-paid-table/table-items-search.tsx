@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
-import { LoaderIcon, RefreshCwIcon } from "lucide-react";
+import { LoaderIcon, RefreshCwIcon } from 'lucide-react';
+import { useEffect } from 'react';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Pagination } from '@/components/ui/pagination';
 import {
   Table,
   TableBody,
@@ -8,16 +11,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { ProductListResponseData, productService } from "@/services/products";
-import { useInvoiceContext } from "@/contexts/invoice-context";
-import { InvoiceListResponseData } from "@/services/invoices";
-import { currencyFormatter } from "@/helpers/currency";
-import { getDocumentTypeNameByCode } from "@/constants/document-types";
-import { formatDate } from "@/helpers/date";
-import { Button } from "@/components/ui/button";
-import { Pagination } from "@/components/ui/pagination";
+} from '@/components/ui/table';
+import { getDocumentTypeNameByCode } from '@/constants/document-types';
+import { useInvoiceContext } from '@/contexts/invoice-context';
+import { currencyFormatter } from '@/helpers/currency';
+import { formatDate } from '@/helpers/date';
+import { InvoiceListResponseData } from '@/services/invoices';
 
 interface ItemSearchProps {
   open: boolean;
@@ -25,8 +24,7 @@ interface ItemSearchProps {
 }
 
 export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
-  const { documentsQuery, filterDocuments, clearFilterDocuments } =
-    useInvoiceContext();
+  const { documentsQuery, filterDocuments, clearFilterDocuments } = useInvoiceContext();
   const { data, isError, isLoading } = documentsQuery;
 
   useEffect(() => {
@@ -34,7 +32,7 @@ export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
       clearFilterDocuments();
     }
     if (open) {
-      filterDocuments({ type: "FT" });
+      filterDocuments({ type: 'FT' });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
@@ -44,12 +42,12 @@ export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
       <Input
         placeholder="Pesquisar"
         // value={query}
-        onChange={(e) => filterDocuments({ q: e.target.value || "" })}
+        onChange={(e) => filterDocuments({ q: e.target.value || '' })}
       />
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
-            <TableHead className="hover:bg-transparent flex items-center justify-between">
+            <TableHead className="flex items-center justify-between hover:bg-transparent">
               <span>Descrição</span>
               <Button
                 variant="ghost"
@@ -63,19 +61,19 @@ export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
         </TableHeader>
         <TableBody>
           {isLoading && !isError && (
-            <TableRow className="hover:bg-transparent h-full">
+            <TableRow className="h-full hover:bg-transparent">
               <TableCell className="h-full">
-                <div className="flex justify-center items-center">
+                <div className="flex items-center justify-center">
                   <LoaderIcon className="animate-spin" />
                 </div>
               </TableCell>
             </TableRow>
           )}
           {!isLoading && isError && (
-            <div className="flex justify-center items-center">
-              <TableRow className="hover:bg-transparent h-full">
+            <div className="flex items-center justify-center">
+              <TableRow className="h-full hover:bg-transparent">
                 <TableCell>
-                  <div className="flex justify-center items-center">
+                  <div className="flex items-center justify-center">
                     <LoaderIcon className="animate-spin" />
                   </div>
                 </TableCell>
@@ -83,8 +81,8 @@ export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
             </div>
           )}
           {!isLoading && !isError && data.length === 0 && (
-            <div className="flex justify-center items-center">
-              <TableRow className="hover:bg-transparent h-full">
+            <div className="flex items-center justify-center">
+              <TableRow className="h-full hover:bg-transparent">
                 <TableCell>Nenhum item</TableCell>
               </TableRow>
             </div>
@@ -92,22 +90,16 @@ export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
           {!isLoading &&
             !isError &&
             data.map((item, key) => (
-              <TableRow
-                key={key}
-                className="hover:cursor-pointer"
-                onClick={() => onSelect?.(item)}
-              >
+              <TableRow key={key} className="hover:cursor-pointer" onClick={() => onSelect?.(item)}>
                 <TableCell>
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold flex flex-col">
+                    <span className="flex flex-col text-xs font-bold">
                       {`${getDocumentTypeNameByCode(item.type)} ${item.number}`}
                       <span className="font-normal">{item.customer.name}</span>
                     </span>
-                    <span className="font-bold flex flex-col text-right">
+                    <span className="flex flex-col text-right font-bold">
                       {currencyFormatter(item?.total ?? 0)}
-                      <span className="font-normal text-xs">
-                        {formatDate(item.date)}
-                      </span>
+                      <span className="text-xs font-normal">{formatDate(item.date)}</span>
                     </span>
                   </div>
                 </TableCell>
@@ -116,7 +108,7 @@ export function TableItemsSearch({ open, onSelect }: ItemSearchProps) {
         </TableBody>
       </Table>
 
-      <div className="absolute bottom-0 left-0 right-0 py-1 bg-gray-100">
+      <div className="absolute bottom-0 left-0 right-0 bg-gray-100 py-1">
         <Pagination
           show={{
             totalItems: true,

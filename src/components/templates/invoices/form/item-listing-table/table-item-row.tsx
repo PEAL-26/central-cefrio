@@ -1,20 +1,12 @@
-"use client";
-import { TableRow, TableCell } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import { InvoiceSchemaType } from "../schema";
-import { Button } from "@/components/ui/button";
-import { TrashIcon } from "lucide-react";
-import { useFormContext } from "react-hook-form";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { useEffect } from "react";
-import { InputSearchPopover } from "./input-search-popover";
-import { formatCurrency } from "@/helpers/currency";
-import { useInvoiceUpdateTotal } from "../use-invoice-update-total";
+'use client';
+import { Button } from '@/components/ui/button';
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { TableCell, TableRow } from '@/components/ui/table';
+import { formatCurrency } from '@/helpers/currency';
+import { TrashIcon } from 'lucide-react';
+import { useInvoiceUpdateTotal } from '../use-invoice-update-total';
+import { InputSearchPopover } from './input-search-popover';
 
 interface TableItemProps {
   index: number;
@@ -140,14 +132,14 @@ export function TableItemRow(props: TableItemProps) {
           )}
         />
       </TableCell>
-      <TableCell className="text-right font-bold align-top pt-4">
+      <TableCell className="pt-4 text-right align-top font-bold">
         {formatCurrency(form.getValues(`items.${index}.total`))}
       </TableCell>
-      <TableCell className="text-right font-bold align-top">
+      <TableCell className="text-right align-top font-bold">
         <Button
           type="button"
-          variant={"ghost"}
-          className="group hover:bg-red-600 px-2"
+          variant={'ghost'}
+          className="group px-2 hover:bg-red-600"
           onClick={remove}
         >
           <TrashIcon className="group-hover:text-white" />

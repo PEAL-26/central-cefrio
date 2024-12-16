@@ -1,15 +1,15 @@
-import { randomUUID } from "crypto";
-import * as fs from "fs";
-import { NextRequest, NextResponse } from "next/server";
+import { randomUUID } from 'crypto';
+import * as fs from 'fs';
+import { NextRequest, NextResponse } from 'next/server';
 
-import { getFileType } from "@/helpers/form-data";
-import { checkOrCreateDirectory } from "@/helpers/input-output";
-import { responseError } from "@/helpers/response/route-response";
+import { getFileType } from '@/helpers/form-data';
+import { checkOrCreateDirectory } from '@/helpers/input-output';
+import { responseError } from '@/helpers/response/route-response';
 
 export async function POST(request: NextRequest) {
   try {
     let path = null;
-    const pathSplitted = request.url.split("?")[1];
+    const pathSplitted = request.url.split('?')[1];
     if (pathSplitted) {
       path = pathSplitted.substring(5);
     }
@@ -19,14 +19,11 @@ export async function POST(request: NextRequest) {
 
     const files = [];
     for (const formDataEntryValue of formDataEntryValues) {
-      if (
-        typeof formDataEntryValue === "object" &&
-        "arrayBuffer" in formDataEntryValue
-      ) {
+      if (typeof formDataEntryValue === 'object' && 'arrayBuffer' in formDataEntryValue) {
         const file = formDataEntryValue as unknown as Blob as File;
         const fileType = getFileType(file.name);
         const fileName = `${new Date().getTime()}_${randomUUID()}.${fileType}`;
-        const newPath = path ? path : "public/files";
+        const newPath = path ? path : 'public/files';
         checkOrCreateDirectory(newPath);
         const buffer = Buffer.from(await file.arrayBuffer());
         fs.writeFileSync(`${newPath}/${fileName}`, buffer);

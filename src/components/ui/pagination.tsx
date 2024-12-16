@@ -1,16 +1,7 @@
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./select";
-import { Button } from "./button";
-import {
-  DoubleArrowLeftIcon,
-  DoubleArrowRightIcon,
-} from "@radix-ui/react-icons";
+import { DoubleArrowLeftIcon, DoubleArrowRightIcon } from '@radix-ui/react-icons';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
+import { Button } from './button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
 
 interface Navigation {
   totalItems?: number;
@@ -46,7 +37,7 @@ export function Pagination(props: Props) {
   return (
     <div className="flex items-center justify-between px-2">
       {show?.totalItems && (
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="text-muted-foreground flex-1 text-sm">
           {`${navigation?.totalItems || 0} Item(s)`}
         </div>
       )}
@@ -55,15 +46,13 @@ export function Pagination(props: Props) {
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium">Items por página</p>
             <Select
-              value={String(navigation?.size || "10")}
+              value={String(navigation?.size || '10')}
               onValueChange={(value) => {
-                navigation?.setSizePerPage?.(
-                  Number(value) === 10 ? undefined : Number(value)
-                );
+                navigation?.setSizePerPage?.(Number(value) === 10 ? undefined : Number(value));
               }}
             >
               <SelectTrigger className="h-8 w-[70px]">
-                <SelectValue placeholder={String(navigation?.size || "10")} />
+                <SelectValue placeholder={String(navigation?.size || '10')} />
               </SelectTrigger>
               <SelectContent side="top">
                 {[10, 20, 30, 40, 50].map((pageSize) => (
@@ -100,7 +89,7 @@ export function Pagination(props: Props) {
             </Button>
           )}
           {show?.currentTotalPages && (
-            <div className="flex px-2 items-center justify-center text-sm font-medium">
+            <div className="flex items-center justify-center px-2 text-sm font-medium">
               {navigation?.currentPage || 0}/{navigation?.totalPages || 0}
             </div>
           )}
@@ -120,9 +109,7 @@ export function Pagination(props: Props) {
               variant="outline"
               className="hidden h-8 w-8 p-0 lg:flex"
               onClick={() =>
-                navigation?.totalPages
-                  ? navigation?.setPage?.(navigation?.totalPages)
-                  : undefined
+                navigation?.totalPages ? navigation?.setPage?.(navigation?.totalPages) : undefined
               }
               disabled={!navigation?.next}
             >

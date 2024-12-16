@@ -1,8 +1,8 @@
-import { AlertCircle, XIcon } from "lucide-react";
+import { AlertCircle, XIcon } from 'lucide-react';
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useCallback, useEffect, useState } from "react";
-import { Button } from "./button";
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useCallback, useEffect, useState } from 'react';
+import { Button } from './button';
 
 type Error = {
   property: string;
@@ -18,13 +18,7 @@ interface AlertErrorProps {
 }
 
 export function AlertError(props: AlertErrorProps) {
-  const {
-    errors,
-    show = false,
-    autoClose = false,
-    duration = 1000,
-    onClose,
-  } = props;
+  const { errors, show = false, autoClose = false, duration = 1000, onClose } = props;
 
   const [open, setOpen] = useState(false);
   const [disableClose, setDisableClose] = useState(false);
@@ -64,12 +58,12 @@ export function AlertError(props: AlertErrorProps) {
   return (
     <div
       data-show={open}
-      className="bg-red-600 text-white fixed top-0 z-50 inset-x-0 transition-all data-[show=true]:translate-y-0 data-[show=false]:-translate-y-full"
+      className="fixed inset-x-0 top-0 z-50 bg-red-600 text-white transition-all data-[show=false]:-translate-y-full data-[show=true]:translate-y-0"
       onMouseEnter={() => setDisableClose(true)}
       onMouseLeave={() => setDisableClose(false)}
     >
       <Alert variant="destructive" className="border-none">
-        <div className="flex items-center justify-between mb-3">
+        <div className="mb-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle className="mb-0">Erro</AlertTitle>
@@ -85,7 +79,7 @@ export function AlertError(props: AlertErrorProps) {
         <AlertDescription>
           {errors.map(({ property, message }, key) => (
             <li key={key}>
-              <span className="font-bold mr-1">{property}</span>
+              <span className="mr-1 font-bold">{property}</span>
               <span>{message}</span>
             </li>
           ))}

@@ -1,19 +1,14 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { Table } from "@tanstack/react-table";
-import { Cross2Icon } from "@radix-ui/react-icons";
-import { useCallback, useEffect, useState } from "react";
+import { Cross2Icon } from '@radix-ui/react-icons';
+import { Table } from '@tanstack/react-table';
+import Link from 'next/link';
+import { useCallback, useEffect, useState } from 'react';
 
-import {
-  useDebounceValue,
-  useGetSearchParams,
-  useSetSearchParams,
-} from "@/hooks";
-import { cn } from "@/libs/utils";
-import { Input } from "@/components/ui/input";
-import { Button, buttonVariants } from "@/components/ui/button";
-
+import { Button, buttonVariants } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useDebounceValue, useGetSearchParams, useSetSearchParams } from '@/hooks';
+import { cn } from '@/libs/utils';
 
 type OnAdd = () => void;
 interface DataTableToolbarProps<TData> {
@@ -21,21 +16,18 @@ interface DataTableToolbarProps<TData> {
   onAdd?: string | OnAdd;
 }
 
-export function DataTableToolbar<TData>({
-  table,
-  onAdd,
-}: DataTableToolbarProps<TData>) {
+export function DataTableToolbar<TData>({ table, onAdd }: DataTableToolbarProps<TData>) {
   const { setParams } = useSetSearchParams();
-  const [q, size] = useGetSearchParams({ params: ["q", "size"] });
-  const [search, setSearch] = useState(q || "");
+  const [q, size] = useGetSearchParams({ params: ['q', 'size'] });
+  const [search, setSearch] = useState(q || '');
   const isFiltered = search.trim().length > 0;
   const debounced = useDebounceValue(search?.trim());
 
   const setParamsSearch = useCallback(() => {
     setParams([
-      { name: "q", value: debounced },
-      { name: "page", value: debounced ? "1" : "" },
-      { name: "size", value: size },
+      { name: 'q', value: debounced },
+      { name: 'page', value: debounced ? '1' : '' },
+      { name: 'size', value: size },
     ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounced]);
@@ -46,7 +38,7 @@ export function DataTableToolbar<TData>({
   }, [debounced]);
 
   const reset = () => {
-    setSearch("");
+    setSearch('');
     table.resetColumnFilters();
   };
 
@@ -57,7 +49,7 @@ export function DataTableToolbar<TData>({
           placeholder="Pesquisar..."
           value={search}
           onChange={(event) => setSearch(String(event.target.value))}
-          className="h-8 w-[150px] placeholder-muted-foreground lg:w-[250px]"
+          className="placeholder-muted-foreground h-8 w-[150px] lg:w-[250px]"
         />
         {isFiltered && (
           <Button variant="ghost" onClick={reset} className="h-8 px-2 lg:px-3">
@@ -75,12 +67,9 @@ export function DataTableToolbar<TData>({
 function AddButton({ onAdd }: { onAdd?: string | OnAdd }) {
   if (!onAdd) return null;
 
-  if (typeof onAdd === "string") {
+  if (typeof onAdd === 'string') {
     return (
-      <Link
-        className={cn(buttonVariants({ variant: "default" }), "h-8")}
-        href={onAdd}
-      >
+      <Link className={cn(buttonVariants({ variant: 'default' }), 'h-8')} href={onAdd}>
         Adicionar
       </Link>
     );

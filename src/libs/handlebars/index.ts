@@ -1,3 +1,3 @@
-import Handlebars from "handlebars";
+import Handlebars from 'handlebars';
 
 export { Handlebars };

@@ -1,8 +1,4 @@
-export function splitArray<T>(
-  array: T[],
-  firstPageSize = 22,
-  restPageSize = 32
-) {
+export function splitArray<T>(array: T[], firstPageSize = 22, restPageSize = 32) {
   if (array.length === 0) {
     return [];
   }

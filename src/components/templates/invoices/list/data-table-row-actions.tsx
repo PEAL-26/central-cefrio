@@ -1,23 +1,20 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useState } from "react";
-import { Row } from "@tanstack/react-table";
+import { Row } from '@tanstack/react-table';
+import Link from 'next/link';
+import { useState } from 'react';
 
+import { AlertModal } from '@/components/modals/alert-modal';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { AlertModal } from "@/components/modals/alert-modal";
-import { invoicePrint } from "@/services/invoices";
-import { ReactLoading } from "@/libs/react-loading";
-import { printJS } from "@/libs/print-js";
-import { useInvoicePrint } from "@/hooks";
+} from '@/components/ui/dropdown-menu';
+import { useInvoicePrint } from '@/hooks';
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 
 interface Actions {
   onDelete?: (id: string) => void;
@@ -39,42 +36,31 @@ export function DataTableRowActions<TData extends { id: string }>({
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-          >
+          <Button variant="ghost" className="data-[state=open]:bg-muted flex h-8 w-8 p-0">
             <DotsHorizontalIcon className="h-4 w-4" />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem asChild>
-            <Link href={`/comercial/invoices/${row.original?.id}`}>
-              Ver Detalhes
-            </Link>
+            <Link href={`/comercial/invoices/${row.original?.id}`}>Ver Detalhes</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link href={`/comercial/invoices/${row.original?.id}/edit`}>
-              Alterar
-            </Link>
+            <Link href={`/comercial/invoices/${row.original?.id}/edit`}>Alterar</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => handlePrintInvoice(row.original?.id || "")}
-          >
+          <DropdownMenuItem onClick={() => handlePrintInvoice(row.original?.id || '')}>
             Imprimir
           </DropdownMenuItem>
           <DropdownMenuItem>Baixar</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => setIsOpenDeleteModal(true)}>
-            Delete
-          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setIsOpenDeleteModal(true)}>Delete</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <AlertModal
         open={isOpenDeleteModal}
         onOpenChange={setIsOpenDeleteModal}
-        onOk={() => actions?.onDelete?.(row.original?.id || "")}
+        onOk={() => actions?.onDelete?.(row.original?.id || '')}
       />
     </>
   );

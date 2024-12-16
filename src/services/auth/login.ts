@@ -1,4 +1,4 @@
-import { api } from "@/libs/axios";
+import { api } from '@/libs/axios';
 
 export type LoginResponseData = {
   id: string;
@@ -14,5 +14,5 @@ export type LoginRequestData = {
 };
 
 export async function loginService(data: LoginRequestData) {
-  return api.post<LoginResponseData>("/auth/login", data);
+  return api.post<LoginResponseData>('/auth/login', data);
 }

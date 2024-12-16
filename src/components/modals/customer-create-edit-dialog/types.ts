@@ -1,4 +1,4 @@
-import { CustomerSchemaType } from "./customer";
+import { CustomerSchemaType } from './customer';
 
 export interface CustomerCreateEditDialogProps {
   open?: boolean;

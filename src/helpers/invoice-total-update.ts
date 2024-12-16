@@ -29,14 +29,9 @@ type ResumeInputType = {
 
 export const invoiceUpdateResume = (input: ResumeInputType) => {
   const { items = [], customerId, withholdingTaxPercentage } = input;
-  const subtotal =
-    items.reduce((total, item) => total + item.total ?? 0, 0) ?? 0;
-  const totalIva =
-    items.reduce((total, item) => total + item.ivaAmount, 0) ?? 0;
-  const totalDiscount = items?.reduce(
-    (total, item) => total + item.discountAmount,
-    0
-  );
+  const subtotal = items.reduce((total, item) => total + item.total ?? 0, 0) ?? 0;
+  const totalIva = items.reduce((total, item) => total + item.ivaAmount, 0) ?? 0;
+  const totalDiscount = items?.reduce((total, item) => total + item.discountAmount, 0);
 
   let withholdingTaxPer = 0;
 

@@ -1,9 +1,9 @@
-import { SettingsCompany } from "@/components/templates/settings";
-import { Loading } from "@/components/ui/loading";
-import { Suspense } from "react";
+import { SettingsCompany } from '@/components/templates/settings';
+import { Loading } from '@/components/ui/loading';
+import { Suspense } from 'react';
 
 export const metadata = {
-  title: "Configurações de empresa",
+  title: 'Configurações de empresa',
 };
 
 export default function SettingsCompanyPage() {

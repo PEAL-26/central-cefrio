@@ -1,11 +1,11 @@
-"use client";
-import { Row } from "@tanstack/react-table";
+'use client';
+import { Row } from '@tanstack/react-table';
 
-import { Button } from "@/components/ui/button";
-import { Pencil1Icon } from "@radix-ui/react-icons";
-import { Trash2Icon } from "lucide-react";
-import { AlertModal } from "@/components/modals/alert-modal";
-import { useState } from "react";
+import { AlertModal } from '@/components/modals/alert-modal';
+import { Button } from '@/components/ui/button';
+import { Pencil1Icon } from '@radix-ui/react-icons';
+import { Trash2Icon } from 'lucide-react';
+import { useState } from 'react';
 
 interface Actions {
   onEdit?: (id: string) => void;
@@ -27,14 +27,14 @@ export function DataTableRowActions<TData extends { id: string }>({
       <div className="flex items-center gap-2">
         <Button
           variant="outline"
-          className="p-0 w-10 h-10"
+          className="h-10 w-10 p-0"
           onClick={() => actions?.onEdit?.(row.original.id)}
         >
           <Pencil1Icon className="size-5" />
         </Button>
         <Button
           variant="destructive"
-          className="p-0 w-10 h-10"
+          className="h-10 w-10 p-0"
           onClick={() => setIsOpenDeleteModal(true)}
         >
           <Trash2Icon className="size-5" />
@@ -43,7 +43,7 @@ export function DataTableRowActions<TData extends { id: string }>({
       <AlertModal
         open={isOpenDeleteModal}
         onOpenChange={setIsOpenDeleteModal}
-        onOk={() => actions?.onDelete?.(row.original?.id || "")}
+        onOk={() => actions?.onDelete?.(row.original?.id || '')}
       />
     </>
   );

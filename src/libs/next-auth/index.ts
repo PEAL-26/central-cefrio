@@ -1,9 +1,7 @@
-import type { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import type { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
-import type { UserType } from "@/@types/next-auth";
-import { validateToken } from "@/helpers/token";
-import { loginService } from "@/services/auth";
+import { loginService } from '@/services/auth';
 
 export const nextAuthUrl = process.env.NEXTAUTH_URL;
 export const secret = process.env.NEXTAUTH_SECRET;
@@ -11,15 +9,15 @@ export const secret = process.env.NEXTAUTH_SECRET;
 export const nextAuthOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      id: "credentials",
-      name: "credentials",
-      type: "credentials",
+      id: 'credentials',
+      name: 'credentials',
+      type: 'credentials',
       credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'text' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (typeof credentials === "undefined") return null;
+        if (typeof credentials === 'undefined') return null;
 
         const input = {
           email: `${credentials.email}`,
@@ -45,14 +43,14 @@ export const nextAuthOptions: NextAuthOptions = {
     },
   },
   secret,
-  session: { strategy: "jwt", maxAge: 24 * 60 * 60 },
+  session: { strategy: 'jwt', maxAge: 24 * 60 * 60 },
   jwt: {
     maxAge: 60 * 60 * 24 * 7,
   },
   pages: {
-    signIn: "/login",
-    signOut: "/login",
-    error: "/login",
+    signIn: '/login',
+    signOut: '/login',
+    error: '/login',
   },
   logger: {
     error(error) {
@@ -61,5 +59,5 @@ export const nextAuthOptions: NextAuthOptions = {
     warn(warning) {
       console.warn(warning);
     },
-  }
+  },
 };
