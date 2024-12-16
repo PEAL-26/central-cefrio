@@ -252,7 +252,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
                       })}
                     </TableCell>
                     <TableCell>
-                      <ButtonPrint documentId={invoice.id} />
+                      <ButtonPrint documentId={doc.invoice.id} />
                     </TableCell>
                   </TableRow>
                 ))}

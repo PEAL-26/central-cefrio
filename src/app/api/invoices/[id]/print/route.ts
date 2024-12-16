@@ -1,4 +1,5 @@
 import { getDocumentTypeNameByCode } from "@/constants/document-types";
+import { getPaymentTermsNameByCode } from "@/constants/payment-terms";
 import { formatCurrency } from "@/helpers/currency";
 import { generateUrlFromName } from "@/helpers/file";
 import { generatePDFPuppeteer } from "@/helpers/generate-pdf";
@@ -90,7 +91,7 @@ export async function GET(
         date_issue: new Date(invoice.date).toLocaleDateString("pt-AO"),
         due_date: getDate(invoice?.dueDate),
         discount: getNumber(invoice?.generalDiscount),
-        payment_terms: invoice?.paymentTerms || "",
+        payment_terms: getPaymentTermsNameByCode( invoice?.paymentTerms || ""),
         observation: invoice?.observation || "",
       },
       tax_summary:
