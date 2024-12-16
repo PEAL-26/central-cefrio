@@ -113,24 +113,27 @@ export async function POST(request: NextRequest) {
 }
 
 async function create(input: any) {
-  const data = await prepareData(input);
-  verify(data);
+  const data = await prepareData(input, true);
+  await verify(data);
 
   const document = invoiceCreate(data);
 
   let receipt: PrismaPromise<any> | null = null;
   if (data.type === 'FT' && data?.totalPaid > 0) {
-    const receiptData = await prepareData({
-      type: 'RE',
-      customerId: input.customerId,
-      date: input.date,
-      dueDate: input.date,
-      reference: input.number,
-      currency: input.currency,
-      exchange: input.exchange,
-      payments: input.payments,
-      documents: [{ documentId: data.id, paid: data.totalPaid }],
-    });
+    const receiptData = await prepareData(
+      {
+        type: 'RE',
+        customerId: input.customerId,
+        date: input.date,
+        dueDate: input.date,
+        reference: input.number,
+        currency: input.currency,
+        exchange: input.exchange,
+        payments: input.payments,
+        documents: [{ documentId: data.id, paid: data.totalPaid }],
+      },
+      true,
+    );
     receipt = invoiceCreate(receiptData);
   }
 

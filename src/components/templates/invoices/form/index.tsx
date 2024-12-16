@@ -2,9 +2,9 @@
 import { AlertError } from '@/components/ui/alert-error';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-
-import { DOCUMENTS_INCLUDE } from '@/constants/document-types';
 import { ReactLoading } from '@/libs/react-loading';
+import { DOCUMENTS_INCLUDE } from '@/constants/document-types';
+
 import { CustomerForm } from './customer';
 import { DocumentSettings } from './document-settings';
 import { ItemListingTable } from './item-listing-table';
@@ -57,11 +57,7 @@ export function InvoiceForm(props: { id?: string }) {
           <Resume />
         </div>
         <div className="flex justify-start">
-          <Button
-            disabled={isLoading}
-            className="bg-primary-900 text-white hover:bg-primary-800"
-            type="submit"
-          >
+          <Button disabled={isLoading} type="submit">
             Salvar
           </Button>
         </div>

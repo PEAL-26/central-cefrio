@@ -45,34 +45,38 @@ export function InvoiceType() {
     updateResume();
   };
 
+  const emitFt = form.watch('emitFt');
+
   return (
     <Popover modal onOpenChange={setOpen} open={open}>
-      <PopoverTrigger className="line-clamp-1 flex items-center gap-2">
+      <PopoverTrigger disabled={emitFt} className="line-clamp-1 flex items-center gap-2">
         <span
           className={cn(
-            'line-clamp-1 flex flex-1 items-center gap-2 whitespace-nowrap',
-            !type?.name && 'text-gray-400',
+            'line-clamp-1 flex-1 items-center gap-2 whitespace-nowrap',
+            (!type?.name || emitFt) && 'text-gray-400',
           )}
         >
           {type?.name || 'Selecione o tipo de doc.'}
         </span>
         <ChevronDownIcon className="text-gray-400" />
       </PopoverTrigger>
-      <PopoverContent align="end" className="w-fit">
-        <div className="flex flex-col">
-          {DOCUMENT_TYPES.filter((filter) => !DOCUMENTS_NOT_INCLUDE.includes(filter.code)).map(
-            (doc, key) => (
-              <span
-                key={key}
-                className="cursor-pointer rounded p-1 pr-14 hover:bg-gray-100"
-                onClick={() => handleSelect(doc.code)}
-              >
-                {doc.name}
-              </span>
-            ),
-          )}
-        </div>
-      </PopoverContent>
+      {!emitFt && (
+        <PopoverContent align="end" className="w-fit">
+          <div className="flex flex-col">
+            {DOCUMENT_TYPES.filter((filter) => !DOCUMENTS_NOT_INCLUDE.includes(filter.code)).map(
+              (doc, key) => (
+                <span
+                  key={key}
+                  className="cursor-pointer rounded p-1 pr-14 hover:bg-gray-100"
+                  onClick={() => handleSelect(doc.code)}
+                >
+                  {doc.name}
+                </span>
+              ),
+            )}
+          </div>
+        </PopoverContent>
+      )}
     </Popover>
   );
 }

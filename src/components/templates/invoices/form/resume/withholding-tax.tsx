@@ -36,9 +36,9 @@ export function WithholdingTax() {
         />
         {form.watch('customerId') && (
           <span className="flex items-center gap-2 px-1 text-right text-[8pt]">
-            {`${withholdingTaxType?.name}${
+            {`${withholdingTaxType?.name || 'Não aplicar'}${
               withholdingTaxType?.percentage ? ` (${withholdingTaxType?.percentage}%)` : ''
-            }` || 'Não aplicar'}
+            }`}
             <Popover modal open={open} onOpenChange={setOpen}>
               <PopoverTrigger>
                 <EditIcon size={16} />

@@ -1,13 +1,20 @@
 import { getDocumentTypeNameByCode } from '@/constants/document-types';
 import { addDate, formatDate } from '@/helpers/date';
 import { generateResponseError, toastResponseRegisterSuccess } from '@/helpers/response/response';
-import { invoiceService } from '@/services/invoices';
+import { useGetSearchParams } from '@/hooks';
+import { generateDocumentNumberService, invoiceService } from '@/services/invoices';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FieldErrors, useForm } from 'react-hook-form';
-import { INVOICE_SCHEMA_PROPERTY, InvoiceSchemaType, invoiceSchema } from './schema';
+import {
+  INVOICE_SCHEMA_PROPERTY,
+  InvoiceDocumentSchemaType,
+  InvoicePaymentSchemaType,
+  InvoiceSchemaType,
+  invoiceSchema,
+} from './schema';
 
 interface InvoiceFormProps {
   id?: string;
@@ -15,6 +22,12 @@ interface InvoiceFormProps {
 
 export function useInvoiceForm(props?: InvoiceFormProps) {
   const { id = '' } = props || {};
+  const [documentIdParam, emitFtParam, copyParam] = useGetSearchParams({
+    params: ['document_id', 'emit_ft', 'copy'],
+  });
+  const copy = copyParam === 'true';
+  const emitFt = emitFtParam === 'true';
+
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<{ property: string; message: string }[]>([]);
   const [isLoadingPage, setIsLoadingPage] = useState(false);
@@ -158,89 +171,65 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
   };
 
   const onInvalid = (errors: FieldErrors<InvoiceSchemaType>) => {
-    setErrors(() => []);
+    setErrors([]);
+    console.log(errors);
 
-    const _errors = Object.entries(errors).map(([property, error]) => {
-      if (Array.isArray(error)) {
-        for (const errorProperties of error) {
-          for (const [errorProperty, errorPropertyError] of Object.entries(
-            errorProperties as any,
-          ) as any) {
-            return {
-              property:
-                INVOICE_SCHEMA_PROPERTY[errorProperty as keyof typeof INVOICE_SCHEMA_PROPERTY],
-              message: errorPropertyError?.message,
-            };
+    const _errors = Object.entries(errors)
+      .map(([property, error]) => {
+        if (Array.isArray(error)) {
+          for (const errorProperties of error) {
+            for (const [errorProperty, errorPropertyError] of Object.entries(
+              errorProperties as any,
+            ) as any) {
+              return {
+                property:
+                  INVOICE_SCHEMA_PROPERTY[errorProperty as keyof typeof INVOICE_SCHEMA_PROPERTY],
+                message: errorPropertyError?.message,
+              };
+            }
           }
         }
-      }
-      return {
-        property: INVOICE_SCHEMA_PROPERTY[property as keyof typeof INVOICE_SCHEMA_PROPERTY],
-        message: error.message,
-      };
-    });
+        return {
+          property: INVOICE_SCHEMA_PROPERTY[property as keyof typeof INVOICE_SCHEMA_PROPERTY],
+          message: error.message,
+        };
+      })
+      .filter((e) => !!e.message || !!e.property);
 
     setErrors(_errors);
   };
 
   const loadingInvoice = async () => {
-    if (!id) return;
+    if (!id && !documentIdParam) return;
 
-    setIsNotFound(false);
-    const invoice = await invoiceService.getById(id);
+    let documentId = id;
 
-    if (!invoice) {
-      setIsNotFound(true);
+    if (copy || emitFt) {
+      documentId = documentIdParam || '';
     }
 
-    if (invoice) {
-      form.setValue('id', invoice.id);
-      form.setValue('number', invoice.number);
-      form.setValue('type', invoice.type);
-      form.setValue('customerId', invoice.customer?.id);
-      form.setValue('date', invoice.date);
-      form.setValue('dueDate', invoice.dueDate);
-      form.setValue('currency', invoice.currency);
-      form.setValue('exchange', invoice.exchange);
-      form.setValue('paymentTerms', invoice.paymentTerms);
-      form.setValue('observation', invoice.observation);
-      form.setValue('reference', invoice.reference);
-      form.setValue('totalWithholdingTax', invoice.totalWithholdingTax);
-      form.setValue('withholdingTax.type', invoice.withholdingTaxType);
-      form.setValue('withholdingTax.percentage', invoice.withholdingTaxPercentage);
-      form.setValue('generalDiscount', invoice.generalDiscount);
-      form.setValue('subtotal', invoice.subtotal);
-      form.setValue('totalIva', invoice.totalIva);
-      form.setValue('totalDiscount', invoice.totalDiscount);
-      form.setValue('total', invoice.total);
-      form.setValue(
-        'items',
-        invoice?.products?.map((prod) => ({
-          itemId: prod.id || '',
-          productId: prod.product.id || '',
-          name: prod.product.name,
-          unitMeasure: prod.product.unitMeasure,
-          quantity: prod.quantity,
-          price: prod.price,
-          discount: prod.discount,
-          discountAmount: prod.discountAmount,
-          iva: prod.iva,
-          ivaAmount: prod.ivaAmount,
-          total: prod.total,
-        })),
-      );
-      form.setValue(
-        'payments',
+    setIsNotFound(false);
+
+    const invoice = await invoiceService.getById(documentId);
+
+    if (!invoice) {
+      return setIsNotFound(true);
+    }
+
+    let payments: InvoicePaymentSchemaType[] = [];
+    let documents: InvoiceDocumentSchemaType[] = [];
+
+    if (!copy && !emitFt) {
+      payments =
         invoice.payments?.map((payment) => ({
           paymentId: payment.id || '',
           date: payment.date,
           method: payment.method,
           amount: payment.amount,
           observation: payment.observation,
-        })),
-      );
-      form.setValue(
-        'documents',
+        })) || [];
+
+      documents =
         invoice.documents?.map((doc) => ({
           itemId: doc.id,
           customerId: doc.document.customer.id,
@@ -250,19 +239,67 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
           documentId: doc.document.id,
           total: doc.document.total || 0,
           paid: doc.paid || 0,
-        })) || [],
-      );
-      form.setValue(
-        'taxes',
-        invoice.taxes?.map((tax) => ({
-          taxId: tax.id,
-          value: tax.value,
-          amount: tax.amount,
-          incidence: tax.incidence,
-          observation: tax.observation,
-        })),
-      );
+        })) || [];
     }
+
+    let number = invoice.number;
+    form.setValue('type', invoice.type);
+
+    if (copy || emitFt) {
+      const type = emitFt ? 'FT' : invoice.type;
+      form.setValue('type', type);
+      const generate = await generateDocumentNumberService(type);
+      number = generate.number;
+    }
+
+    form.setValue('id', copy || emitFt ? undefined : invoice.id);
+    form.setValue('number', number);
+    form.setValue('copy', copy);
+    form.setValue('emitFt', emitFt);
+    form.setValue('customerId', invoice.customer?.id);
+    form.setValue('date', copy || emitFt ? new Date() : invoice.date);
+    form.setValue('dueDate', copy || emitFt ? addDate(15, 'day') : invoice.dueDate);
+    form.setValue('currency', invoice?.currency || undefined);
+    form.setValue('exchange', invoice?.exchange || undefined);
+    form.setValue('paymentTerms', invoice?.paymentTerms || undefined);
+    form.setValue('observation', invoice.observation || undefined);
+    form.setValue('reference', copy ? undefined : invoice.number);
+    form.setValue('totalWithholdingTax', invoice?.totalWithholdingTax || undefined);
+    form.setValue('withholdingTax.type', invoice?.withholdingTaxType || undefined);
+    form.setValue('withholdingTax.percentage', invoice?.withholdingTaxPercentage || undefined);
+    form.setValue('generalDiscount', invoice?.generalDiscount || undefined);
+    form.setValue('subtotal', invoice?.subtotal || undefined);
+    form.setValue('totalIva', invoice?.totalIva || undefined);
+    form.setValue('totalDiscount', invoice?.totalDiscount || undefined);
+    form.setValue('total', invoice?.total || undefined);
+    form.setValue(
+      'items',
+      invoice?.products?.map((prod) => ({
+        itemId: copy || emitFt ? undefined : prod.id || undefined,
+        productId: prod.product.id || '',
+        name: prod.product.name,
+        unitMeasure: prod.product.unitMeasure,
+        quantity: prod.quantity,
+        price: prod.price,
+        discount: prod.discount,
+        discountAmount: prod.discountAmount,
+        iva: prod.iva,
+        ivaAmount: prod.ivaAmount,
+        total: prod.total,
+      })) || [],
+    );
+    form.setValue('payments', payments);
+    form.setValue('documents', documents);
+    form.setValue(
+      'taxes',
+      invoice.taxes?.map((tax) => ({
+        taxId: copy || emitFt ? undefined : tax.id,
+        value: tax.value,
+        amount: tax.amount,
+        incidence: tax.incidence,
+        observation: tax.observation,
+      })) || [],
+    );
   };
 
   useEffect(() => {
@@ -272,7 +309,7 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
       setIsLoadingPage(false);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [id, documentIdParam, emitFtParam, copyParam]);
 
   return {
     errors,

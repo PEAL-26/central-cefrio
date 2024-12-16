@@ -25,7 +25,6 @@ export function AppDropdownMenu(props: Props) {
   }[app === 'mails' ? 'mails' : app === 'comercial' ? 'comercial' : 'undefined'];
 
   const isLoading = app !== '' && defaultRoute !== app;
-  console.log({ app, defaultRoute });
 
   useEffect(() => {
     setApp(defaultRoute);

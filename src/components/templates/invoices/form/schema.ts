@@ -44,6 +44,8 @@ export const invoiceTaxSchema = z.object({
 export const invoiceSchema = z.object({
   id: z.string().uuid().optional(),
   number: z.string().optional(),
+  copy: z.boolean().optional(),
+  emitFt: z.boolean().optional(),
   type: z.string({ required_error: 'Campo Obrigatório' }).min(1, 'Campo Obrigatório'),
   customerId: z.string().optional(),
   date: z.date(),

@@ -13,7 +13,7 @@ import {
   InvoiceSchemaType,
 } from './types';
 
-export function verify(data: any) {
+export async function verify(data: any) {
   const totalPaid =
     data.paymentsData?.reduce((total: number, item: any) => total + item.amount, 0) || 0;
   const total = data.total || 0;
@@ -61,7 +61,7 @@ export function verify(data: any) {
   }
 }
 
-export async function prepareData(input: InvoiceSchemaType) {
+export async function prepareData(input: InvoiceSchemaType, create = false) {
   const {
     id = randomUUID(),
     type,
@@ -81,7 +81,7 @@ export async function prepareData(input: InvoiceSchemaType) {
   } = invoiceSchema.parse(input);
 
   const number = input?.number ? input.number : await generateNumber(type);
-  const { productsData, taxesData } = await getItems(items);
+  const { productsData, taxesData } = await getItems(items, create);
   const paymentsData = getPayments(payments);
   const { documentsData, invoicesData, totalInvoices } = await getDocuments(documents);
 
@@ -159,7 +159,7 @@ export async function generateNumber(type: string) {
   return number;
 }
 
-export async function getItems(items: InvoiceItemSchemaType[]) {
+export async function getItems(items: InvoiceItemSchemaType[], create = false) {
   let productsData = [];
   let taxesData = [];
   let order = 0;
@@ -178,7 +178,7 @@ export async function getItems(items: InvoiceItemSchemaType[]) {
 
     const newItem = {
       order: ++order,
-      id: id ? id : randomUUID(),
+      id: create ? randomUUID() : id ? id : randomUUID(),
       productId: product.id,
       productName: product.name,
       unitMeasure: product.unitMeasure,
