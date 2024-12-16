@@ -13,24 +13,26 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useInvoicePrint } from '@/hooks';
+import { DOCUMENT_COPY, DOCUMENT_EMIT_FT } from '@/constants/documetn-dropdown-menu';
+import { useInvoiceDownload, useInvoicePrint } from '@/hooks';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 
 interface Actions {
   onDelete?: (id: string) => void;
 }
 
-interface DataTableRowActionsProps<TData extends { id: string }> {
+interface DataTableRowActionsProps<TData extends Record<string, any> = {}> {
   row: Row<TData>;
   actions?: Actions;
 }
 
-export function DataTableRowActions<TData extends { id: string }>({
+export function DataTableRowActions<TData extends Record<string, any> = {}>({
   row,
   actions,
 }: DataTableRowActionsProps<TData>) {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const { handlePrintInvoice } = useInvoicePrint();
+  const { handleDownloadInvoice } = useInvoiceDownload();
 
   return (
     <>
@@ -46,13 +48,28 @@ export function DataTableRowActions<TData extends { id: string }>({
             <Link href={`/comercial/invoices/${row.original?.id}`}>Ver Detalhes</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <Link href={`/comercial/invoices/${row.original?.id}/edit`}>Alterar</Link>
-          </DropdownMenuItem>
+          {DOCUMENT_EMIT_FT.includes(row.original?.type) && (
+            <DropdownMenuItem asChild>
+              <Link
+                href={`/comercial/invoices/create?emit_ft=true&document_id=${row.original?.id}`}
+              >
+                Emitir Factura
+              </Link>
+            </DropdownMenuItem>
+          )}
+          {DOCUMENT_COPY.includes(row.original?.type) && (
+            <DropdownMenuItem asChild>
+              <Link href={`/comercial/invoices/create?copy=true&document_id=${row.original?.id}`}>
+                Copiar
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem onClick={() => handlePrintInvoice(row.original?.id || '')}>
             Imprimir
           </DropdownMenuItem>
-          <DropdownMenuItem>Baixar</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleDownloadInvoice(row.original?.id || '')}>
+            Baixar
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setIsOpenDeleteModal(true)}>Delete</DropdownMenuItem>
         </DropdownMenuContent>

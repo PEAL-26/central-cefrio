@@ -25,7 +25,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
     <div className="container mx-auto py-10">
       <div className="mb-6 flex items-center gap-2">
         <h1 className="text-3xl font-bold">Detalhes do documento</h1>
-        <ActionsButtons id={invoice.id} />
+        <ActionsButtons id={invoice.id} type={invoice.type} />
       </div>
 
       {/* Informações gerais */}

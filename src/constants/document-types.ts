@@ -54,3 +54,13 @@ export const PAYMENT = ['RE', 'FR'];
 export function getDocumentTypeNameByCode(code: string) {
   return DOCUMENT_TYPES.find((doc) => doc.code === code)?.name || '';
 }
+
+export enum DOCUMENT_STATUS_ENUM {
+  N = 'N',
+  A = 'A',
+}
+
+export const DOCUMENT_STATUS_ENUM_MAP: Record<DOCUMENT_STATUS_ENUM, string> = {
+  N: 'Normal',
+  A: 'Anulado',
+};
