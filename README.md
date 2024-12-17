@@ -1,6 +1,6 @@
-# 🏢 **Cefrio Central**
+# 🏢 **Central Cefrio**
 
-**Cefrio Central** é uma plataforma desenvolvida para centralizar todos os aplicativos da empresa em um único lugar, promovendo eficiência, organização e acessibilidade. O projeto, atualmente em fase inicial, contém dois módulos principais: **Comercial** e **Emails**.
+**Central Cefrio** é uma plataforma desenvolvida para centralizar todos os aplicativos da empresa em um único lugar, promovendo eficiência, organização e acessibilidade. O projeto, atualmente em fase inicial, contém dois módulos principais: **Comercial** e **Emails**.
 
 ---
 
@@ -38,8 +38,8 @@ Certifique-se de ter instalado em sua máquina:
 
 ### 2. **Clonar o Repositório**
 ```bash
-git clone https://github.com/PEAL-26/cefrio-central.git
-cd cefrio-central
+git clone https://github.com/PEAL-26/central-cefrio.git
+cd central-cefrio
 ```
 
 ### 3. **Instalar Dependências**
