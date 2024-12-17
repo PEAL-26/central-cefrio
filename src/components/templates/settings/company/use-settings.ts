@@ -32,7 +32,7 @@ export function useSettings() {
       if (data.logo?.file) {
         if (isUploadLocal) {
           const imageFormData = createFormData(data.logo?.file);
-          const [[logoName]] = await uploads([imageFormData]);
+          const [logoName] = await uploads([imageFormData]);
           logo = logoName || null;
         } else {
           const blob = await vercel.upload(data.logo.file);
