@@ -69,8 +69,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
             invoice: {
               select: {
                 status: true,
-              },
-              include: {
                 payments: {
                   select: {
                     amount: true,
@@ -89,9 +87,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
   ]);
 
   const rows = invoices
-    .map((inv) => {
+    .map(({ documents, ...inv }) => {
       const payments = (
-        inv?.documents?.flatMap((d) => [
+        documents?.flatMap((d) => [
           ...(d?.invoice?.payments?.map((p) => ({ ...p, status: d.invoice.status })) || []),
         ]) || []
       ).filter((p) => p.status !== 'A');
