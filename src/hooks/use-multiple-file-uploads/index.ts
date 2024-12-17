@@ -16,7 +16,6 @@ export function useMultipleFileUploads(props?: { path?: string }) {
     let result = [];
     for (const data of formData) {
       if (!data) {
-        result.push(data);
         continue;
       }
 
@@ -29,7 +28,7 @@ export function useMultipleFileUploads(props?: { path?: string }) {
         { path: props?.path },
       );
 
-      result.push(response);
+      result.push(...response);
     }
 
     return result;

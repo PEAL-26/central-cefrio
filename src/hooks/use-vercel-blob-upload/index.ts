@@ -6,7 +6,7 @@ export function useVercelBlobUpload() {
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
 
   const upload = async (file: File, name?: string, configs?: UploadOptions) => {
-    const { access = 'public', handleUploadUrl = 'api/uploads/vercel', ...config } = configs || {};
+    const { access = 'public', handleUploadUrl = '/api/uploads/vercel', ...config } = configs || {};
 
     if (!file) {
       throw new Error('No file selected');

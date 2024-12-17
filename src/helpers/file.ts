@@ -6,10 +6,11 @@ export async function blobToBase64(blob: Blob | null) {
   });
 }
 
-export function generateUrlFromName(name?: string | null) {
+export function generateUrlFromName(name?: string | null, folder?: string) {
   if (!name) return undefined;
 
+  const folderUrl = folder ? `/${folder}` : '';
   const url = `${process.env.UPLOAD_FILE_PROTOCOL}://${process.env.UPLOAD_FILE_HOSTNAME}`;
 
-  return `${url}/${name}`;
+  return `${url}${folderUrl}/${name}`;
 }

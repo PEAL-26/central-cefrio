@@ -10,7 +10,7 @@ export interface CompanyListResponseData {
   site?: string;
   taxpayer?: string;
   location?: string;
-  logo?: string;
+  logo?: string | null;
 }
 
 export interface CompanyParams extends ListRequestParams {}
@@ -24,7 +24,7 @@ export interface CompanyRequestData {
   address?: string;
   taxpayer?: string;
   location?: string;
-  logo?: string;
+  logo?: string | null;
 }
 
 export const companyService = crud<

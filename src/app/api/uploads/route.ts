@@ -17,13 +17,13 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const formDataEntryValues = Array.from(formData.values());
 
-    const files = [];
+    const files: string[] = [];
     for (const formDataEntryValue of formDataEntryValues) {
       if (typeof formDataEntryValue === 'object' && 'arrayBuffer' in formDataEntryValue) {
         const file = formDataEntryValue as unknown as Blob as File;
         const fileType = getFileType(file.name);
         const fileName = `${new Date().getTime()}_${randomUUID()}.${fileType}`;
-        const newPath = path ? path : 'public/files';
+        const newPath = path ? path : 'public/uploads';
         checkOrCreateDirectory(newPath);
         const buffer = Buffer.from(await file.arrayBuffer());
         fs.writeFileSync(`${newPath}/${fileName}`, buffer);

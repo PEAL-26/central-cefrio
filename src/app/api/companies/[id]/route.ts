@@ -17,7 +17,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     });
 
     return NextResponse.json(
-      { ...company, logo: generateUrlFromName(company?.logo) },
+      company ? { ...company, logo: generateUrlFromName(company?.logo) } : null,
       {
         status: 200,
       },

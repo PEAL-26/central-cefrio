@@ -7,12 +7,16 @@
 ## 🚀 **Módulos Disponíveis**
 
 ### 📊 **Comercial**
+
 Gerenciamento comercial e faturação:
+
 - Emissão e organização de faturas.
 - Relatórios e análises de desempenho comercial.
 
 ### 📧 **Emails**
+
 Gestão de correio eletrônico:
+
 - Caixa de entrada e saída de e-mails.
 - Composição e envio eficiente de mensagens.
 
@@ -31,49 +35,66 @@ Gestão de correio eletrônico:
 ## ⚙️ **Instalação e Configuração**
 
 ### 1. **Pré-requisitos**
+
 Certifique-se de ter instalado em sua máquina:
+
 - **Node.js** (v20+)
 - **NPM**
 - **PostgreSQL** ou outro banco de dados compatível com Prisma
 
 ### 2. **Clonar o Repositório**
+
 ```bash
 git clone https://github.com/PEAL-26/central-cefrio.git
 cd central-cefrio
 ```
 
 ### 3. **Instalar Dependências**
+
 ```bash
 npm install
 ```
 
 ### 4. **Configurar Variáveis de Ambiente**
+
 Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 
 ```env
 NODE_ENV=development
-NEXT_PUBLIC_UPLOAD_LOCAL=true
 NEXT_PUBLIC_URL=http://localhost:3000
 NEXT_PUBLIC_API_URL=http://localhost:3000/api
 NEXT_PUBLIC_NUMBER_VALIDATION=
-DATABASE_URL=""
+DATABASE_URL="postgres://user:password@host:port/database?schema=public"
+NEXTAUTH_URL="http://localhost:3001"
+NEXTAUTH_SECRET="YOUR_SECRET"
+```
+
+#### 4.1. **Configurar Variáveis de Ambiente para Upload de Arquivos**
+
+```env
 VERCER_STORE_READ_WRITE_TOKEN=""
+NEXT_PUBLIC_UPLOAD_LOCAL=true
 UPLOAD_FILE_PROTOCOL=""
 UPLOAD_FILE_HOSTNAME=""
+```
+
+#### 4.2. **Configurar Variáveis de Ambiente para Sentry (logs de erro)**
+
+```env
 SENTRY_ENABLE="false"
 SENTRY_AUTH_TOKEN=""
 SENTRY_ORGANIZATION=""
 SENTRY_PROJECT=""
-NEXTAUTH_URL="http://localhost:3001"
-NEXTAUTH_SECRET=""
 ```
 
 ### 5. **Executar Migrações do Prisma**
+
 ```bash
 npx prisma migrate dev
 ```
 
 ### 6. **Rodar o Projeto em Desenvolvimento**
+
 ```bash
 npm run dev
 ```
@@ -85,6 +106,7 @@ O projeto estará disponível em **http://localhost:3001**.
 ## 👨‍💻 **Contribuição**
 
 Sinta-se à vontade para contribuir com o projeto! Para isso:
+
 1. Faça um fork do repositório.
 2. Crie uma branch com suas alterações:
    ```bash
@@ -112,10 +134,10 @@ Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) par
 
 Para dúvidas, sugestões ou parcerias, entre em contato:
 
-- **Nome do Desenvolvedor**: *Seu Nome*  
-- **E-mail**: [edilasio@live.com](mailto:edilasio@live.com)  
-- **LinkedIn**: [PEAL](https://www.linkedin.com/in/peal26/)  
+- **Nome do Desenvolvedor**: _Seu Nome_
+- **E-mail**: [edilasio@live.com](mailto:edilasio@live.com)
+- **LinkedIn**: [PEAL](https://www.linkedin.com/in/peal26/)
 
 ---
 
-**Desenvolvido com ❤️ e dedicação.** 🚀  
+**Desenvolvido com ❤️ e dedicação.** 🚀

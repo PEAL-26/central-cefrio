@@ -1,3 +1,4 @@
+import { createFormData } from '@/helpers/form-data';
 import { toastResponseError, toastResponseRegisterSuccess } from '@/helpers/response/response';
 import { useMultipleFileUploads } from '@/hooks/use-multiple-file-uploads';
 import { useVercelBlobUpload } from '@/hooks/use-vercel-blob-upload';
@@ -22,22 +23,22 @@ export function useSettings() {
   const handleSubmit = async (data: CompanySchemaType) => {
     if (isLoading) return;
 
+    const isUploadLocal = process.env.NEXT_PUBLIC_UPLOAD_LOCAL === 'true';
+
     try {
       setIsLoading(true);
 
-      let logo = undefined;
-      // if (data.logo?.file) {
-      //   // const imageFormData = createFormData(data.logo?.file);
-      //   const blob = await vercel.upload(data.logo.file)
-
-      //   console.log(blob);
-
-      //   // const [imageFileName] = await uploads([imageFormData]);
-      //   // logo =
-      //   //   imageFileName && imageFileName?.length > 0
-      //   //     ? imageFileName[0]
-      //   //     : undefined;
-      // }
+      let logo: string | null | undefined = data.logo?.url ? undefined : null;
+      if (data.logo?.file) {
+        if (isUploadLocal) {
+          const imageFormData = createFormData(data.logo?.file);
+          const [[logoName]] = await uploads([imageFormData]);
+          logo = logoName || null;
+        } else {
+          const blob = await vercel.upload(data.logo.file);
+          logo = blob.url.split('/').slice(-1)[0] ?? '';
+        }
+      }
 
       await companyService.create({
         ...data,

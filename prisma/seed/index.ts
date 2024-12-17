@@ -1,17 +1,17 @@
-import { END_CONSUMER } from "../../src/constants/customer";
-import { PrismaClient } from "@prisma/client";
-import { customerSeed } from "./customer";
-import { usersSeed } from "./users";
+import { PrismaClient } from '@prisma/client';
+import { companiesSeed } from './company';
+import { customerSeed } from './customer';
+import { usersSeed } from './users';
 
-const url = process.env.DATABASE_URL || "";
+const url = process.env.DATABASE_URL || '';
 
 const prisma = new PrismaClient({
-  log: ["info"],
+  log: ['info'],
   datasourceUrl: url,
 });
 
 async function runSeeds() {
-  await Promise.all([customerSeed(prisma), usersSeed(prisma)]);
+  await Promise.all([customerSeed(prisma), usersSeed(prisma), companiesSeed(prisma)]);
 }
 
 runSeeds()
