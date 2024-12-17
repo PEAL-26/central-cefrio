@@ -1,3 +1,4 @@
+import { DOCUMENT_STATUS_ENUM } from '@/constants/document-types';
 import { crud } from '@/libs/axios';
 import { ListRequestParams } from '@/types';
 import { CustomerRequestData } from '../customers';
@@ -84,6 +85,7 @@ export interface InvoiceDetailsData {
   totalWithholdingTax?: number;
   total?: number;
   totalPaid?: number;
+  status?: DOCUMENT_STATUS_ENUM;
 
   createdAt?: Date;
   updatedAt?: Date;
@@ -114,6 +116,7 @@ interface InvoiceDetailsPayment {
   date: Date;
   method: string;
   amount: number;
+  reference?: string;
   observation?: string;
 }
 

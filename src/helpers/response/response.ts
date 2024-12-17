@@ -49,3 +49,12 @@ export function toastResponseRegisterSuccess(id: string | null | undefined) {
     description: `Registro ${id ? 'alterado' : 'feito'} com sucesso`,
   });
 }
+
+export function toastResponseSuccess(message: string) {
+  toast({
+    duration: 5000,
+    variant: 'success',
+    title: 'Sucesso',
+    description: message,
+  });
+}

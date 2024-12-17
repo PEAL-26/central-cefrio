@@ -14,7 +14,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { Suspense, useState } from 'react';
+import { ReactNode, Suspense, useState } from 'react';
 
 import {
   Table,
@@ -41,13 +41,12 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDefProps<TData, TValue>[];
   response?: IQueryPaginationResponse<TData>;
   onAdd?: string | OnAdd;
+  filters?: ReactNode;
+  onClearFilters?(): void;
 }
 
-export function DataTable<TData, TValue>({
-  columns,
-  response,
-  onAdd,
-}: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>(props: DataTableProps<TData, TValue>) {
+  const { columns, response, onAdd, filters, onClearFilters } = props;
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -78,7 +77,12 @@ export function DataTable<TData, TValue>({
   return (
     <div className="h-full space-y-4">
       <Suspense>
-        <DataTableToolbar table={table} onAdd={onAdd} />
+        <DataTableToolbar
+          table={table}
+          onAdd={onAdd}
+          filters={filters}
+          onClearFilters={onClearFilters}
+        />
       </Suspense>
       <div className="rounded-md border">
         <Table>

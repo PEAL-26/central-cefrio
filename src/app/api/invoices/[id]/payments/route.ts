@@ -1,5 +1,4 @@
 import { numericString } from '@/helpers/zod';
-import { randomUUID } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { responseError } from '../../../../../helpers/response/route-response';
@@ -51,16 +50,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
 
     const receiptResponse = invoiceCreate(receiptData);
 
-    const paymentResponse = prisma.invoicePayment.createMany({
-      data: receiptData.paymentsData.map((payment) => ({
-        ...payment,
-        id: randomUUID(),
-        invoiceId: params.id,
-        observation: `${payment.observation || ''} ${receiptData.number}`.trim(),
-      })),
-    });
-
-    await prisma.$transaction([receiptResponse, paymentResponse]);
+    await prisma.$transaction([receiptResponse]);
 
     return NextResponse.json({}, { status: 200 });
   } catch (error: any) {

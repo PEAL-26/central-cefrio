@@ -9,24 +9,71 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { getDocumentTypeNameByCode } from '@/constants/document-types';
+import {
+  DOCUMENTS_WITH_PAYMENT,
+  DOCUMENT_STATUS_ENUM,
+  DOCUMENT_STATUS_ENUM_MAP,
+  getDocumentTypeNameByCode,
+} from '@/constants/document-types';
 import { getPaymentMethodNameByCode } from '@/constants/payment-methods';
 import { getPaymentTermsNameByCode } from '@/constants/payment-terms';
 import { currencyFormatter } from '@/helpers/currency';
 import { formatDate } from '@/helpers/date';
-import { InvoiceDetailsData } from '@/services/invoices';
 import { cn } from '@/libs/utils';
+import { InvoiceDetailsData } from '@/services/invoices';
 
 import { AddPayment } from './add-payment';
 import { ActionsButtons } from './button-actions';
 import { ButtonPrint } from './button-print';
 
 export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
+  let payments = [];
+  let total = 0;
+  let totalPaid = 0;
+  let balance = 0;
+
+  if (invoice.type === 'RE') {
+    total = (invoice?.documents?.flatMap((d) => ({ ...d.invoice })) || []).reduce(
+      (total, item) => Number(total) + Number(item?.total || 0),
+      0,
+    );
+    payments = invoice?.payments?.map((p) => ({ ...p, status: invoice.status })) || [];
+    total = Number(invoice?.total || 0);
+    totalPaid = Number(invoice?.totalPaid || 0);
+    balance = totalPaid - total;
+  } else {
+    payments =
+      invoice?.documents?.flatMap((d) => [
+        ...(d?.invoice?.payments?.map((p) => ({ ...p, status: d.invoice.status })) || []),
+      ]) || [];
+    total = Number(invoice?.total || 0);
+    totalPaid =
+      payments
+        .filter((p) => p.status !== DOCUMENT_STATUS_ENUM.A)
+        .reduce((total, item) => Number(total) + Number(item.amount), 0) || 0;
+    balance = totalPaid - total;
+  }
+
   return (
     <div className="container mx-auto py-10">
-      <div className="mb-6 flex items-center gap-2">
-        <h1 className="text-3xl font-bold">Detalhes do documento</h1>
-        <ActionsButtons data={invoice} />
+      <div
+        className={cn(
+          'mb-6 flex w-full items-center justify-between gap-2 rounded-md p-2',
+          invoice.status === DOCUMENT_STATUS_ENUM.A && 'bg-red-500 text-white',
+        )}
+      >
+        <div className="flex w-full items-center gap-2">
+          <h1 className="text-3xl font-bold">Detalhes do documento</h1>
+          <ActionsButtons data={invoice} />
+        </div>
+        <span
+          className={cn(
+            'text-lg font-bold uppercase',
+            invoice.status === DOCUMENT_STATUS_ENUM.N && 'text-green-500',
+          )}
+        >
+          {DOCUMENT_STATUS_ENUM_MAP[invoice?.status as DOCUMENT_STATUS_ENUM] ?? ''}
+        </span>
       </div>
 
       {/* Informações gerais */}
@@ -169,10 +216,32 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
                 </dd>
                 <dt className="font-semibold">Total:</dt>
                 <dd className="text-lg font-bold">
-                  {currencyFormatter(invoice?.total || 0, {
+                  {currencyFormatter(total, {
                     code: invoice.currency,
                   })}
                 </dd>
+                {DOCUMENTS_WITH_PAYMENT.includes(invoice.type) && (
+                  <>
+                    <dt className="font-semibold">Pago:</dt>
+                    <dd className="text-lg font-bold">
+                      {currencyFormatter(totalPaid, {
+                        code: invoice.currency,
+                      })}
+                    </dd>
+                    <dt className="font-semibold">Saldo:</dt>
+                    <dd
+                      className={cn(
+                        'text-lg font-bold',
+                        balance < 0 && 'text-red-500',
+                        balance > 0 && 'text-green-500',
+                      )}
+                    >
+                      {currencyFormatter(balance, {
+                        code: invoice.currency,
+                      })}
+                    </dd>
+                  </>
+                )}
               </dl>
             </CardContent>
           </Card>
@@ -181,7 +250,9 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Pagamentos</CardTitle>
-            {invoice.type === 'FT' && <AddPayment documentId={invoice.id} />}
+            {invoice.status === DOCUMENT_STATUS_ENUM.N && invoice.type === 'FT' && (
+              <AddPayment documentId={invoice.id} total={total} totalPaid={totalPaid} />
+            )}
           </CardHeader>
           <CardContent>
             <Table>
@@ -190,11 +261,12 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
                   <TableHead>Data</TableHead>
                   <TableHead>Método</TableHead>
                   <TableHead>Valor</TableHead>
+                  <TableHead className="w-[1%]">Estado</TableHead>
                   <TableHead>Obs</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {invoice?.payments?.map((payment, index) => (
+                {payments?.map((payment, index) => (
                   <TableRow key={index}>
                     <TableCell>{formatDate(payment.date)}</TableCell>
                     <TableCell>{getPaymentMethodNameByCode(payment.method)}</TableCell>
@@ -203,6 +275,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
                         code: invoice.currency,
                       })}
                     </TableCell>
+                    <TableCell className="text-center">{payment.status}</TableCell>
                     <TableCell className="line-clamp-1">{payment.observation}</TableCell>
                   </TableRow>
                 ))}
@@ -227,6 +300,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
                   <TableHead>Documento</TableHead>
                   <TableHead>Data</TableHead>
                   <TableHead>Pago</TableHead>
+                  <TableHead className="w-[1%]">Estado</TableHead>
                   <TableHead className="w-[1%]"></TableHead>
                 </TableRow>
               </TableHeader>
@@ -244,6 +318,7 @@ export function InvoiceDetails({ invoice }: { invoice: InvoiceDetailsData }) {
                         code: invoice.currency,
                       })}
                     </TableCell>
+                    <TableCell className="text-center">{doc.invoice.status}</TableCell>
                     <TableCell>
                       <ButtonPrint documentId={doc.invoice.id} />
                     </TableCell>

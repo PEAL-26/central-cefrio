@@ -3,7 +3,7 @@
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { Table } from '@tanstack/react-table';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,21 +14,28 @@ type OnAdd = () => void;
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
   onAdd?: string | OnAdd;
+  filters?: ReactNode;
+  onClearFilters?(): void;
 }
 
-export function DataTableToolbar<TData>({ table, onAdd }: DataTableToolbarProps<TData>) {
+export function DataTableToolbar<TData>(props: DataTableToolbarProps<TData>) {
+  const { table, onAdd, filters, onClearFilters } = props;
   const { setParams } = useSetSearchParams();
-  const [q, size] = useGetSearchParams({ params: ['q', 'size'] });
+  const [q, size, isFilteredParam] = useGetSearchParams({ params: ['q', 'size', 'is_filtered'] });
+  const isFiltered = isFilteredParam === 'true';
+
   const [search, setSearch] = useState(q || '');
-  const isFiltered = search.trim().length > 0;
   const debounced = useDebounceValue(search?.trim());
 
   const setParamsSearch = useCallback(() => {
-    setParams([
-      { name: 'q', value: debounced },
-      { name: 'page', value: debounced ? '1' : '' },
-      { name: 'size', value: size },
-    ]);
+    if (!debounced) return
+    
+      setParams([
+        { name: 'is_filtered', value: 'true' },
+        { name: 'q', value: debounced },
+        { name: 'page', value: debounced ? '1' : '' },
+        { name: 'size', value: size },
+      ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounced]);
 
@@ -40,6 +47,8 @@ export function DataTableToolbar<TData>({ table, onAdd }: DataTableToolbarProps<
   const reset = () => {
     setSearch('');
     table.resetColumnFilters();
+    setParams([{ name: 'is_filtered', value: undefined }]);
+    onClearFilters?.();
   };
 
   return (
@@ -51,6 +60,7 @@ export function DataTableToolbar<TData>({ table, onAdd }: DataTableToolbarProps<
           onChange={(event) => setSearch(String(event.target.value))}
           className="placeholder-muted-foreground h-8 w-[150px] lg:w-[250px]"
         />
+        {filters}
         {isFiltered && (
           <Button variant="ghost" onClick={reset} className="h-8 px-2 lg:px-3">
             Limpar filtro

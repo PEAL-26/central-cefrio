@@ -23,6 +23,7 @@ export function ListInvoices() {
       </div>
       <DataTable
         response={response}
+        filters={<div></div>}
         columns={columns({
           onDelete: handleDelete,
         })}

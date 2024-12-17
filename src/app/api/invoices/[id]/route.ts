@@ -24,7 +24,11 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         documents: {
           include: {
             document: true,
-            invoice: true,
+            invoice: {
+              include: {
+                payments: true,
+              },
+            },
           },
         },
         invoices: {

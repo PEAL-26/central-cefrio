@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { UNAUTHORIZED_MESSAGE } from '@/helpers/response/messages';
-import { toastResponseError, toastResponseRegisterSuccess } from '@/helpers/response/response';
+import { toastResponseError, toastResponseSuccess } from '@/helpers/response/response';
 import { loginSchema, type LoginSchema } from './schema';
 
 export function useLogin() {
@@ -36,7 +36,7 @@ export function useLogin() {
         return;
       }
 
-      toastResponseRegisterSuccess('Login feito com sucesso.');
+      toastResponseSuccess('Login feito com sucesso.');
       router.replace(res.url || '/');
     } catch (error) {
       toastResponseError(error);

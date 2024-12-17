@@ -28,7 +28,7 @@ export function PaymentTerms() {
       <PopoverTrigger disabled={disabled} className="line-clamp-1 flex flex-1 items-center gap-2">
         <span
           className={cn(
-            'line-clamp-1 flex w-full items-center gap-2 whitespace-nowrap text-right',
+            'line-clamp-1 w-full items-center gap-2 whitespace-nowrap text-right',
             (disabled || !paymentTerms?.name) && 'text-gray-400',
           )}
         >

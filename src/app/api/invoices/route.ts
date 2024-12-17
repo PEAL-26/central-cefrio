@@ -116,7 +116,7 @@ async function create(input: any) {
   const data = await prepareData(input, true);
   await verify(data);
 
-  const document = invoiceCreate(data);
+  const document = invoiceCreate({ ...data, payments: [] });
 
   let receipt: PrismaPromise<any> | null = null;
   if (data.type === 'FT' && data?.totalPaid > 0) {

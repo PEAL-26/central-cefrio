@@ -32,7 +32,15 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         where: { id },
         include: {
           customer: true,
-          documents: true,
+          documents: {
+            include: {
+              invoice: {
+                include: {
+                  payments: true,
+                },
+              },
+            },
+          },
           products: {
             orderBy: [{ order: 'asc' }],
           },
@@ -56,6 +64,12 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     if (invoice.products.length === 0 && invoice.documents.length === 0) {
       throw new Error('Não existe nenhum item deste documento.');
     }
+
+    // TODO Implementar o pagamento na factura depois
+    const payments =
+      invoice?.documents?.flatMap((d) => [
+        ...(d?.invoice.status === 'A' ? [] : d?.invoice?.payments || []),
+      ]) || [];
 
     const typeName = getDocumentTypeNameByCode(invoice.type);
     const templateHtml = await invoiceTemplate({

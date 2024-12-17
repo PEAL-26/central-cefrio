@@ -2,9 +2,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { FieldErrors, useForm } from 'react-hook-form';
 
-import { toastResponseError, toastResponseRegisterSuccess } from '@/helpers/response/response';
+import { toastResponseError, toastResponseSuccess } from '@/helpers/response/response';
 
 import { addPaymentService } from '@/services/invoices';
+import { useRouter } from 'next/navigation';
 import { INVOICE_SCHEMA_PROPERTY, invoiceSchema, InvoiceSchemaType } from './schema';
 
 export function useAddPayment(documentId: string) {
@@ -20,6 +21,7 @@ export function useAddPayment(documentId: string) {
     },
   });
 
+  const router = useRouter();
   const handleSubmit = async (data: InvoiceSchemaType) => {
     if (isLoading) return;
 
@@ -32,7 +34,8 @@ export function useAddPayment(documentId: string) {
         observation: payment.observation,
       }));
       await addPaymentService({ documentId, payments });
-      toastResponseRegisterSuccess('Pagamento(s) adicionado(s) com sucesso.');
+      toastResponseSuccess('Pagamento(s) adicionado(s) com sucesso.');
+      router.refresh();
       handleChangeStateModal(false);
     } catch (error) {
       toastResponseError(error);
@@ -64,18 +67,10 @@ export function useAddPayment(documentId: string) {
   };
 
   useEffect(() => {
-    if (documentId && isModalOpen) {
-      (async () => {
-        setIsLoadingData(true);
-        // Verificar se o documento já foi completamente pago
-        // const payments =
-        setIsLoadingData(false);
-      })();
-    }
     if (!isModalOpen) {
       form.reset(undefined);
     }
-  }, [documentId, form, isModalOpen]);
+  }, [form, isModalOpen]);
 
   return {
     isLoading,

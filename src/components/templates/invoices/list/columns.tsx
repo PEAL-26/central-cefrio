@@ -40,14 +40,13 @@ export const columns = (props?: ColumnProps): Column[] => [
     enableHiding: false,
   },
   {
-    id: 'document',
+    id: 'number',
     className: 'w-[1%]',
-    accessorKey: 'document',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Documento" />,
+    accessorKey: ' number',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Nº" />,
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-2 whitespace-nowrap font-bold">
-          <span>{getDocumentTypeNameByCode(row.original.type)}</span>
           <span>{row.original.number}</span>
         </div>
       );
@@ -56,6 +55,23 @@ export const columns = (props?: ColumnProps): Column[] => [
       return value.includes(row.getValue(id));
     },
   },
+  {
+    id: 'document',
+    className: 'w-[1%]',
+    accessorKey: 'document',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Documento" />,
+    cell: ({ row }) => {
+      return (
+        <div className="flex items-center gap-2 whitespace-nowrap font-bold">
+          <span>{getDocumentTypeNameByCode(row.original.type)}</span>
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
+
   {
     id: 'date',
     accessorKey: 'date',

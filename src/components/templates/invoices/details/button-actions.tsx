@@ -17,9 +17,10 @@ import { useInvoiceDownload, useInvoicePrint } from '@/hooks';
 import { useInitialLoading } from '@/hooks/use-initial-loading';
 import { useRouter } from 'next/navigation';
 import { useListInvoice } from '../list/use-list';
+import { DOCUMENT_STATUS_ENUM } from '@/constants/document-types';
 
 export function ActionsButtons({ data }: { data: Record<string, any> }) {
-  const { id, type, number, customer } = data;
+  const { id, type, number, customer, status } = data;
   
   const router = useRouter();
   const isReady = useInitialLoading();
@@ -44,13 +45,13 @@ export function ActionsButtons({ data }: { data: Record<string, any> }) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="data-[state=open]:bg-muted flex h-8 w-8 p-0">
+          <Button variant="outline" className="data-[state=open]:bg-muted flex h-8 w-8 p-0 text-black">
             <DotsHorizontalIcon className="h-4 w-4" />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
-          {DOCUMENT_EMIT_FT.includes(type) && (
+          {status !== DOCUMENT_STATUS_ENUM.A && DOCUMENT_EMIT_FT.includes(type) && (
             <DropdownMenuItem asChild>
               <Link href={`/comercial/invoices/create?emit_ft=true&document_id=${id}`}>
                 Emitir Factura
