@@ -32,72 +32,78 @@ export function ProductListing(props: ProductListingProps) {
   }, [open]);
 
   return (
-    <div className="h-full w-full p-4">
-      <div className="flex items-center gap-1">
+    <div className="flex h-full w-full flex-1 flex-col pt-4">
+      <div className="flex items-center gap-1 px-4">
         <Input
           placeholder="Pesquisar"
           // value={query}
           onChange={(e) => filterProducts({ q: e.target.value || '' })}
         />
-        <Button variant="ghost" className="h-10 w-10 p-0" onClick={onAdd}>
-          <PlusCircleIcon />
+        <Button variant="ghost" className="h-10 w-10 p-0 hover:bg-transparent" onClick={onAdd}>
+          <PlusCircleIcon className="size-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          className="p-0 hover:bg-transparent"
+          onClick={productsQuery?.refetch}
+        >
+          <RefreshCwIcon className="size-4" />
         </Button>
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow className="hover:bg-transparent">
-            <TableHead className="flex items-center justify-between hover:bg-transparent">
-              <span>Descrição</span>
-              <Button
-                variant="ghost"
-                className="p-0 hover:bg-transparent"
-                onClick={productsQuery?.refetch}
-              >
-                <RefreshCwIcon className="size-4" />
-              </Button>
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {isLoading && !isError && (
-            <TableRow className="h-full hover:bg-transparent">
-              <TableCell className="h-full">
-                <div className="flex items-center justify-center">
-                  <LoaderIcon className="animate-spin" />
-                </div>
-              </TableCell>
+      <div className="flex-1 overflow-y-auto p-4">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="flex items-center justify-between hover:bg-transparent">
+                <span>Descrição</span>
+              </TableHead>
             </TableRow>
-          )}
-          {!isLoading && isError && (
-            <div className="flex items-center justify-center">
+          </TableHeader>
+          <TableBody>
+            {isLoading && !isError && (
               <TableRow className="h-full hover:bg-transparent">
-                <TableCell>
+                <TableCell className="h-full">
                   <div className="flex items-center justify-center">
                     <LoaderIcon className="animate-spin" />
                   </div>
                 </TableCell>
               </TableRow>
-            </div>
-          )}
-          {!isLoading && !isError && data.length === 0 && (
-            <div className="flex items-center justify-center">
-              <TableRow className="h-full hover:bg-transparent">
-                <TableCell>Nenhum item</TableCell>
-              </TableRow>
-            </div>
-          )}
-          {!isLoading &&
-            !isError &&
-            data.map((item, key) => (
-              <TableRow key={key} className="hover:cursor-pointer" onClick={() => onSelect?.(item)}>
-                <TableCell>{item.name}</TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
+            )}
+            {!isLoading && isError && (
+              <div className="flex items-center justify-center">
+                <TableRow className="h-full hover:bg-transparent">
+                  <TableCell>
+                    <div className="flex items-center justify-center">
+                      <LoaderIcon className="animate-spin" />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              </div>
+            )}
+            {!isLoading && !isError && data.length === 0 && (
+              <div className="flex items-center justify-center">
+                <TableRow className="h-full hover:bg-transparent">
+                  <TableCell>Nenhum item</TableCell>
+                </TableRow>
+              </div>
+            )}
+            {!isLoading &&
+              !isError &&
+              data.map((item, key) => (
+                <TableRow
+                  key={key}
+                  className="hover:cursor-pointer"
+                  onClick={() => onSelect?.(item)}
+                >
+                  <TableCell>{item.name}</TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </div>
 
-      <div className="absolute bottom-0 left-0 right-0 bg-gray-100 py-1">
+      <div className="w-full bg-gray-100 py-1">
         <Pagination
           show={{
             totalItems: true,

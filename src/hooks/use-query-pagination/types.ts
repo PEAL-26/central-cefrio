@@ -19,7 +19,7 @@ type QueryKey = ReadonlyArray<unknown>;
 
 export interface QueryPaginationProps<D, R = ListResponseData<D>> {
   queryKey: QueryKey;
-  fn: (context?: QueryFn) => Promise<R>;
+  fn: (context: Partial<QueryFn>) => Promise<R>;
   disableFetch?: boolean;
 }
 

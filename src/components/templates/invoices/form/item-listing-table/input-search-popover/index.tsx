@@ -27,7 +27,7 @@ export function InputSearchPopover(props: ItemSearchProps) {
           </FormItem>
         )}
       />
-      <PopoverContent align="end" className="h-96 w-80 overflow-hidden bg-white p-0">
+      <PopoverContent align="end" className="h-[320px] w-80 overflow-hidden bg-white p-0">
         <div className="relative h-full w-full flex-1">
           <div
             data-add={add}
@@ -37,7 +37,7 @@ export function InputSearchPopover(props: ItemSearchProps) {
           </div>
           <div
             data-add={add}
-            className="absolute flex h-full w-full translate-x-0 overflow-y-auto transition-all data-[add='false']:translate-x-0 data-[add='true']:translate-x-full"
+            className="absolute inset-0 flex-1 translate-x-0 transition-all data-[add='false']:translate-x-0 data-[add='true']:translate-x-full"
           >
             <ProductListing open={open} onSelect={handleSelect} onAdd={() => setAdd(true)} />
           </div>

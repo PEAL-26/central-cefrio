@@ -6,7 +6,7 @@ export function useQueryPagination<T>(props: QueryPaginationProps<T>): IQueryPag
   const { queryKey, fn, disableFetch = false, ...rest } = props;
   const { setParams } = useSetSearchParams();
 
-  const queryFn = async (props?: QueryFn) => {
+  const queryFn = async (props: QueryFn) => {
     if (disableFetch) return;
     return await fn(props);
   };

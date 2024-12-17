@@ -1,6 +1,6 @@
 'use client';
 import { useQueryPagination } from '@/hooks';
-import { invoiceService } from '@/services/invoices';
+import { listUnpaidDocumentsService } from '@/services/invoices';
 import { productService } from '@/services/products';
 import { createContext, useContext, useState } from 'react';
 import {
@@ -17,12 +17,12 @@ export const InvoiceProvider: React.FC<InvoiceProviderProps> = ({ children }) =>
   const [productFilters, setProductFilters] = useState<ProductFilterTypes>({});
 
   const documentsQuery = useQueryPagination({
-    fn: () => invoiceService.list(documentFilters),
-    queryKey: ['invoices', { ...documentFilters }],
+    fn: ({ signal }) => listUnpaidDocumentsService(documentFilters, { signal }),
+    queryKey: ['invoices-unpaid', { ...documentFilters }],
   });
 
   const productsQuery = useQueryPagination({
-    fn: () => productService.list(productFilters),
+    fn: ({ signal }) => productService.list(productFilters, { signal }),
     queryKey: ['products', { ...productFilters }],
   });
 

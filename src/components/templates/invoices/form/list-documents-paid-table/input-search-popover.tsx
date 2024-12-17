@@ -73,9 +73,9 @@ export function InputSearchPopover(props: ItemSearchProps) {
           </FormItem>
         )}
       />
-      <PopoverContent align="start" className="h-96 w-80 overflow-hidden bg-white p-0">
+      <PopoverContent align="start" className="h-[320px] w-80 overflow-hidden bg-white p-0">
         <div className="relative h-full w-full flex-1">
-          <div className="absolute flex h-full w-full overflow-y-auto">
+          <div className="absolute inset-0 flex-1">
             <TableItemsSearch open={open} onSelect={handleSelect} />
           </div>
         </div>

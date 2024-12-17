@@ -14,7 +14,6 @@ export function useListInvoice() {
 
   const handleDelete = async (id: string) => {
     try {
-      throw new Error('fggg');
       await invoiceService.delete(id);
       queryClient.invalidateQueries({
         queryKey: ['invoices'],
