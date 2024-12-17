@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev -p 3001",
     "build": "next build",
+    "puppeteer:install": "npx puppeteer browsers install chrome",
     "build:prod": "npm i && npm run prisma:generate && npm run migrate:deploy && npm run build",
     "start": "next start -p 3001",
     "lint": "next lint",
