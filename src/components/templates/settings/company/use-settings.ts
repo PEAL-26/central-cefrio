@@ -1,11 +1,13 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
 import { createFormData } from '@/helpers/form-data';
 import { toastResponseError, toastResponseRegisterSuccess } from '@/helpers/response/response';
 import { useMultipleFileUploads } from '@/hooks/use-multiple-file-uploads';
 import { useVercelBlobUpload } from '@/hooks/use-vercel-blob-upload';
 import { companyService, getCompanyFirst } from '@/services/companies';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+
 import { CompanySchemaType, companySchema } from './schema';
 
 export function useSettings() {
