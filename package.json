@@ -71,6 +71,7 @@
     "react-loading": "^2.0.3",
     "react-pdf-html": "^2.1.2",
     "react-resizable-panels": "^2.1.7",
+    "sharp": "^0.33.5",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "unidecode": "^1.1.0",

@@ -3,6 +3,7 @@ import { Handlebars } from '@/libs/handlebars';
 import { InvoiceData, InvoiceDataItem } from './types';
 
 import templateSource from './invoice.min.hbs';
+import { generateImageDataURLFromURL } from '@/helpers/url';
 
 async function generateItems(items: InvoiceDataItem[], itemsPerPage = 22, restItemsPerPage = 32) {
   const totalItems = items.length;
@@ -34,12 +35,13 @@ export async function invoiceTemplate(data: InvoiceData) {
   } = data;
 
   const { total_pages, pages } = await generateItems(items, 22);
-  // const logoUrl = await generateImageDataURLFromURL(logo_url);
-  // console.log({ logoUrl, logo_url });
+  // const logoDataUrl = await generateImageDataURLFromURL(logo_url);
+
+  // console.log({ logoDataUrl,logo_url });
   const context = {
     total_pages,
     pages,
-    logo_url, //: logoUrl,
+    logo_url, // : logoDataUrl,
     company: {
       name: company?.name || false,
       slogan: company?.slogan || false,

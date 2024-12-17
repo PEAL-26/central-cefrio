@@ -16,6 +16,12 @@ const nextConfig = {
         hostname: '**',
       },
     ],
+    localPatterns: [
+      {
+        pathname: '**',
+        search: '',
+      },
+    ],
   },
   webpack: (config, options) => {
     config.module.rules.push(

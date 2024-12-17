@@ -1,5 +1,6 @@
 import { withAuth, type NextRequestWithAuth } from 'next-auth/middleware';
 import { NextResponse } from 'next/server';
+
 import { COOKIES } from './constants/cookies';
 import { getServerCookie } from './libs/cookies/server-cookies';
 
@@ -8,7 +9,6 @@ const PUBLIC_ROUTES = ['/login', '/forgot-password', '/reset-password'];
 export default withAuth(
   async function middleware(req: NextRequestWithAuth) {
     const session = req?.nextauth.token;
-
     const token = getServerCookie(COOKIES.TOKEN) || '';
 
     if (!PUBLIC_ROUTES.includes(req.nextUrl.pathname) && !session) {
