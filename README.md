@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🏢 **Cefrio Central**
 
-## Getting Started
+**Cefrio Central** é uma plataforma desenvolvida para centralizar todos os aplicativos da empresa em um único lugar, promovendo eficiência, organização e acessibilidade. O projeto, atualmente em fase inicial, contém dois módulos principais: **Comercial** e **Emails**.
 
-First, run the development server:
+---
 
+## 🚀 **Módulos Disponíveis**
+
+### 📊 **Comercial**
+Gerenciamento comercial e faturação:
+- Emissão e organização de faturas.
+- Relatórios e análises de desempenho comercial.
+
+### 📧 **Emails**
+Gestão de correio eletrônico:
+- Caixa de entrada e saída de e-mails.
+- Composição e envio eficiente de mensagens.
+
+---
+
+## 🛠️ **Tecnologias Utilizadas**
+
+- **Next.js 14**: Framework React para aplicações full-stack com recursos avançados de SSR, API Routes e App Router.
+- **Prisma ORM**: Gerenciamento eficiente e tipado do banco de dados.
+- **Node.js**: Plataforma para execução do backend.
+- **Typescript**: Tipagem estática para maior robustez do código.
+- **TailwindCSS**: Para estilização rápida e moderna.
+
+---
+
+## ⚙️ **Instalação e Configuração**
+
+### 1. **Pré-requisitos**
+Certifique-se de ter instalado em sua máquina:
+- **Node.js** (v20+)
+- **NPM**
+- **PostgreSQL** ou outro banco de dados compatível com Prisma
+
+### 2. **Clonar o Repositório**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/PEAL-26/cefrio-central.git
+cd cefrio-central
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. **Instalar Dependências**
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. **Configurar Variáveis de Ambiente**
+Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```env
+NODE_ENV=development
+NEXT_PUBLIC_UPLOAD_LOCAL=true
+NEXT_PUBLIC_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+NEXT_PUBLIC_NUMBER_VALIDATION=
+DATABASE_URL=""
+VERCER_STORE_READ_WRITE_TOKEN=""
+UPLOAD_FILE_PROTOCOL=""
+UPLOAD_FILE_HOSTNAME=""
+SENTRY_ENABLE="false"
+SENTRY_AUTH_TOKEN=""
+SENTRY_ORGANIZATION=""
+SENTRY_PROJECT=""
+NEXTAUTH_URL="http://localhost:3001"
+NEXTAUTH_SECRET=""
+```
 
-## Learn More
+### 5. **Executar Migrações do Prisma**
+```bash
+npx prisma migrate dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 6. **Rodar o Projeto em Desenvolvimento**
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+O projeto estará disponível em **http://localhost:3001**.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 👨‍💻 **Contribuição**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Sinta-se à vontade para contribuir com o projeto! Para isso:
+1. Faça um fork do repositório.
+2. Crie uma branch com suas alterações:
+   ```bash
+   git checkout -b feature/nova-funcionalidade
+   ```
+3. Commit suas mudanças:
+   ```bash
+   git commit -m "Adiciona nova funcionalidade"
+   ```
+4. Envie suas alterações:
+   ```bash
+   git push origin feature/nova-funcionalidade
+   ```
+5. Abra um Pull Request 🚀.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---
+
+## 📜 **Licença**
+
+Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## 💬 **Contato**
+
+Para dúvidas, sugestões ou parcerias, entre em contato:
+
+- **Nome do Desenvolvedor**: *Seu Nome*  
+- **E-mail**: [edilasio@live.com](mailto:edilasio@live.com)  
+- **LinkedIn**: [PEAL](https://www.linkedin.com/in/peal26/)  
+
+---
+
+**Desenvolvido com ❤️ e dedicação.** 🚀  
