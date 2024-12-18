@@ -13,7 +13,7 @@ export async function usersSeed(prisma: PrismaClient) {
 
   await prisma.user.upsert({
     create: user,
-    update: user,
+    update: {},
     where: { id: user.id },
   });
 }

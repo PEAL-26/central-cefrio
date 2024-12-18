@@ -12,7 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/libs/utils';
 import { BaseSyntheticEvent, ReactNode } from 'react';
 import { UseFormReturn } from 'react-hook-form';
-import { CustomerSchemaType } from './customer';
+import { CustomerSchemaType } from './schema';
 
 interface CreateEditCustomerFormProps {
   children: ReactNode;

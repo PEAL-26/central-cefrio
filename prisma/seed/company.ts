@@ -15,7 +15,7 @@ export async function companiesSeed(prisma: PrismaClient) {
 
   await prisma.company.upsert({
     create: company,
-    update: company,
+    update: {},
     where: { id: company.id },
   });
 }

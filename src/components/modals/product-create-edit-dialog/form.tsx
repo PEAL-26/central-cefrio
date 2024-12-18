@@ -14,7 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/libs/utils';
 import { BaseSyntheticEvent, ReactNode } from 'react';
 import { UseFormReturn } from 'react-hook-form';
-import { ProductSchemaType } from './product';
+import { ProductSchemaType } from './schema';
 
 interface CreateEditProductFormProps {
   children: ReactNode;

@@ -1,21 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { toastResponseError, toastResponseRegisterSuccess } from '@/helpers/response/response';
-import { useQueryGetDataCached } from '@/hooks';
 
 import { customerService } from '@/services/customers';
-import { customerSchema, CustomerSchemaType } from './customer';
+import { customerSchema, CustomerSchemaType } from './schema';
 import { UseCustomerCreateEditDialogProps } from './types';
 
 export function useCustomerCreateEdit(props?: UseCustomerCreateEditDialogProps) {
   const { id, open, onClose, onSubmitted } = props || {};
   const queryClient = useQueryClient();
-  const { getDataCached } = useQueryGetDataCached();
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const { mutateAsync, isPending } = useMutation({
     mutationKey: ['customer'],
@@ -54,29 +50,28 @@ export function useCustomerCreateEdit(props?: UseCustomerCreateEditDialogProps) 
     onSubmitted?.(response);
   };
 
+  const { data: customer, isLoading } = useQuery({
+    queryFn: () => (id ? customerService.getById(id) : null),
+    queryKey: ['customer', id],
+  });
+
   useEffect(() => {
     if (!open) {
-      form.reset({
-        id: undefined,
-        name: '',
-      });
+      form.reset(undefined);
     }
-    if (id && open) {
-      setIsLoading(true);
-      const response = getDataCached(id, ['customers']);
-      if (response) {
-        form.setValue('id', response.id);
-        form.setValue('name', response.name);
-        form.setValue('address', response?.address || '');
-        form.setValue('location', response?.location || '');
-        form.setValue('taxpayer', response?.taxpayer || '');
-        form.setValue('telephone', response?.telephone || '');
-        form.setValue('email', response?.email || '');
-      }
-      setIsLoading(false);
+  }, [form, open]);
+
+  useEffect(() => {
+    if (id && customer) {
+      form.setValue('id', customer.id);
+      form.setValue('name', customer.name);
+      form.setValue('address', customer?.address || '');
+      form.setValue('location', customer?.location || '');
+      form.setValue('taxpayer', customer?.taxpayer || '');
+      form.setValue('telephone', customer?.telephone || '');
+      form.setValue('email', customer?.email || '');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, open]);
+  }, [id, customer, form]);
 
   return {
     form,

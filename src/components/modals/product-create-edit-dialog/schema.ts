@@ -12,7 +12,7 @@ export const productSchema = z.object({
     .max(255, {
       message: 'O nome não deve ter mais de 255 caracteres',
     }),
-  unitMeasure: z.string().optional().default(''),
+  unitMeasure: z.string().optional().default('UN'),
   price: z.coerce.number().optional().default(0),
   iva: z.coerce.number().optional().default(0),
   reasonExemption: z.string().optional().default('Transmissão de bens e serviços não sujeita'),

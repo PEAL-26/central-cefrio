@@ -1,4 +1,4 @@
-import { ProductSchemaType } from './product';
+import { ProductSchemaType } from './schema';
 
 export interface CreateEditProductDialogProps {
   open?: boolean;

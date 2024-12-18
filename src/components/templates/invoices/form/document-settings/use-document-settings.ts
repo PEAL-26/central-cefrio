@@ -7,7 +7,7 @@ export function useDocumentSettings() {
 
   const updateDocumentNumber = async (documentType: string) => {
     const { number } = await generateDocumentNumberService(documentType);
-    form.setValue('number', `${documentType} ${number}`);
+    form.setValue('number', number);
   };
 
   return { form, updateDocumentNumber };

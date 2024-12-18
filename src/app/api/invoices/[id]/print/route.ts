@@ -21,14 +21,14 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     const { id } = paramsSchema.parse(params);
     const { company, invoice, banks } = await getData(id);
 
+    
+    let templateHtml = '';
+    
+    if (INVOICE.includes(invoice.type)) {
     const payments =
       invoice?.documents?.flatMap((d) => [
         ...(d?.invoice.status === 'A' ? [] : d?.invoice?.payments || []),
       ]) || [];
-
-    let templateHtml = '';
-
-    if (INVOICE.includes(invoice.type)) {
       templateHtml = await invoiceTemplateData({ company, invoice, payments, banks });
     }
 
@@ -37,7 +37,7 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     }
 
     if (PAYMENT.includes(invoice.type)) {
-      templateHtml = await paymentTemplateData({ company, invoice, payments, banks });
+      templateHtml = await paymentTemplateData({ company, invoice, banks });
     }
 
     const isUploadLocal = process.env.NEXT_PUBLIC_UPLOAD_LOCAL === 'true';

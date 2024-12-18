@@ -4,13 +4,10 @@ import { generateUrlFromName } from '@/helpers/file';
 import { paymentTemplate } from '@/resources';
 import { getDate, getDocumentNumber, getNumber } from './utils';
 
-export async function paymentTemplateData(data: {
-  company: any;
-  invoice: any;
-  payments: any;
-  banks: any;
-}) {
-  const { company, invoice, banks, payments } = data;
+export async function paymentTemplateData(data: { company: any; invoice: any; banks: any }) {
+  const { company, invoice, banks } = data;
+  const payments = invoice?.payments || [];
+  
   const totalPaid = payments.reduce(
     (total: number, item: any) => Number(total) + Number(item.amount),
     0,

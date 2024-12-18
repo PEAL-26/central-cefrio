@@ -67,7 +67,7 @@ export const columns = (props?: ColumnProps): ColumnDefProps<ProductListResponse
     header: ({ column }) => <DataTableColumnHeader column={column} title="Preço" />,
     cell: ({ row }) => {
       return (
-        <div className="flex items-center">
+        <div className="flex items-center whitespace-nowrap">
           <span>{currencyFormatter(row.getValue('price'))}</span>
         </div>
       );
