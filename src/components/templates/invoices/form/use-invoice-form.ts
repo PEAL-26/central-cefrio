@@ -20,6 +20,8 @@ interface InvoiceFormProps {
   id?: string;
 }
 
+const DOCUMENT_REQUIRED_CUSTOMER_INSTALLMENT = ['FT', 'FR', 'RE', ''];
+
 export function useInvoiceForm(props?: InvoiceFormProps) {
   const { id = '' } = props || {};
   const [documentIdParam, emitFtParam, copyParam] = useGetSearchParams({
@@ -108,8 +110,10 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
       }
     }
 
-    if (data.paymentTerms === 'installment' && !data.customerId) {
-      throw new Error('Em documentos com pagamento a prazo deve selecionar um cliente');
+    if (DOCUMENT_REQUIRED_CUSTOMER_INSTALLMENT.includes(data.type)) {
+      if (data.paymentTerms === 'installment' && !data.customerId) {
+        throw new Error('Em documentos com pagamento a prazo deve selecionar um cliente');
+      }
     }
   };
 
@@ -128,6 +132,7 @@ export function useInvoiceForm(props?: InvoiceFormProps) {
         customerId: rest?.customerId,
         date: rest.date,
         dueDate: rest?.dueDate,
+        deliveryDate: rest?.deliveryDate,
         paymentTerms: rest?.paymentTerms,
         reference: rest?.reference,
         observation: rest?.observation,

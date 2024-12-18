@@ -1,9 +1,10 @@
-import { crud } from '@/libs/axios';
+import { api, ApiRequestConfig, crud } from '@/libs/axios';
 import { ListRequestParams } from '@/types';
 
 export interface CompanyListResponseData {
   id?: string;
   name: string;
+  slogan?: string;
   telephone?: string;
   address?: string;
   email?: string;
@@ -18,6 +19,7 @@ export interface CompanyParams extends ListRequestParams {}
 export interface CompanyRequestData {
   id?: string;
   name: string;
+  slogan?: string;
   telephone?: string;
   email?: string;
   site?: string;
@@ -34,8 +36,8 @@ export const companyService = crud<
   CompanyParams
 >({ route: 'companies' });
 
-export async function getCompanyFirst() {
-  const response = await companyService.list();
-  const [company] = response.data;
-  return company;
+export async function getCompanyFirst(configs?: ApiRequestConfig) {
+  return api.get<CompanyListResponseData>(`companies/first`, {
+    ...configs,
+  });
 }

@@ -13,6 +13,7 @@ export const companySchema = z.object({
     .max(255, {
       message: 'O nome não deve ter mais de 255 caracteres',
     }),
+  slogan: z.string().optional(),
   telephone: z.string().optional(),
   email: z.string().optional(),
   site: z.string().optional(),

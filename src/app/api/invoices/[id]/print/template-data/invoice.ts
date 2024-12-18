@@ -1,17 +1,10 @@
-import { getDocumentTypeNameByCode } from '@/constants/document-types';
+import { getPaymentMethodNameByCode } from '@/constants/payment-methods';
 import { getPaymentTermsNameByCode } from '@/constants/payment-terms';
-import { formatCurrency } from '@/helpers/currency';
 import { generateUrlFromName } from '@/helpers/file';
 import { invoiceTemplate } from '@/resources';
-import { Decimal } from '@prisma/client/runtime/library';
+import { getDate, getDocumentNumber, getNumber } from './utils';
 
-function getDate(date?: Date | null) {
-  return date ? new Date(date).toLocaleDateString('pt-AO') : '';
-}
-
-function getNumber(value?: number | Decimal | null) {
-  return formatCurrency(Number(value ?? 0));
-}
+const SHOW_PAYMENTS = ['FT', 'FR', 'OR', 'RE'];
 
 export async function invoiceTemplateData(data: {
   company: any;
@@ -19,9 +12,7 @@ export async function invoiceTemplateData(data: {
   payments: any;
   banks: any;
 }) {
-  const { company, invoice, banks } = data;
-  const typeName = getDocumentTypeNameByCode(invoice.type);
-
+  const { company, invoice, banks, payments } = data;
   const template = await invoiceTemplate({
     logo_url: generateUrlFromName(company?.logo) || '',
     company: {
@@ -43,7 +34,7 @@ export async function invoiceTemplateData(data: {
       tax_id: invoice?.customer?.taxpayer || false,
     },
     document: {
-      number: `${typeName} ${invoice.number}`,
+      number: getDocumentNumber(invoice),
       currency: {
         name: invoice?.currency || 'Akz',
         rate: getNumber(invoice?.exchange),
@@ -52,6 +43,7 @@ export async function invoiceTemplateData(data: {
       due_date: getDate(invoice?.dueDate),
       discount: getNumber(invoice?.generalDiscount),
       payment_terms: getPaymentTermsNameByCode(invoice?.paymentTerms || ''),
+      reference: invoice?.reference || false,
       observation: invoice?.observation || '',
     },
     tax_summary:
@@ -86,6 +78,13 @@ export async function invoiceTemplateData(data: {
       account: `${bank.abbreviation}: ${bank.account}`,
       iban: `IBAN: ${bank.iban}`,
     })),
+    show_payments: SHOW_PAYMENTS.includes(invoice.type),
+    payments: payments?.map((payment: any) => ({
+      name: `${getPaymentMethodNameByCode(payment.method)} | ${getDate(payment.date)}`,
+      amount: getNumber(payment.amount),
+      observation: payment?.observation?.trim() || false,
+    })),
+    number_validation: process.env.NEXT_PUBLIC_NUMBER_VALIDATION || '',
   });
 
   return template;

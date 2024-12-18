@@ -50,6 +50,7 @@ export const invoiceSchema = z.object({
   customerId: z.string().optional(),
   date: z.date(),
   dueDate: z.date().optional(),
+  deliveryDate: z.coerce.date().optional(),
   currency: z.string().optional(),
   exchange: numericString(z.number().optional()),
   paymentTerms: z.string().optional(),

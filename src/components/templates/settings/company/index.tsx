@@ -70,6 +70,21 @@ export function SettingsCompany() {
           <div>
             <FormField
               control={form.control}
+              name="slogan"
+              render={({ field }) => (
+                <FormItem className="w-full flex-1">
+                  <FormLabel>Slogan</FormLabel>
+                  <FormControl>
+                    <Input disabled={isLoading} type="text" placeholder="Slogan." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div>
+            <FormField
+              control={form.control}
               name="telephone"
               render={({ field }) => (
                 <FormItem className="w-full flex-1">

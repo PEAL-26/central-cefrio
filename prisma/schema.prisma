@@ -69,6 +69,7 @@ model Invoice {
   exchange                 Decimal?            @default(0.00)
   date                     DateTime
   dueDate                  DateTime?           @map("due_Date")
+  deliveryDate             DateTime?           @map("delivery_date")
   paymentTerms             String?             @map("payment_terms")
   reference                String?
   observation              String?

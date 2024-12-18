@@ -3,6 +3,7 @@ import {
   DOCUMENTS_INCLUDE,
   DOCUMENTS_NOT_INCLUDE,
   DOCUMENTS_WITH_PAYMENT,
+  DOCUMENT_TRANSPORT,
   DOCUMENT_TYPES,
   PAYMENT,
 } from '@/constants/document-types';
@@ -40,6 +41,14 @@ export function InvoiceType() {
     if (PAYMENT.includes(typeCode)) {
       form.setValue('dueDate', undefined);
       form.setValue('paymentTerms', undefined);
+    }
+
+    if (DOCUMENT_TRANSPORT.includes(typeCode)) {
+      form.setValue('dueDate', undefined);
+      form.setValue('currency', undefined);
+      form.setValue('paymentTerms', undefined);
+    } else {
+      form.setValue('deliveryDate', undefined);
     }
 
     updateResume();

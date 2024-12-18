@@ -7,13 +7,14 @@ import { ChevronDownIcon } from 'lucide-react';
 
 interface DatePickerProps {
   value?: Date;
+  start?: Date;
   onChange?(date: Date): void;
   disabled?: boolean;
   className?: string;
 }
 
 export function DatePicker(props: DatePickerProps) {
-  const { value, onChange, disabled, className } = props;
+  const { value, start, onChange, disabled, className } = props;
   const [open, setOpen] = useState(false);
 
   const handleChangeDate = (date?: Date) => {
@@ -38,7 +39,7 @@ export function DatePicker(props: DatePickerProps) {
         </span>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-fit">
-        <DateDayPicker date={value} onChange={handleChangeDate} />
+        <DateDayPicker date={value} onChange={handleChangeDate} start={start} />
       </PopoverContent>
     </Popover>
   );

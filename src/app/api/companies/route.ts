@@ -77,6 +77,7 @@ const companySchema = z.object({
     .max(255, {
       message: 'O nome não deve ter mais de 255 caracteres',
     }),
+  slogan: z.string().optional(),
   telephone: z.string().optional(),
   email: z.string().optional(),
   site: z.string().optional(),
@@ -92,6 +93,7 @@ export async function POST(request: NextRequest) {
     const {
       id = randomUUID(),
       name,
+      slogan,
       telephone,
       email,
       site,
@@ -107,6 +109,7 @@ export async function POST(request: NextRequest) {
       await prisma.company.update({
         data: {
           name,
+          slogan,
           telephone,
           email,
           site,
@@ -122,6 +125,7 @@ export async function POST(request: NextRequest) {
         data: {
           id,
           name,
+          slogan,
           telephone,
           email,
           site,

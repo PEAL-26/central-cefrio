@@ -5,11 +5,12 @@ import 'react-day-picker/style.css';
 
 interface DateDayPickerProps {
   date?: Date;
+  start?: Date;
   onChange?(date?: Date): void;
 }
 
 export function DateDayPicker(props: DateDayPickerProps) {
-  const { onChange, date = new Date() } = props;
+  const { onChange, date = new Date(), start } = props;
 
   const [selected, setSelected] = useState<Date>(() => date);
 
@@ -24,6 +25,7 @@ export function DateDayPicker(props: DateDayPickerProps) {
       captionLayout="dropdown"
       selected={selected}
       onDayClick={handleChange}
+      
       footer={
         <div className="flex justify-center">
           <span

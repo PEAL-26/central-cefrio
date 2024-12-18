@@ -1,10 +1,10 @@
 import { Handlebars } from '@/libs/handlebars';
-import { InvoiceDataType } from '../types';
+import { PaymentDataType } from '../types';
 
 import { generateItems } from '../utils';
-import templateSource from './invoice.min.hbs';
+import templateSource from './payment.min.hbs';
 
-export async function invoiceTemplate(data: InvoiceDataType) {
+export async function paymentTemplate(data: PaymentDataType) {
   const {
     company,
     customer,
@@ -14,9 +14,11 @@ export async function invoiceTemplate(data: InvoiceDataType) {
     total,
     banks = [],
     show_banks,
-    tax_summary,
-    payments,
-    show_payments = true,
+    payments = [],
+    credit,
+    debit,
+    subtotal,
+    total_paid,
     number_validation,
   } = data;
 
@@ -55,27 +57,16 @@ export async function invoiceTemplate(data: InvoiceDataType) {
       payment_terms: document?.payment_terms || false,
       observation: document?.observation || false,
     },
-    tax_summary:
-      tax_summary?.map((tax) => ({
-        value: tax?.value || '0,00 Kz',
-        incidence: tax?.incidence || '0,00 Kz',
-        total: tax?.total || '0,00 Kz',
-        reason_exemption: tax?.reason_exemption || '',
-      })) || [],
-    total: {
-      items: total.items,
-      discounts: total.discounts,
-      advance: total.advance,
-      iva: total.iva,
-      hit: total.hit,
-      retention: total.retention,
-      value: total.value,
-    },
     show_banks,
     banks,
-    number_validation,
-    show_payments,
+    show_payments: true,
     payments,
+    total,
+    credit,
+    debit,
+    subtotal,
+    total_paid,
+    number_validation,
   };
 
   const template = Handlebars.compile(templateSource);

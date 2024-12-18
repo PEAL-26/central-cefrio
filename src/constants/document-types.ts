@@ -44,12 +44,23 @@ export const DOCUMENT_TYPES = [
     name: 'Outro',
     slug: 'outro',
   },
+  {
+    code: 'GR',
+    name: 'Guia de Remessa',
+    slug: 'guia-remessa',
+  },
+  {
+    code: 'GT',
+    name: 'Guia de Transporte',
+    slug: 'guia-transporte',
+  },
 ];
 
 export const DOCUMENTS_WITH_PAYMENT = ['FT', 'FG', 'FR', 'RE'];
 export const DOCUMENTS_NOT_INCLUDE = ['NC', 'ND'];
 export const DOCUMENTS_INCLUDE = ['RE', 'NC', 'ND'];
 export const PAYMENT = ['RE', 'FR'];
+export const DOCUMENT_TRANSPORT = ['GR', 'GT'];
 
 export function getDocumentTypeNameByCode(code: string) {
   return DOCUMENT_TYPES.find((doc) => doc.code === code)?.name || '';

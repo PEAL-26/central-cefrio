@@ -1,22 +1,26 @@
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+
 import { COOKIES } from '@/constants/cookies';
 import { generatePDFPuppeteer } from '@/helpers/generate-pdf';
 import { responseError } from '@/helpers/response/route-response';
 import { prisma } from '@/libs/prisma';
-import { cookies } from 'next/headers';
-import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
-import { invoiceTemplateData } from './invoice';
+import { invoiceTemplateData, paymentTemplateData, transportTemplateData } from './template-data';
 
 const paramsSchema = z.object({
   id: z.string().uuid(),
 });
+
+const INVOICE = ['FT', 'FR', 'PP', 'OR', 'FO'];
+const TRANSPORT = ['GR', 'GT'];
+const PAYMENT = ['RE'];
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const { id } = paramsSchema.parse(params);
     const { company, invoice, banks } = await getData(id);
 
-    // TODO Implementar o pagamento na factura depois
     const payments =
       invoice?.documents?.flatMap((d) => [
         ...(d?.invoice.status === 'A' ? [] : d?.invoice?.payments || []),
@@ -24,8 +28,16 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
     let templateHtml = '';
 
-    if (invoice.type) {
+    if (INVOICE.includes(invoice.type)) {
       templateHtml = await invoiceTemplateData({ company, invoice, payments, banks });
+    }
+
+    if (TRANSPORT.includes(invoice.type)) {
+      templateHtml = await transportTemplateData({ company, invoice });
+    }
+
+    if (PAYMENT.includes(invoice.type)) {
+      templateHtml = await paymentTemplateData({ company, invoice, payments, banks });
     }
 
     const isUploadLocal = process.env.NEXT_PUBLIC_UPLOAD_LOCAL === 'true';
@@ -34,11 +46,9 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       Authorization = `Bearer ${cookies().get(COOKIES.TOKEN)?.value || ''}`;
     }
 
-    console.log({ Authorization });
     const data = await generatePDFPuppeteer(templateHtml, { Authorization });
 
     const b64 = Buffer.from(data).toString('base64');
-    //  const base64DataUri = `data:application/pdf;base64,${b64}`;
 
     return NextResponse.json(
       { pdf: b64 },

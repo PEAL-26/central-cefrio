@@ -23,6 +23,7 @@ export interface InvoiceRequestData {
   customerId?: string;
   date: Date;
   dueDate?: Date;
+  deliveryDate?: Date;
   currency?: string;
   exchange?: number;
   paymentTerms?: string;

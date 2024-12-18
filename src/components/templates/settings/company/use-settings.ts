@@ -8,11 +8,11 @@ import { useMultipleFileUploads } from '@/hooks/use-multiple-file-uploads';
 import { useVercelBlobUpload } from '@/hooks/use-vercel-blob-upload';
 import { companyService, getCompanyFirst } from '@/services/companies';
 
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { CompanySchemaType, companySchema } from './schema';
 
 export function useSettings() {
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingData, setIsLoadingData] = useState(true);
 
   const { uploads, progress: uploadProgress } = useMultipleFileUploads();
   const vercel = useVercelBlobUpload();
@@ -21,6 +21,18 @@ export function useSettings() {
     resolver: zodResolver(companySchema),
     mode: 'onChange',
   });
+
+  const {
+    data: company,
+    isLoading: isLoadingQuery,
+    isFetching,
+  } = useQuery({
+    queryFn: getCompanyFirst,
+    queryKey: ['company'],
+  });
+
+  const isLoadingData = isLoadingQuery || isFetching;
+  const queryClient = useQueryClient();
 
   const handleSubmit = async (data: CompanySchemaType) => {
     if (isLoading) return;
@@ -48,7 +60,7 @@ export function useSettings() {
       });
 
       toastResponseRegisterSuccess(data?.id);
-      await loadingCompany();
+      queryClient.invalidateQueries({ queryKey: ['company'] });
     } catch (error) {
       toastResponseError(error);
     } finally {
@@ -56,12 +68,11 @@ export function useSettings() {
     }
   };
 
-  const loadingCompany = async () => {
-    const company = await getCompanyFirst();
-
+  useEffect(() => {
     if (company) {
       form.setValue('id', company.id);
       form.setValue('name', company.name);
+      form.setValue('slogan', company?.slogan || undefined);
       form.setValue('telephone', company?.telephone || undefined);
       form.setValue('address', company?.address || undefined);
       form.setValue('email', company?.email || undefined);
@@ -70,16 +81,7 @@ export function useSettings() {
       form.setValue('location', company?.location || undefined);
       form.setValue('logo.url', company?.logo || undefined);
     }
-  };
-
-  useEffect(() => {
-    (async () => {
-      setIsLoadingData(true);
-      await loadingCompany();
-      setIsLoadingData(false);
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [company, form]);
 
   return {
     form,

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import { AlertModal } from '@/components/modals/alert-modal';
+import { EmitGuideTransport } from '@/components/modals/emit-guide-transport';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -13,7 +14,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { DOCUMENT_COPY, DOCUMENT_EMIT_FT } from '@/constants/documetn-dropdown-menu';
+import {
+  DOCUMENT_COPY,
+  DOCUMENT_EMIT_FT,
+  DOCUMENT_EMIT_TRANSPORT_GUIDE,
+} from '@/constants/documetn-dropdown-menu';
 import { useInvoiceDownload, useInvoicePrint } from '@/hooks';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 
@@ -55,6 +60,11 @@ export function DataTableRowActions<TData extends Record<string, any> = {}>({
               >
                 Emitir Factura
               </Link>
+            </DropdownMenuItem>
+          )}
+          {DOCUMENT_EMIT_TRANSPORT_GUIDE.includes(row.original?.type) && (
+            <DropdownMenuItem asChild>
+              <EmitGuideTransport documentId={row.original.id} />
             </DropdownMenuItem>
           )}
           {DOCUMENT_COPY.includes(row.original?.type) && (

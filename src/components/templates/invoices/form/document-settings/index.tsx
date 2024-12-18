@@ -1,6 +1,6 @@
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
-import { PAYMENT } from '@/constants/document-types';
+import { DOCUMENT_TRANSPORT, PAYMENT } from '@/constants/document-types';
 import { DatePicker } from '../../../../ui/date-picker';
 import { Change } from './change';
 import { Currency } from './currency';
@@ -10,6 +10,8 @@ import { useDocumentSettings } from './use-document-settings';
 
 export function DocumentSettings() {
   const { form } = useDocumentSettings();
+  const type = form.watch('type');
+  const showDeliveryDate = DOCUMENT_TRANSPORT.includes(type);
 
   return (
     <div className="flex w-96 flex-col gap-4">
@@ -30,30 +32,43 @@ export function DocumentSettings() {
             onChange={(date) => form.setValue('date', date)}
           />
         </div>
-        <div className="flex w-full items-center justify-between gap-4">
-          <span className="font-bold">Vencimento: </span>
-          <DatePicker
-            disabled={
-              PAYMENT.includes(form.watch('type')) || form.watch('paymentTerms') === 'ready'
-            }
-            value={form.watch('dueDate')}
-            onChange={(date) => form.setValue('dueDate', date)}
-          />
-        </div>
-        <div className="flex w-full items-center justify-between gap-4">
-          <span className="font-bold">Moeda: </span>
-          <Currency />
-        </div>
-        {form.watch('currency') !== 'AOA' && (
+        {!showDeliveryDate && (
           <div className="flex w-full items-center justify-between gap-4">
-            <span className="font-bold">Câmbio: </span>
-            <Change />
+            <span className="font-bold">Vencimento: </span>
+            <DatePicker
+              disabled={PAYMENT.includes(type) || form.watch('paymentTerms') === 'ready'}
+              value={form.watch('dueDate')}
+              onChange={(date) => form.setValue('dueDate', date)}
+            />
           </div>
         )}
-        <div className="flex w-full flex-1 items-center justify-between gap-4">
-          <span className="font-bold">Cond. Pagamento</span>
-          <PaymentTerms />
-        </div>
+        {showDeliveryDate && (
+          <div className="flex w-full items-center justify-between gap-4">
+            <span className="font-bold">Data de Entrega: </span>
+            <DatePicker
+              value={form.watch('deliveryDate')}
+              onChange={(date) => form.setValue('deliveryDate', date)}
+            />
+          </div>
+        )}
+        {!showDeliveryDate && (
+          <>
+            <div className="flex w-full items-center justify-between gap-4">
+              <span className="font-bold">Moeda: </span>
+              <Currency />
+            </div>
+            {form.watch('currency') !== 'AOA' && (
+              <div className="flex w-full items-center justify-between gap-4">
+                <span className="font-bold">Câmbio: </span>
+                <Change />
+              </div>
+            )}
+            <div className="flex w-full flex-1 items-center justify-between gap-4">
+              <span className="font-bold">Cond. Pagamento</span>
+              <PaymentTerms />
+            </div>
+          </>
+        )}
         <div className="flex w-full flex-col">
           <span className="font-bold">Observações: </span>
           <FormField

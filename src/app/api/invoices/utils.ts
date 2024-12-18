@@ -68,6 +68,7 @@ export async function prepareData(input: InvoiceSchemaType, create = false) {
     customerId,
     date,
     dueDate,
+    deliveryDate,
     paymentTerms,
     reference,
     observation,
@@ -110,6 +111,7 @@ export async function prepareData(input: InvoiceSchemaType, create = false) {
     customerId: customerId || END_CONSUMER.id,
     date,
     dueDate,
+    deliveryDate,
     paymentTerms,
     reference,
     observation,
@@ -165,10 +167,10 @@ export async function getItems(items: InvoiceItemSchemaType[], create = false) {
   let order = 0;
   for (const { id, productId, name, discount, iva, price, quantity, reasonExemption } of items) {
     const { discountAmount, ivaAmount, priceDiscount, priceIva, total } = invoiceUpdateItemTotal({
-      discount,
-      iva,
-      price,
-      quantity,
+      discount: discount || 0,
+      iva: iva || 0,
+      price: price || 0,
+      quantity: quantity || 0,
     });
 
     const product = await prisma.product.findFirst({
@@ -183,23 +185,27 @@ export async function getItems(items: InvoiceItemSchemaType[], create = false) {
       productName: product.name,
       unitMeasure: product.unitMeasure,
       reasonExemption: product.reasonExemption,
-      price,
-      quantity,
-      discount,
-      discountAmount,
-      iva,
-      ivaAmount,
-      total,
+      price: price || 0,
+      quantity: quantity || 0,
+      discount: discount || 0,
+      discountAmount: discountAmount || 0,
+      iva: iva || 0,
+      ivaAmount: ivaAmount || 0,
+      total: total || 0,
     };
 
     productsData.push(newItem);
 
     let tax = {
       id: randomUUID(),
-      value: iva,
-      amount: ivaAmount,
-      incidence: priceIva * quantity,
-      observation: reasonExemption ? reasonExemption : iva === 0 ? product.reasonExemption : '',
+      value: iva || 0,
+      amount: ivaAmount || 0,
+      incidence: (priceIva || 0) * (quantity || 0),
+      observation: reasonExemption
+        ? reasonExemption
+        : (iva || 0) === 0
+          ? product.reasonExemption
+          : '',
     };
 
     let taxFound = taxesData.find((p) => p.value === iva);
@@ -267,9 +273,10 @@ export function invoiceCreate(data: any) {
       customerId: data.customerId || END_CONSUMER.id,
       date: data.date,
       dueDate: data.dueDate,
+      deliveryDate: data.deliveryDate,
       paymentTerms: data.paymentTerms,
       reference: data.reference,
-      observation: data.reference,
+      observation: data.observation,
       currency: data.currency,
       exchange: data.exchange,
       withholdingTaxType: data.withholdingTaxType,
