@@ -5,7 +5,7 @@ import { toastResponseError, toastResponseRegisterSuccess } from '@/helpers/resp
 import { userService } from '@/services/users';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { userSchema, UserSchemaType } from './schema';
+import { UserSchemaType, userSchema } from './schema';
 import { UserFormProps } from './types';
 
 export function useUserForm(props: UserFormProps) {

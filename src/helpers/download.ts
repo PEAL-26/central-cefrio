@@ -1,4 +1,4 @@
-import { createSlug } from "./slug";
+import { createSlug } from './slug';
 
 export async function downloadWithUrl(url: string) {
   return fetch(url, {

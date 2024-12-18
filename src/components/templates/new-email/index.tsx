@@ -64,7 +64,7 @@ export default function EmailComposer() {
             </div>
             <div>
               {/* Formatting Toolbar */}
-              <div className="w-full mb-3">
+              <div className="mb-3 w-full">
                 <div className="flex items-center space-x-2">
                   <div className="flex items-center space-x-1 border-r border-gray-200 pr-2">
                     <Button variant="ghost" size="icon" className="p-0 hover:bg-transparent">

@@ -33,7 +33,7 @@ export function MailsListingLayout(props: Props) {
       className="w-full"
     >
       <ResizablePanel defaultSize={15} maxSize={30} minSize={10}>
-        <div className="flex h-screen-custom flex-col border-r border-r-gray-300 shadow mr-1">
+        <div className="mr-1 flex h-screen-custom flex-col border-r border-r-gray-300 shadow">
           {/* Header */}
           <div>
             <div className="flex w-full items-center justify-center gap-2 border-b border-b-gray-200 px-2 text-center">
@@ -61,7 +61,7 @@ export function MailsListingLayout(props: Props) {
           </div>
         </div>
       </ResizablePanel>
-      <ResizableHandle  />
+      <ResizableHandle />
       <ResizablePanel>
         <div className="flex h-screen-custom flex-1 items-center justify-center overflow-y-auto">
           {children}

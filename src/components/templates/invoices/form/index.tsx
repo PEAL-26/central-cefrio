@@ -2,8 +2,8 @@
 import { AlertError } from '@/components/ui/alert-error';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import { ReactLoading } from '@/libs/react-loading';
 import { DOCUMENTS_INCLUDE } from '@/constants/document-types';
+import { ReactLoading } from '@/libs/react-loading';
 
 import { CustomerForm } from './customer';
 import { DocumentSettings } from './document-settings';

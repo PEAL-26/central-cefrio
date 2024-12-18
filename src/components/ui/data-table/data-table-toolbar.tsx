@@ -28,14 +28,14 @@ export function DataTableToolbar<TData>(props: DataTableToolbarProps<TData>) {
   const debounced = useDebounceValue(search?.trim());
 
   const setParamsSearch = useCallback(() => {
-    if (!debounced) return
-    
-      setParams([
-        { name: 'is_filtered', value: 'true' },
-        { name: 'q', value: debounced },
-        { name: 'page', value: debounced ? '1' : '' },
-        { name: 'size', value: size },
-      ]);
+    if (!debounced) return;
+
+    setParams([
+      { name: 'is_filtered', value: 'true' },
+      { name: 'q', value: debounced },
+      { name: 'page', value: debounced ? '1' : '' },
+      { name: 'size', value: size },
+    ]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounced]);
 

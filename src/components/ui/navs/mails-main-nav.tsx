@@ -30,7 +30,7 @@ export function MailsMainNav(props: HTMLAttributes<HTMLElement>) {
         >
           {link.label}
           {link.href === '/mails/inputs' && (
-            <div className="absolute -right-4 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-primary text-center text-[5pt] text-white font-bold">
+            <div className="absolute -right-4 -top-2 flex h-[18px] w-[18px] items-center justify-center rounded-full bg-primary text-center text-[5pt] font-bold text-white">
               1
             </div>
           )}

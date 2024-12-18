@@ -40,7 +40,7 @@ export async function generateImageDataURLFromURL(imageURL: string): Promise<str
       console.log({ headers: res.headers });
       res.on('end', () => {
         const contentType = res.headers['content-type'];
-        console.log({contentType})
+        console.log({ contentType });
         const data = Buffer.concat(imageData);
         const dataURL = `data:${contentType};base64,${data.toString('base64')}`;
         resolve(dataURL);

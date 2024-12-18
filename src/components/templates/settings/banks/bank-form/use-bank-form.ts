@@ -5,7 +5,7 @@ import { toastResponseError, toastResponseRegisterSuccess } from '@/helpers/resp
 import { bankService } from '@/services/banks';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { bankSchema, BankSchemaType } from './schema';
+import { BankSchemaType, bankSchema } from './schema';
 import { BankFormProps } from './types';
 
 export function useBankForm(props: BankFormProps) {

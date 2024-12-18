@@ -25,7 +25,6 @@ export function DateDayPicker(props: DateDayPickerProps) {
       captionLayout="dropdown"
       selected={selected}
       onDayClick={handleChange}
-      
       footer={
         <div className="flex justify-center">
           <span
