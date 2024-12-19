@@ -3,11 +3,23 @@ import { useState } from 'react';
 // import { useState } from "next";
 import { RefreshCcwIcon } from 'lucide-react';
 
+import { useMailContext } from '@/contexts';
 import { Button } from '../ui/button';
 import { MailListingItem } from '../ui/mail-listing-item';
 import { MailListingToolbox } from '../ui/mail-listing-toolbox';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../ui/resizable';
 import { SelectEmailUsing } from '../ui/select-email-using';
+
+type ChildrenProps = {
+  nextUrl?: string;
+  prevUrl?: string;
+};
+
+type Selected = {
+  id: string;
+  nextId?: string;
+  prevId?: string;
+};
 
 interface Props {
   type: 'inputs' | 'outputs' | 'contacts';
@@ -16,7 +28,8 @@ interface Props {
 
 export function MailsListingLayout(props: Props) {
   const { type, children } = props;
-  const [select, setSelect] = useState('');
+  const [select, setSelect] = useState<Selected | undefined>(undefined);
+  const { handleSelectContent } = useMailContext();
 
   const title = {
     inputs: 'Caixa de Entrada',
@@ -27,6 +40,27 @@ export function MailsListingLayout(props: Props) {
   const count = 100;
   const countStr = count > 99 ? '99+' : count.toString();
 
+  const contentListing = Array.from({ length: 100 }).map((_, key) => ({
+    id: `${key}`,
+    name: `Nome ${key}`,
+    subject: `Assunto ${key}`,
+    message: `Mensagem ${key}`,
+    read: key % 2 === 0,
+  }));
+
+  const mainUrl = `/mails/${type}`;
+
+  const handleSelect = (item: any, key: number) => {
+    setSelect({ id: item.id, nextId: '', prevId: '' });
+
+    const nextId = undefined;
+    const prevId = undefined;
+    const nextUrl = nextId ? `${mainUrl}/${nextId}` : undefined;
+    const prevUrl = prevId ? `${mainUrl}/${prevId}` : undefined;
+
+    handleSelectContent({ navigation: { nextUrl, prevUrl } });
+  };
+
   return (
     <ResizablePanelGroup
       autoSaveId="cefrio.resizable.painel"
@@ -34,7 +68,7 @@ export function MailsListingLayout(props: Props) {
       className="w-full"
     >
       <ResizablePanel defaultSize={15} maxSize={30} minSize={10}>
-        <div className="mr-1 flex h-screen-custom flex-col border-r border-r-gray-300 shadow">
+        <div className="flex h-screen-custom flex-col ">
           {/* Header */}
           <div>
             <div className="flex h-14 w-full flex-col items-center gap-1 border-b border-b-gray-200 px-2 py-2 text-center">
@@ -45,7 +79,7 @@ export function MailsListingLayout(props: Props) {
                 <div className="relative">
                   <span className="text-xs font-bold">{`${title} (${countStr})`}</span>
                   {/* Apenas será visível quando o usuário tiver mais de 1 email vinculado a ele*/}
-                  <div className="absolute left-0 -bottom-4">
+                  <div className="absolute -bottom-4 left-0">
                     <SelectEmailUsing value="cesar.lopes@cefrio.ao" />
                   </div>
                 </div>
@@ -55,24 +89,24 @@ export function MailsListingLayout(props: Props) {
           </div>
           {/* Listing */}
           <div className="flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-            {Array.from({ length: 100 }).map((_, key) => (
+            {contentListing.map((item, key) => (
               <MailListingItem
                 key={key}
-                name={`Nome ${key}`}
-                subject="Assunto"
-                message="Mensagem"
-                select={select === String(key)}
-                read={key % 2 === 0}
-                href={`/mails/${type}/${key}`}
-                onClick={() => setSelect(String(key))}
+                name={item.name}
+                subject={item.subject}
+                message={item.message}
+                select={select?.id === item?.id}
+                read={item.read}
+                href={`${mainUrl}/${item.id}`}
+                onClick={() => handleSelect(item, key)}
               />
             ))}
           </div>
         </div>
       </ResizablePanel>
-      <ResizableHandle />
+      <ResizableHandle className='after:bg-gray-300 mx-[1px] after:w-[2px]' />
       <ResizablePanel>
-        <div className="flex h-screen-custom flex-1 items-center justify-center overflow-y-auto">
+        <div className="relative flex h-screen-custom flex-1 items-center justify-center overflow-y-auto">
           {children}
         </div>
       </ResizablePanel>

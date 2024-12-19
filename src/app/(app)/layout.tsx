@@ -1,9 +1,14 @@
 import { AppLayout } from '@/components/layouts';
+import { MailProvider } from '@/contexts';
 
 export default function AppMainLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <AppLayout>{children}</AppLayout>;
+  return (
+    <AppLayout>
+      <MailProvider>{children}</MailProvider>
+    </AppLayout>
+  );
 }

@@ -1,6 +1,7 @@
+import { MailMessageDetails } from '@/components/templates/mail-message-details';
 import { Loading } from '@/components/ui/loading';
 import { Metadata, ResolvingMetadata } from 'next';
-import { Suspense } from 'react';
+import { memo, Suspense } from 'react';
 
 interface Props {
   params: { id: string };
@@ -18,5 +19,12 @@ export async function generateMetadata(
 }
 
 export default async function MailsInputMessageDetailsPage(props: Props) {
-  return <Suspense fallback={<Loading />}>mensagem de entrada{JSON.stringify(props)}</Suspense>;
+
+  const data = {}
+  
+  return (
+    <Suspense fallback={<Loading />}>
+      <MailMessageDetails data={data} />
+    </Suspense>
+  );
 }

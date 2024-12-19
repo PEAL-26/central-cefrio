@@ -19,8 +19,8 @@ export function MailListingItem(props: Props) {
   return (
     <Link
       className={cn(
-        'flex items-center justify-between gap-2 border-b border-b-primary-100 pr-2 hover:cursor-pointer hover:bg-primary-50/50',
-        select && 'bg-primary-50/50',
+        'bg-white flex items-center justify-between gap-2 border-b border-b-primary-100 pr-2 hover:cursor-pointer hover:bg-primary-50/50',
+        select && 'bg-primary-50/60',
       )}
       href={href}
       onClick={onClick}

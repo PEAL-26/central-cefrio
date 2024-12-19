@@ -1,3 +1,4 @@
+import { MailContactDetails } from '@/components/templates/mail-contact-details';
 import { Loading } from '@/components/ui/loading';
 import { Metadata, ResolvingMetadata } from 'next';
 import { Suspense } from 'react';
@@ -18,5 +19,9 @@ export async function generateMetadata(
 }
 
 export default async function MailsContactDetailsPage(props: Props) {
-  return <Suspense fallback={<Loading />}>Detalhes do contacto</Suspense>;
+  return (
+    <Suspense fallback={<Loading />}>
+      <MailContactDetails />
+    </Suspense>
+  );
 }
