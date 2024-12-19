@@ -1,4 +1,4 @@
-import EmailComposer from '@/components/templates/new-email';
+import { EmailComposer } from '@/components/templates/new-email';
 import { Loading } from '@/components/ui/loading';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
