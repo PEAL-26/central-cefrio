@@ -6,12 +6,8 @@ export const metadata = {
 
 const sidebarNavItems = [
   {
-    title: 'Empresa',
-    href: '/mails/settings/company',
-  },
-  {
-    title: 'Bancos',
-    href: '/mails/settings/banks',
+    title: 'Contas de Email',
+    href: '/mails/settings/email-accounts',
   },
   {
     title: 'Usuários',
@@ -24,5 +20,9 @@ export default function SettingsMainLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <SettingsLayout items={sidebarNavItems}>{children}</SettingsLayout>;
+  return (
+    <div className="flex-1 p-8">
+      <SettingsLayout items={sidebarNavItems}>{children}</SettingsLayout>;
+    </div>
+  );
 }

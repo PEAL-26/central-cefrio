@@ -5,6 +5,8 @@ export interface UserListResponseData {
   id: string;
   name: string;
   email: string;
+  picture: string;
+  role: string;
 }
 
 export interface UserParams extends ListRequestParams {}

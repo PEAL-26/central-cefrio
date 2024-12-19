@@ -4,10 +4,10 @@ import { ColumnDef } from '@tanstack/react-table';
 
 import { Checkbox } from '@/components/ui/checkbox';
 import { DataTableColumnHeader } from '@/components/ui/data-table';
-import { UserListResponseData } from '@/services/users';
+import { EmailAccountListResponseData } from '@/services/email-accounts';
 import { DataTableRowActions } from './data-table-row-actions';
 
-type Column = ColumnDef<UserListResponseData> & { className?: string };
+type Column = ColumnDef<EmailAccountListResponseData> & { className?: string };
 
 interface ColumnProps {
   onDelete?: (id: string) => void;
@@ -37,26 +37,10 @@ export const columns = (props?: ColumnProps): Column[] => [
     enableHiding: false,
   },
   {
-    accessorKey: 'name',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Nome" />,
-    cell: ({ row }) => <div className="whitespace-nowrap">{row.getValue('name')}</div>,
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     accessorKey: 'email',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
     cell: ({ row }) => {
       return <div className="whitespace-nowrap">{row.getValue('email')}</div>;
-    },
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: 'role',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Função" />,
-    cell: ({ row }) => {
-      return <div className="whitespace-nowrap">{row.getValue('role')}</div>;
     },
     enableSorting: false,
     enableHiding: false,
