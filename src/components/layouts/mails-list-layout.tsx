@@ -7,6 +7,7 @@ import { Button } from '../ui/button';
 import { MailListingItem } from '../ui/mail-listing-item';
 import { MailListingToolbox } from '../ui/mail-listing-toolbox';
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../ui/resizable';
+import { SelectEmailUsing } from '../ui/select-email-using';
 
 interface Props {
   type: 'inputs' | 'outputs' | 'contacts';
@@ -36,11 +37,19 @@ export function MailsListingLayout(props: Props) {
         <div className="mr-1 flex h-screen-custom flex-col border-r border-r-gray-300 shadow">
           {/* Header */}
           <div>
-            <div className="flex w-full items-center justify-center gap-2 border-b border-b-gray-200 px-2 text-center">
-              <Button className="p-0 hover:bg-transparent" variant="ghost">
-                <RefreshCcwIcon className="size-4 text-gray-300" />
-              </Button>
-              <span className="text-xs font-bold">{`${title} (${countStr})`}</span>
+            <div className="flex h-14 w-full flex-col items-center gap-1 border-b border-b-gray-200 px-2 py-2 text-center">
+              <div className="flex w-full items-center justify-center gap-2">
+                <Button className="h-5 p-0 hover:bg-transparent" variant="ghost">
+                  <RefreshCcwIcon className="size-4 text-gray-300" />
+                </Button>
+                <div className="relative">
+                  <span className="text-xs font-bold">{`${title} (${countStr})`}</span>
+                  {/* Apenas será visível quando o usuário tiver mais de 1 email vinculado a ele*/}
+                  <div className="absolute left-0 -bottom-4">
+                    <SelectEmailUsing value="cesar.lopes@cefrio.ao" />
+                  </div>
+                </div>
+              </div>
             </div>
             <MailListingToolbox />
           </div>
