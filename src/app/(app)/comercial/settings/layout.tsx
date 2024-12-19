@@ -14,6 +14,10 @@ const sidebarNavItems = [
     href: '/comercial/settings/banks',
   },
   {
+    title: 'Bancos',
+    href: '/comercial/settings/synchronization-backup',
+  },
+  {
     title: 'Usuários',
     href: '/comercial/settings/users',
   },

@@ -18,7 +18,7 @@ export function ListInvoices() {
         </div>
 
         <Link className={buttonVariants({ variant: 'default' })} href="/comercial/invoices/create">
-          Emitir
+          Novo documento
         </Link>
       </div>
       <DataTable
