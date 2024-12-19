@@ -14,8 +14,8 @@ const sidebarNavItems = [
     href: '/comercial/settings/banks',
   },
   {
-    title: 'Bancos',
-    href: '/comercial/settings/synchronization-backup',
+    title: 'Sincronização e Cópia de Segurança',
+    href: '/comercial/settings/synchronization-backups',
   },
   {
     title: 'Usuários',
