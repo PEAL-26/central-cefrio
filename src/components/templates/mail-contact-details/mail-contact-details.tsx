@@ -3,6 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ContactIcon } from '@/components/ui/contact-icon';
 import {
   Dialog,
   DialogContent,
@@ -20,6 +21,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
+import { getContactType } from '@/constants/contantc-types';
 import { Briefcase, Mail, MapPin, Pencil, Phone, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -116,7 +118,7 @@ export function MailContactDetails() {
           <CardTitle>Informações de Contato</CardTitle>
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="outline" size="sm" className="rounded-full p-0 w-8 h-8">
+              <Button variant="outline" size="sm" className="h-8 w-8 rounded-full p-0">
                 <Plus className="h-4 w-4" />
               </Button>
             </DialogTrigger>
@@ -161,76 +163,80 @@ export function MailContactDetails() {
         </CardHeader>
         <CardContent>
           <ul className="max-w-sm space-y-2">
-            {contacts.map((contact) => (
-              <li key={contact.id} className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  {contact.type === 'Telefone' && <Phone className="h-5 w-5 text-gray-500" />}
-                  {contact.type === 'Email' && <Mail className="h-5 w-5 text-gray-500" />}
-                  {contact.type === 'Outro' && <Briefcase className="h-5 w-5 text-gray-500" />}
-                  <span>{contact.value}</span>
-                </div>
-                <div>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                        <Pencil className="h-4 w-4" />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Editar Contato</DialogTitle>
-                      </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="edit-type" className="text-right">
-                            Tipo
-                          </Label>
-                          <Select
-                            value={editingContact?.type}
-                            onValueChange={(value) =>
-                              setEditingContact((prev) => (prev ? { ...prev, type: value } : null))
-                            }
-                          >
-                            <SelectTrigger className="col-span-3">
-                              <SelectValue placeholder="Selecione o tipo" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Telefone">Telefone</SelectItem>
-                              <SelectItem value="Email">Email</SelectItem>
-                              <SelectItem value="Outro">Outro</SelectItem>
-                            </SelectContent>
-                          </Select>
+            {contacts.map((contact) => {
+              const type = getContactType(contact.type);
+
+              return (
+                <li key={contact.id} className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <ContactIcon icon={type?.icon} className="h-5 w-5 text-gray-500" />
+                    <span>{contact.value}</span>
+                  </div>
+                  <div>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Editar Contato</DialogTitle>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="edit-type" className="text-right">
+                              Tipo
+                            </Label>
+                            <Select
+                              value={editingContact?.type}
+                              onValueChange={(value) =>
+                                setEditingContact((prev) =>
+                                  prev ? { ...prev, type: value } : null,
+                                )
+                              }
+                            >
+                              <SelectTrigger className="col-span-3">
+                                <SelectValue placeholder="Selecione o tipo" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Telefone">Telefone</SelectItem>
+                                <SelectItem value="Email">Email</SelectItem>
+                                <SelectItem value="Outro">Outro</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <Label htmlFor="edit-value" className="text-right">
+                              Valor
+                            </Label>
+                            <Input
+                              id="edit-value"
+                              value={editingContact?.value}
+                              onChange={(e) =>
+                                setEditingContact((prev) =>
+                                  prev ? { ...prev, value: e.target.value } : null,
+                                )
+                              }
+                              className="col-span-3"
+                            />
+                          </div>
                         </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="edit-value" className="text-right">
-                            Valor
-                          </Label>
-                          <Input
-                            id="edit-value"
-                            value={editingContact?.value}
-                            onChange={(e) =>
-                              setEditingContact((prev) =>
-                                prev ? { ...prev, value: e.target.value } : null,
-                              )
-                            }
-                            className="col-span-3"
-                          />
-                        </div>
-                      </div>
-                      <Button onClick={updateContact}>Salvar Alterações</Button>
-                    </DialogContent>
-                  </Dialog>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0"
-                    onClick={() => deleteContact(contact.id)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              </li>
-            ))}
+                        <Button onClick={updateContact}>Salvar Alterações</Button>
+                      </DialogContent>
+                    </Dialog>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0"
+                      onClick={() => deleteContact(contact.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </CardContent>
       </Card>

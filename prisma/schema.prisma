@@ -27,8 +27,24 @@ model Customer {
   updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
 
   invoices Invoice[]
+  contact  Contact[]
 
   @@map("customers")
+}
+
+model Contact {
+  id    String  @id @unique @default(uuid())
+  type  String
+  value String
+  main Boolean @default(false)
+
+  customer   Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  customerId String?   @map("customer_id")
+
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(3)
+  updatedAt DateTime  @updatedAt @map("updated_at") @db.Timestamp(3)
+
+  @@map("contacts")
 }
 
 model Product {

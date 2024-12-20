@@ -4,6 +4,7 @@ import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { Row } from '@tanstack/react-table';
 
 import { AlertModal } from '@/components/modals/alert-modal';
+import { CustomerContacts } from '@/components/modals/customer-contacts';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -41,6 +42,12 @@ export function DataTableRowActions<TData extends { id: string }>({
         <DropdownMenuContent align="end" className="w-[160px]">
           <DropdownMenuItem onClick={() => actions?.onEdit?.(row.original?.id)}>
             Alterar
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <CustomerContacts
+              customerId={row.original?.id || ''}
+              customerName={row.original?.name || ''}
+            />
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setIsOpenDeleteModal(true)}>Delete</DropdownMenuItem>

@@ -10,23 +10,32 @@ interface Props<TFieldValues extends FieldValues = FieldValues, TContext = any> 
   control?: Control<TFieldValues, TContext>;
   name: Path<TFieldValues>;
   type?: HTMLInputTypeAttribute;
+  defaultValue?: any;
+  className?: string;
 }
 
 export function InputFormFieldControl<
   TFieldValues extends FieldValues = FieldValues,
   TContext = any,
 >(props: Props<TFieldValues, TContext>) {
-  const { label, placeholder, isLoading, control, name, type } = props;
+  const { label, placeholder, isLoading, control, name, type, defaultValue, className } = props;
 
   return (
     <FormField
       control={control}
       name={name}
+      defaultValue={defaultValue}
       render={({ field }) => (
         <FormItem className="w-full">
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Input disabled={isLoading} type={type} placeholder={placeholder} {...field} />
+            <Input
+              disabled={isLoading}
+              type={type}
+              placeholder={placeholder}
+              className={className}
+              {...field}
+            />
           </FormControl>
           <FormMessage />
         </FormItem>
