@@ -73,7 +73,6 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   try {
     const data = await req.json();
     const { contacts } = contactSchema.parse(data);
-    //id = randomUUID(), type, value, main, customerId
     const customer = await prisma.customer.findFirst({ where: { id: params.id } });
 
     if (!customer) {
@@ -86,7 +85,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
           contact: {
             deleteMany: {
               id: {
-                notIn: contacts.map((c) => c.id).filter((id) => id !== undefined),
+                notIn: contacts.map((c) => c.id).filter((id) => id !== undefined) as string[],
               },
             },
             createMany: {

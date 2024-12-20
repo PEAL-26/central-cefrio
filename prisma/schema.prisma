@@ -35,8 +35,8 @@ model Customer {
 model Contact {
   id    String  @id @unique @default(uuid())
   type  String
-  value String
-  main Boolean @default(false)
+  value String  @unique
+  main  Boolean @default(false)
 
   customer   Customer? @relation(fields: [customerId], references: [id], onDelete: SetNull)
   customerId String?   @map("customer_id")

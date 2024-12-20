@@ -20,12 +20,12 @@ interface Actions {
   onDelete?: (id: string) => void;
 }
 
-interface DataTableRowActionsProps<TData extends { id: string }> {
+interface DataTableRowActionsProps<TData extends Record<string, any>> {
   row: Row<TData>;
   actions?: Actions;
 }
 
-export function DataTableRowActions<TData extends { id: string }>({
+export function DataTableRowActions<TData extends Record<string, any>>({
   row,
   actions,
 }: DataTableRowActionsProps<TData>) {
